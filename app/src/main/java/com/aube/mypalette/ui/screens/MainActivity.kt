@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -15,6 +15,10 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +38,12 @@ class MainActivity : ComponentActivity() {
                 AppContent(colorViewModel, combinationViewModel)
             }
         }
+
+        // Set up WindowInsetsController to control the system bars
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = ViewCompat.getWindowInsetsController(window.decorView)
+        controller?.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        controller?.hide(WindowInsetsCompat.Type.systemBars())
     }
 }
 
@@ -65,6 +75,17 @@ fun MyPaletteNavGraph(
                     label = { Text("내 팔레트") }
                 )
 
+                // 색 찾기 버튼
+                NavigationBarItem(
+                    selected = navController.currentDestination?.route == "searchColorScreen",
+                    onClick = {
+                        navController.navigate("searchColorScreen")
+                    },
+                    icon = { Icon(Icons.Default.Search, contentDescription = null) },
+                    label = { Text("색 찾기") }
+                )
+
+
                 // 색 등록하기 버튼
                 NavigationBarItem(
                     selected = navController.currentDestination?.route == "registerColorScreen",
@@ -73,16 +94,6 @@ fun MyPaletteNavGraph(
                     },
                     icon = { Icon(Icons.Default.AddCircle, contentDescription = null) },
                     label = { Text("색 등록하기") }
-                )
-
-                // 색 추출하기 버튼
-                NavigationBarItem(
-                    selected = navController.currentDestination?.route == "extractColorScreen",
-                    onClick = {
-                        navController.navigate("extractColorScreen")
-                    },
-                    icon = { Icon(Icons.Default.Send, contentDescription = null) },
-                    label = { Text("색 추출하기") }
                 )
 
                 // 나만의 조합 버튼
@@ -107,13 +118,13 @@ fun MyPaletteNavGraph(
                     colorViewModel = colorViewModel
                 )
             }
-            composable("registerColorScreen") {
-                RegisterColorScreen(
+            composable("searchColorScreen") {
+                SearchColorScreen(
                     colorViewModel = colorViewModel
                 )
             }
-            composable("extractColorScreen") {
-                ExtractColorScreen(
+            composable("registerColorScreen") {
+                RegisterColorScreen(
                     colorViewModel = colorViewModel
                 )
             }

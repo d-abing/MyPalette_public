@@ -13,18 +13,6 @@
         android:theme="@style/Theme.MyPalette"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screens.MyCombinationScreen"
-            android:exported="false" />
-        <activity
-            android:name=".ui.screens.ExtractColorScreen"
-            android:exported="false" />
-        <activity
-            android:name=".ui.screens.RegisterColorScreen"
-            android:exported="false" />
-        <activity
-            android:name=".ui.screens.MyPaletteScreen"
-            android:exported="false" />
-        <activity
             android:name=".ui.screens.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
