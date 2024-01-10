@@ -1,17 +1,36 @@
 package com.aube.mypalette.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.aube.mypalette.data.ColorRepository
-import com.aube.mypalette.model.CombinationItem
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.aube.mypalette.database.ColorEntity
+import com.aube.mypalette.database.CombinationEntity
+import com.aube.mypalette.repository.CombinationRepository
+import kotlinx.coroutines.launch
 
-class CombinationViewModel : ViewModel() {
-    private val colorRepository = ColorRepository()
+class CombinationViewModel(private val combinationRepository: CombinationRepository) : ViewModel() {
+    val allCombinations: LiveData<List<CombinationEntity>>  = combinationRepository.allCombinations
 
-    fun addCombination(combinationItem: CombinationItem) {
-        colorRepository.addCombination(combinationItem)
+    fun insert(combination: CombinationEntity) {
+        viewModelScope.launch {
+            combinationRepository.insert(combination)
+        }
     }
 
-    fun getAllCombinations(): List<CombinationItem> {
-        return colorRepository.getAllCombinations()
+    fun delete(combination: CombinationEntity) {
+        viewModelScope.launch {
+            combinationRepository.delete(combination)
+        }
+    }
+}
+
+class CombinationViewModelFactory(private val repository: CombinationRepository) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CombinationViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return CombinationViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

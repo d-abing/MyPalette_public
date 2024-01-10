@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -51,8 +52,10 @@ android {
 
 dependencies {
 
-    implementation("com.vanniktech:android-image-cropper:4.5.0")
-    implementation ("io.coil-kt:coil-compose:1.4.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

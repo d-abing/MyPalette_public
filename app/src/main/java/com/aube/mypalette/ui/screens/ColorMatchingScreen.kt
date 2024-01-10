@@ -6,22 +6,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-
+import com.aube.mypalette.viewmodel.ColorViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterColorScreen(
+fun ColorMatchingScreen(
+    colorViewModel: ColorViewModel
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Register Color") }
+                title = { Text("Color Matching") }
             )
         },
         content = {
-            // 여기에 색 등록하기 화면 구현
-            Text("Register Color Screen Content")
+            // 여기에 색 매칭 기능 구현
+            Text("Color Matching Screen Content")
         }
     )
 }
