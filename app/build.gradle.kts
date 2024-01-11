@@ -53,9 +53,11 @@ android {
 dependencies {
 
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
-    implementation ("androidx.room:room-runtime:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("io.coil-kt:coil:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

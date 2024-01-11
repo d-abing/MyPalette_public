@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -62,7 +63,7 @@ fun MyPaletteScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("My Palette") }
             )
         }
@@ -70,8 +71,8 @@ fun MyPaletteScreen(
         LazyColumn (
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(start = 20.dp, end = 20.dp)
                 .background(Color(100, 100, 100))
+                .padding(start = 20.dp, top = 10.dp, end = 20.dp)
                 .fillMaxWidth()
             ,
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -97,7 +98,7 @@ fun ColorItem(colorItem: ColorEntity) {
 
         LazyRow(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(start = 10.dp, top = 10.dp, bottom = 10.dp)
                 .background(Color(200, 200, 200))
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -136,3 +137,16 @@ fun ColorItem(colorItem: ColorEntity) {
         }
     }
 }
+
+/*
+@Composable
+fun ImageItem(imageItem: ImageEntity) {
+    Image(
+        painter = painterResource(id = R.drawable.imageItem),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .size(80.dp)
+            .clip(RoundedCornerShape(16.dp))
+    )
+}*/
