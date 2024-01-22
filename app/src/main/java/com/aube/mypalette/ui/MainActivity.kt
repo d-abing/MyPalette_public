@@ -1,8 +1,10 @@
 package com.aube.mypalette.ui
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -16,6 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,8 +34,11 @@ import com.aube.mypalette.viewmodel.CombinationViewModel
 import com.aube.mypalette.repository.ColorRepository
 import com.aube.mypalette.repository.CombinationRepository
 import com.aube.mypalette.database.MyPaletteDatabase
+import com.aube.mypalette.repository.ImageRepository
 import com.aube.mypalette.viewmodel.ColorViewModelFactory
 import com.aube.mypalette.viewmodel.CombinationViewModelFactory
+import com.aube.mypalette.viewmodel.ImageViewModel
+import com.aube.mypalette.viewmodel.ImageViewModelFactory
 
 class MainActivity : ComponentActivity() {
 
@@ -40,10 +47,11 @@ class MainActivity : ComponentActivity() {
         val database = MyPaletteDatabase.getInstance(this)
         val colorRepository = ColorRepository(database.colorDao())
         val combinationRepository = CombinationRepository(database.combinationDao())
+        val imageRepository = ImageRepository(database.imageDao())
 
         setContent {
             MyPaletteTheme {
-                AppContent(colorRepository, combinationRepository)
+                AppContent(colorRepository, combinationRepository, imageRepository)
             }
         }
     }
@@ -52,24 +60,30 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppContent(
     colorRepository: ColorRepository,
-    combinationRepository: CombinationRepository
+    combinationRepository: CombinationRepository,
+    imageRepository: ImageRepository
 ) {
     val colorViewModel: ColorViewModel = viewModel(factory = ColorViewModelFactory(colorRepository))
     val combinationViewModel: CombinationViewModel = viewModel(factory = CombinationViewModelFactory(combinationRepository))
+    val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(imageRepository))
+    val context: Context = LocalContext.current
 
-    MyPaletteNavGraph(colorViewModel, combinationViewModel)
+    MyPaletteNavGraph(colorViewModel, combinationViewModel, imageViewModel, context)
 }
 
 @Composable
 fun MyPaletteNavGraph(
     colorViewModel: ColorViewModel,
-    combinationViewModel: CombinationViewModel
+    combinationViewModel: CombinationViewModel,
+    imageViewModel: ImageViewModel,
+    context: Context
 ) {
     val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
+            NavigationBar(
+            ) {
                 // 내 팔레트 버튼
                 NavigationBarItem(
                     selected = navController.currentDestination?.route == "myPaletteScreen",
@@ -120,7 +134,8 @@ fun MyPaletteNavGraph(
         ) {
             composable("myPaletteScreen") {
                 MyPaletteScreen(
-                    colorViewModel = colorViewModel
+                    colorViewModel = colorViewModel,
+                    imageViewModel = imageViewModel
                 )
             }
             composable("colorMatchingScreen") {
@@ -130,6 +145,9 @@ fun MyPaletteNavGraph(
             }
             composable("registerColorScreen") {
                 RegisterColorScreen(
+                    colorViewModel = colorViewModel,
+                    imageViewModel = imageViewModel,
+                    context = context
                 )
             }
             composable("myCombinationScreen") {

@@ -12,7 +12,18 @@ interface ColorDao {
     @Query("SELECT * FROM colors")
     fun getAllColors(): LiveData<List<ColorEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("SELECT id FROM colors WHERE color = :color")
+    fun getIdForColor(color: Int): Int?
+
+    // 실제 insert 메서드
+    suspend fun insertColorIfNotExists(color: ColorEntity) {
+        val existingId = getIdForColor(color.color)
+        if (existingId == null) {
+            insertColor(color)
+        }
+    }
+
+    @Insert
     suspend fun insertColor(color: ColorEntity)
 
     @Delete
@@ -29,4 +40,16 @@ interface CombinationDao {
 
     @Delete
     suspend fun deleteCombination(combination: CombinationEntity)
+}
+
+@Dao
+interface ImageDao {
+    @Query("SELECT * FROM images WHERE colorId = :colorId")
+    fun getImagesForColor(colorId: Int): LiveData<List<ImageEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertImage(image: ImageEntity)
+
+    @Delete
+    suspend fun deleteImage(image: ImageEntity)
 }

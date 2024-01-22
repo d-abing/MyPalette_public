@@ -9,10 +9,11 @@ import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.CombinationDao
 import com.aube.mypalette.database.CombinationEntity
 
-@Database(entities = [ColorEntity::class, CombinationEntity::class], version = 1)
+@Database(entities = [ColorEntity::class, CombinationEntity::class, ImageEntity::class], version = 1)
 abstract class MyPaletteDatabase : RoomDatabase() {
     abstract fun colorDao(): ColorDao
     abstract fun combinationDao(): CombinationDao
+    abstract fun imageDao(): ImageDao
 
     companion object {
         private var INSTANCE: MyPaletteDatabase? = null
