@@ -15,7 +15,7 @@ fun MyCombinationScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = { Text("My Combinations") }
             )
         },

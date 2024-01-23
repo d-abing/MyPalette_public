@@ -11,10 +11,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -65,6 +69,14 @@ fun RegisterColorScreen(
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     var colorId: Int? by remember { mutableStateOf(null) }
 
+    var color0: Color? by remember { mutableStateOf(Color.White) }
+    var color1: Color? by remember { mutableStateOf(Color.White) }
+    var color2: Color? by remember { mutableStateOf(Color.White) }
+    var color3: Color? by remember { mutableStateOf(Color.White) }
+    var color4: Color? by remember { mutableStateOf(Color.White) }
+    var color5: Color? by remember { mutableStateOf(Color.White) }
+    var color6: Color? by remember { mutableStateOf(Color.White) }
+
 
     Scaffold(
         topBar = {
@@ -73,16 +85,11 @@ fun RegisterColorScreen(
                 actions = {
                     IconButton(onClick = {
                         if (selectedColor != null) {
-                            colorId = colorViewModel.getIdForColor(selectedColor!!.toArgb())
-                            if (colorId == null) {
-                                Log.d("test다", "null")
-                                colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
-                                colorId = colorViewModel.getIdForColor(selectedColor!!.toArgb())
-                            }
+                            colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
                             imageViewModel.insert(
                                 ImageEntity(
                                     imageBytes = imageBytes!!,
-                                    colorId = colorId!!
+                                    colorId = 0!!
                                 )
                             )
                         }
@@ -119,8 +126,21 @@ fun RegisterColorScreen(
                 val bitmap = context.getBitmapFromUri(selectedImage!!)
 
                 Palette.from(bitmap!!).generate { palette ->
-                    val dominantColor = palette?.dominantSwatch?.rgb ?: 0
-                    selectedColor = Color(dominantColor)
+                    val dominantSwatch = palette?.dominantSwatch?.rgb ?: 0
+                    val darkMutedSwatch = palette?.darkMutedSwatch?.rgb ?: 0
+                    val darkVibrantSwatch = palette?.darkVibrantSwatch?.rgb ?: 0
+                    val lightMutedSwatch = palette?.lightMutedSwatch?.rgb ?: 0
+                    val lightVibrantSwatch = palette?.lightVibrantSwatch?.rgb ?: 0
+                    val mutedSwatch = palette?.mutedSwatch?.rgb ?: 0
+                    val vibrantSwatch = palette?.vibrantSwatch?.rgb ?: 0
+
+                    color0 = Color(dominantSwatch)
+                    color1 = Color(darkMutedSwatch)
+                    color2 = Color(darkVibrantSwatch)
+                    color3 = Color(lightMutedSwatch)
+                    color4 = Color(lightVibrantSwatch)
+                    color5 = Color(mutedSwatch)
+                    color6 = Color(vibrantSwatch)
                 }
 
                 imageBytes = bitmap.toBytes()
@@ -130,6 +150,84 @@ fun RegisterColorScreen(
                     modifier = Modifier
                         .size(350.dp)
                         .background(Color.Gray, RoundedCornerShape(16.dp))
+                )
+            }
+
+            // 팔레트 배치
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 20.dp, end = 10.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color0!!)
+                        .clickable {
+                            selectedColor = color0
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color1!!)
+                        .clickable {
+                            selectedColor = color1
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color2!!)
+                        .clickable {
+                            selectedColor = color2
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color3!!)
+                        .clickable {
+                            selectedColor = color3
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color4!!)
+                        .clickable {
+                            selectedColor = color4
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color5!!)
+                        .clickable {
+                            selectedColor = color5
+                        }
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .border(1.dp, Color.DarkGray)
+                        .background(color6!!)
+                        .clickable {
+                            selectedColor = color6
+                        }
                 )
             }
 

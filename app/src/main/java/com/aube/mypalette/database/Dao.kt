@@ -12,8 +12,8 @@ interface ColorDao {
     @Query("SELECT * FROM colors")
     fun getAllColors(): LiveData<List<ColorEntity>>
 
-    @Query("SELECT id FROM colors WHERE color = :color")
-    fun getIdForColor(color: Int): Int?
+    @Query("SELECT id FROM colors WHERE color = :colorValue")
+    fun getIdForColor(colorValue: Int): Int?
 
     // 실제 insert 메서드
     suspend fun insertColorIfNotExists(color: ColorEntity) {
