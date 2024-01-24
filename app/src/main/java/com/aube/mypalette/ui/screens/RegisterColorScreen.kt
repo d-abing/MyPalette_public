@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +47,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.palette.graphics.Palette
 import coil.compose.rememberAsyncImagePainter
 import com.aube.mypalette.database.ColorEntity
@@ -65,23 +65,22 @@ import java.io.InputStream
 fun RegisterColorScreen(
     colorViewModel: ColorViewModel,
     imageViewModel: ImageViewModel,
-    context: Context
+    context: Context,
+    lifecycleOwner: LifecycleOwner,
 ) {
     var selectedColor: Color? by remember { mutableStateOf(null) }
     var selectedImage: Uri? by remember { mutableStateOf(null) }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
-    var colorId: Int? by remember { mutableStateOf(null) }
     val colorPalette = List(7) { remember { mutableStateOf(Color.White) } }.toMutableList()
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             selectedImage = uri
-        } else {
-            Log.e("takenPhoto", "canceled ...")
         }
     }
 
-    val takePhotoFromCameraLauncher =
+    val PhotoFromCameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { takenPhoto ->
             if (takenPhoto != null) {
                 val baos = ByteArrayOutputStream()
@@ -92,9 +91,7 @@ fun RegisterColorScreen(
                 )
                 val b: ByteArray = baos.toByteArray()
                 imageBytes = b
-                selectedImage = saveBitmapToGalleryAndGetUri(takenPhoto, "MyImage", context)
-            } else {
-                Log.e("takenPhoto", "canceled ...")
+                selectedImage = saveBitmapToGalleryAndGetUri(takenPhoto, "PaletteImage", context)
             }
         }
 
@@ -106,13 +103,17 @@ fun RegisterColorScreen(
                 actions = {
                     IconButton(onClick = {
                         if (selectedColor != null) {
-                            colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
-                            imageViewModel.insert(
-                                ImageEntity(
-                                    imageBytes = imageBytes!!,
-                                    colorId = 0
-                                )
-                            )
+                            colorViewModel.changeIdForColor(selectedColor!!.toArgb())
+                            colorViewModel.colorId.observe(lifecycleOwner, Observer { result ->
+                                if (result == null) {
+                                    Log.d("test다", "color id = null")
+                                    colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
+                                    imageViewModel.insert(ImageEntity(imageBytes = imageBytes!!, colorId = 1))
+                                } else {
+                                    Log.d("test다", "color id != null")
+                                    imageViewModel.insert(ImageEntity(imageBytes = imageBytes!!, colorId = result))
+                                }
+                            })
                         }
                     }) {
                         Icon(
@@ -207,7 +208,7 @@ fun RegisterColorScreen(
                 // 촬영하여 등록하기 버튼
                 Button(
                     onClick = {
-                        takePhotoFromCameraLauncher.launch()
+                         PhotoFromCameraLauncher.launch()
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -271,8 +272,6 @@ fun Context.getBitmapFromUri(uri: Uri): Bitmap? {
     }
     return null
 }
-
-
 
 fun Bitmap.toBytes(): ByteArray {
     val stream = ByteArrayOutputStream()

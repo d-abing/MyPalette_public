@@ -33,6 +33,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -79,33 +80,32 @@ fun MyPaletteScreen(
         }
     ) { innerPadding ->
 
-        if (!listToggle) {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 80.dp),
-                modifier = Modifier
-                    .background(Color.White)
-                    .padding(innerPadding)
-                    .padding(10.dp)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(0.dp),
-                horizontalArrangement = Arrangement.spacedBy(0.dp)
-            ) {
-                items(colorList) { colorItem ->
-                    PaletteColorItem(colorItem, imageViewModel)
-                }
-            }
+        Box(
+            modifier = Modifier
+                .background(Color.White)
+                .padding(innerPadding)
+                .padding(top = 10.dp, start = 20.dp, bottom = 10.dp, end = 20.dp)
+                .fillMaxSize(),
+        ) {
+            if (!listToggle) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 70.dp),
+                    modifier = Modifier
 
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .background(Color.White)
-                    .padding(innerPadding)
-                    .padding(10.dp)
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                items(colorList) { colorItem ->
-                    ListColorItem(colorItem, imageViewModel)
+                ) {
+                    items(colorList) { colorItem ->
+                        PaletteColorItem(colorItem)
+                    }
+                }
+
+            } else {
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                    items(colorList) { colorItem ->
+                        ListColorItem(colorItem, imageViewModel)
+                    }
                 }
             }
         }
@@ -161,12 +161,9 @@ fun ImageItem(imageItem: ImageEntity) {
 }
 
 @Composable
-fun PaletteColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
-    val imageList by imageViewModel.getImagesForColor(colorItem.id).observeAsState(emptyList())
-
+fun PaletteColorItem(colorItem: ColorEntity) {
     Box(
         modifier = Modifier
-            .padding(10.dp)
             .size(80.dp)
             .background(Color(colorItem.color))
     )

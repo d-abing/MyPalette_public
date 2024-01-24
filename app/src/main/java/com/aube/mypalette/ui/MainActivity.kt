@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -48,10 +49,11 @@ class MainActivity : ComponentActivity() {
         val colorRepository = ColorRepository(database.colorDao())
         val combinationRepository = CombinationRepository(database.combinationDao())
         val imageRepository = ImageRepository(database.imageDao())
+        val lifecycleOwner = this
 
         setContent {
             MyPaletteTheme {
-                AppContent(colorRepository, combinationRepository, imageRepository)
+                AppContent(colorRepository, combinationRepository, imageRepository, lifecycleOwner)
             }
         }
     }
@@ -61,14 +63,15 @@ class MainActivity : ComponentActivity() {
 fun AppContent(
     colorRepository: ColorRepository,
     combinationRepository: CombinationRepository,
-    imageRepository: ImageRepository
+    imageRepository: ImageRepository,
+    lifecycleOwner: LifecycleOwner
 ) {
     val colorViewModel: ColorViewModel = viewModel(factory = ColorViewModelFactory(colorRepository))
     val combinationViewModel: CombinationViewModel = viewModel(factory = CombinationViewModelFactory(combinationRepository))
     val imageViewModel: ImageViewModel = viewModel(factory = ImageViewModelFactory(imageRepository))
     val context: Context = LocalContext.current
 
-    MyPaletteNavGraph(colorViewModel, combinationViewModel, imageViewModel, context)
+    MyPaletteNavGraph(colorViewModel, combinationViewModel, imageViewModel, context, lifecycleOwner)
 }
 
 @Composable
@@ -76,7 +79,8 @@ fun MyPaletteNavGraph(
     colorViewModel: ColorViewModel,
     combinationViewModel: CombinationViewModel,
     imageViewModel: ImageViewModel,
-    context: Context
+    context: Context,
+    lifecycleOwner: LifecycleOwner
 ) {
     val navController = rememberNavController()
 
@@ -147,7 +151,8 @@ fun MyPaletteNavGraph(
                 RegisterColorScreen(
                     colorViewModel = colorViewModel,
                     imageViewModel = imageViewModel,
-                    context = context
+                    context = context,
+                    lifecycleOwner = lifecycleOwner,
                 )
             }
             composable("myCombinationScreen") {

@@ -1,5 +1,6 @@
 package com.aube.mypalette.database
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -13,11 +14,11 @@ interface ColorDao {
     fun getAllColors(): LiveData<List<ColorEntity>>
 
     @Query("SELECT id FROM colors WHERE color = :colorValue")
-    fun getIdForColor(colorValue: Int): Int?
+    suspend fun changeIdForColor(colorValue: Int): Int?
 
     // 실제 insert 메서드
     suspend fun insertColorIfNotExists(color: ColorEntity) {
-        val existingId = getIdForColor(color.color)
+        val existingId = changeIdForColor(color.color)
         if (existingId == null) {
             insertColor(color)
         }

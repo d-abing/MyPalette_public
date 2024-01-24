@@ -8,12 +8,12 @@ import com.aube.mypalette.database.ColorEntity
 class ColorRepository(private val colorDao: ColorDao) {
     val allColors: LiveData<List<ColorEntity>> = colorDao.getAllColors()
 
-    fun getIdForColor(color: Int): Int? {
-        return colorDao.getIdForColor(color)
+    suspend fun changeIdForColor(color: Int): Int? {
+        return colorDao.changeIdForColor(color)
     }
 
     suspend fun insert(color: ColorEntity) {
-        colorDao.insertColor(color)
+        colorDao.insertColorIfNotExists(color)
     }
 
     suspend fun delete(color: ColorEntity) {
