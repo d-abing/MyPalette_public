@@ -1,5 +1,6 @@
 package com.aube.mypalette.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ class ImageViewModel(private val imageRepository: ImageRepository) : ViewModel()
     }
 
     fun insert(image: ImageEntity) {
+        Log.d("test다", "ImageViewModel")
         viewModelScope.launch {
             imageRepository.insert(image)
         }

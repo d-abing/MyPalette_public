@@ -26,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -70,14 +71,7 @@ fun RegisterColorScreen(
     var selectedImage: Uri? by remember { mutableStateOf(null) }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     var colorId: Int? by remember { mutableStateOf(null) }
-
-    var color0: Color? by remember { mutableStateOf(Color.White) }
-    var color1: Color? by remember { mutableStateOf(Color.White) }
-    var color2: Color? by remember { mutableStateOf(Color.White) }
-    var color3: Color? by remember { mutableStateOf(Color.White) }
-    var color4: Color? by remember { mutableStateOf(Color.White) }
-    var color5: Color? by remember { mutableStateOf(Color.White) }
-    var color6: Color? by remember { mutableStateOf(Color.White) }
+    val colorPalette = List(7) { remember { mutableStateOf(Color.White) } }.toMutableList()
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
@@ -116,7 +110,7 @@ fun RegisterColorScreen(
                             imageViewModel.insert(
                                 ImageEntity(
                                     imageBytes = imageBytes!!,
-                                    colorId = 0!!
+                                    colorId = 0
                                 )
                             )
                         }
@@ -161,13 +155,13 @@ fun RegisterColorScreen(
                     val mutedSwatch = palette?.mutedSwatch?.rgb ?: 0
                     val vibrantSwatch = palette?.vibrantSwatch?.rgb ?: 0
 
-                    color0 = Color(dominantSwatch)
-                    color1 = Color(darkMutedSwatch)
-                    color2 = Color(darkVibrantSwatch)
-                    color3 = Color(lightMutedSwatch)
-                    color4 = Color(lightVibrantSwatch)
-                    color5 = Color(mutedSwatch)
-                    color6 = Color(vibrantSwatch)
+                    colorPalette[0].value = Color(dominantSwatch)
+                    colorPalette[1].value = Color(darkMutedSwatch)
+                    colorPalette[2].value = Color(darkVibrantSwatch)
+                    colorPalette[3].value = Color(lightMutedSwatch)
+                    colorPalette[4].value = Color(lightVibrantSwatch)
+                    colorPalette[5].value = Color(mutedSwatch)
+                    colorPalette[6].value = Color(vibrantSwatch)
                 }
 
                 imageBytes = bitmap.toBytes()
@@ -187,75 +181,19 @@ fun RegisterColorScreen(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 20.dp, end = 10.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color0!!)
-                        .clickable {
-                            selectedColor = color0
-                        }
-                )
 
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color1!!)
-                        .clickable {
-                            selectedColor = color1
-                        }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color2!!)
-                        .clickable {
-                            selectedColor = color2
-                        }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color3!!)
-                        .clickable {
-                            selectedColor = color3
-                        }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color4!!)
-                        .clickable {
-                            selectedColor = color4
-                        }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color5!!)
-                        .clickable {
-                            selectedColor = color5
-                        }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .border(1.dp, Color.DarkGray)
-                        .background(color6!!)
-                        .clickable {
-                            selectedColor = color6
-                        }
-                )
+                for (color in colorPalette) {
+                    Box(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                            .background(color.value)
+                            .clickable {
+                                selectedColor = color.value
+                            }
+                    )
+                }
             }
 
             // 버튼 배치
@@ -271,9 +209,10 @@ fun RegisterColorScreen(
                     onClick = {
                         takePhotoFromCameraLauncher.launch()
                     },
-                    shape = RoundedCornerShape(16.dp), // 둥글게 만들기
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(50.dp)
+                        .width(200.dp)
                 ) {
                     Text("촬영하여 등록하기")
                 }
@@ -283,9 +222,10 @@ fun RegisterColorScreen(
                     onClick = {
                         launcher.launch("image/*")
                     },
-                    shape = RoundedCornerShape(16.dp), // 둥글게 만들기
+                    shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
                         .height(50.dp)
+                        .width(200.dp)
                 ) {
                     Text("사진첩에서 가져오기")
                 }

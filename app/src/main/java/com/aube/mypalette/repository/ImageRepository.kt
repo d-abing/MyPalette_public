@@ -1,5 +1,6 @@
 package com.aube.mypalette.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.database.ImageDao
@@ -11,6 +12,7 @@ class ImageRepository(private val imageDao: ImageDao) {
     }
 
     suspend fun insert(image: ImageEntity) {
+        Log.d("test다", "ImageRepository")
         imageDao.insertImage(image)
     }
 
