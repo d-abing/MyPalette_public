@@ -9,7 +9,7 @@ import androidx.room.Query
 
 @Dao
 interface ColorDao {
-    @Query("SELECT * FROM colors")
+    @Query("SELECT * FROM colors ORDER BY color")
     fun getAllColors(): LiveData<List<ColorEntity>>
 
     @Query("SELECT id FROM colors WHERE color = :colorValue")

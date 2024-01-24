@@ -2,13 +2,17 @@ package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
 import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -51,6 +55,7 @@ import com.aube.mypalette.database.ImageEntity
 import com.aube.mypalette.viewmodel.ImageViewModel
 import com.aube.mypalette.viewmodel.ColorViewModel
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.io.InputStream
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,9 +68,6 @@ fun RegisterColorScreen(
 ) {
     var selectedColor: Color? by remember { mutableStateOf(null) }
     var selectedImage: Uri? by remember { mutableStateOf(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        selectedImage = uri
-    }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     var colorId: Int? by remember { mutableStateOf(null) }
 
@@ -76,6 +78,31 @@ fun RegisterColorScreen(
     var color4: Color? by remember { mutableStateOf(Color.White) }
     var color5: Color? by remember { mutableStateOf(Color.White) }
     var color6: Color? by remember { mutableStateOf(Color.White) }
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            selectedImage = uri
+        } else {
+            Log.e("takenPhoto", "canceled ...")
+        }
+    }
+
+    val takePhotoFromCameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { takenPhoto ->
+            if (takenPhoto != null) {
+                val baos = ByteArrayOutputStream()
+                takenPhoto.compress(
+                    Bitmap.CompressFormat.PNG,
+                    100,
+                    baos
+                )
+                val b: ByteArray = baos.toByteArray()
+                imageBytes = b
+                selectedImage = saveBitmapToGalleryAndGetUri(takenPhoto, "MyImage", context)
+            } else {
+                Log.e("takenPhoto", "canceled ...")
+            }
+        }
 
 
     Scaffold(
@@ -242,7 +269,7 @@ fun RegisterColorScreen(
                 // 촬영하여 등록하기 버튼
                 Button(
                     onClick = {
-
+                        takePhotoFromCameraLauncher.launch()
                     },
                     shape = RoundedCornerShape(16.dp), // 둥글게 만들기
                     modifier = Modifier
@@ -265,6 +292,32 @@ fun RegisterColorScreen(
             }
         }
     }
+
+
+}
+
+fun saveBitmapToGalleryAndGetUri(bitmap: Bitmap, displayName: String, context: Context): Uri? {
+    val resolver = context?.contentResolver
+    val contentValues = ContentValues().apply {
+        put(MediaStore.Images.Media.DISPLAY_NAME, "$displayName.png")
+        put(MediaStore.Images.Media.MIME_TYPE, "image/png")
+    }
+
+    val imageUri = resolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+    try {
+        val outputStream = resolver?.openOutputStream(imageUri!!)
+        if (outputStream != null) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        }
+        outputStream?.close()
+
+        return imageUri
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
+    return null
 }
 
 fun Context.getBitmapFromUri(uri: Uri): Bitmap? {
@@ -279,8 +332,11 @@ fun Context.getBitmapFromUri(uri: Uri): Bitmap? {
     return null
 }
 
+
+
 fun Bitmap.toBytes(): ByteArray {
     val stream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.PNG, 100, stream)
     return stream.toByteArray()
 }
+
