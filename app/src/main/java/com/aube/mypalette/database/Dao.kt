@@ -14,13 +14,17 @@ interface ColorDao {
     fun getAllColors(): LiveData<List<ColorEntity>>
 
     @Query("SELECT id FROM colors WHERE color = :colorValue")
-    suspend fun changeIdForColor(colorValue: Int): Int?
+    suspend fun checkIdForColor(colorValue: Int): Int?
 
     // 실제 insert 메서드
     suspend fun insertColorIfNotExists(color: ColorEntity) {
-        val existingId = changeIdForColor(color.color)
+        val existingId = checkIdForColor(color.color)
+        Log.d("test다", "color insert시도")
         if (existingId == null) {
+            Log.d("test다", "color insert 성공")
             insertColor(color)
+        } else {
+            Log.d("test다", "color insert 실패")
         }
     }
 
@@ -47,6 +51,21 @@ interface CombinationDao {
 interface ImageDao {
     @Query("SELECT * FROM images WHERE colorId = :colorId")
     fun getImagesForColor(colorId: Int): LiveData<List<ImageEntity>>
+
+    @Query("SELECT id FROM images WHERE imageBytes = :imageBytes and colorId = :colorId")
+    suspend fun checkIdForImage(imageBytes: ByteArray, colorId: Int): Int?
+
+    // 실제 insert 메서드
+    suspend fun insertImageIfNotExists(image: ImageEntity) {
+        val existingId = checkIdForImage(image.imageBytes, image.colorId)
+        Log.d("test다", "insert시도")
+        if (existingId == null) {
+            Log.d("test다", "insert성공")
+            insertImage(image)
+        } else {
+            Log.d("test다", "insert실패")
+        }
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertImage(image: ImageEntity)

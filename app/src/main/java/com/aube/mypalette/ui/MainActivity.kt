@@ -153,6 +153,7 @@ fun MyPaletteNavGraph(
                     imageViewModel = imageViewModel,
                     context = context,
                     lifecycleOwner = lifecycleOwner,
+                    navController = navController,
                 )
             }
             composable("myCombinationScreen") {

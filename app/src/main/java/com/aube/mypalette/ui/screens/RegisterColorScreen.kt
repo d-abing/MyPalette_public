@@ -34,11 +34,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,12 +54,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.navigation.NavController
 import androidx.palette.graphics.Palette
 import coil.compose.rememberAsyncImagePainter
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
 import com.aube.mypalette.viewmodel.ImageViewModel
 import com.aube.mypalette.viewmodel.ColorViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -67,31 +75,27 @@ fun RegisterColorScreen(
     imageViewModel: ImageViewModel,
     context: Context,
     lifecycleOwner: LifecycleOwner,
+    navController: NavController,
 ) {
     var selectedColor: Color? by remember { mutableStateOf(null) }
     var selectedImage: Uri? by remember { mutableStateOf(null) }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     val colorPalette = List(7) { remember { mutableStateOf(Color.White) } }.toMutableList()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    val launcher =
+    val photoFromGalleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             selectedImage = uri
         }
     }
 
-    val PhotoFromCameraLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { takenPhoto ->
-            if (takenPhoto != null) {
-                val baos = ByteArrayOutputStream()
-                takenPhoto.compress(
-                    Bitmap.CompressFormat.PNG,
-                    100,
-                    baos
-                )
-                val b: ByteArray = baos.toByteArray()
-                imageBytes = b
-                selectedImage = saveBitmapToGalleryAndGetUri(takenPhoto, "PaletteImage", context)
+    val photoFromCameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            if (bitmap != null) {
+                imageBytes = compressBitmapAndGetByteArray(bitmap)
+                selectedImage = saveBitmapToGalleryAndGetUri(bitmap, "PaletteImage", context)
             }
         }
 
@@ -102,18 +106,23 @@ fun RegisterColorScreen(
                 title = { Text("Register Color") },
                 actions = {
                     IconButton(onClick = {
-                        if (selectedColor != null) {
-                            colorViewModel.changeIdForColor(selectedColor!!.toArgb())
-                            colorViewModel.colorId.observe(lifecycleOwner, Observer { result ->
-                                if (result == null) {
-                                    Log.d("test다", "color id = null")
+                        if (selectedColor != null && selectedImage != null) {
+                            colorViewModel.colorId.observe(lifecycleOwner, Observer { colorId ->
+                                if (colorId == null) {
+                                    Log.d("test다", "$colorId")
                                     colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
-                                    imageViewModel.insert(ImageEntity(imageBytes = imageBytes!!, colorId = 1))
                                 } else {
-                                    Log.d("test다", "color id != null")
-                                    imageViewModel.insert(ImageEntity(imageBytes = imageBytes!!, colorId = result))
+                                    Log.d("test다", "$colorId")
+                                    imageViewModel.insert(
+                                        ImageEntity(
+                                            imageBytes = imageBytes!!,
+                                            colorId = colorId!!,
+                                        )
+                                    )
                                 }
                             })
+                            colorViewModel.setIdNull()
+                            showSnackBar(scope, snackbarHostState, navController)
                         }
                     }) {
                         Icon(
@@ -123,6 +132,9 @@ fun RegisterColorScreen(
                     }
                 }
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) { innerPadding ->
 
@@ -192,6 +204,7 @@ fun RegisterColorScreen(
                             .background(color.value)
                             .clickable {
                                 selectedColor = color.value
+                                colorViewModel.checkIdForColor(selectedColor!!.toArgb())
                             }
                     )
                 }
@@ -208,7 +221,7 @@ fun RegisterColorScreen(
                 // 촬영하여 등록하기 버튼
                 Button(
                     onClick = {
-                         PhotoFromCameraLauncher.launch()
+                        photoFromCameraLauncher.launch()
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -221,7 +234,7 @@ fun RegisterColorScreen(
                 // 사진첩에서 찾아보기 버튼
                 Button(
                     onClick = {
-                        launcher.launch("image/*")
+                        photoFromGalleryLauncher.launch("image/*")
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -235,6 +248,49 @@ fun RegisterColorScreen(
     }
 
 
+}
+fun showSnackBar(
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+    navController: NavController
+) {
+    scope.launch {
+        val result = snackbarHostState
+            .showSnackbar(
+                message = " 🎨 저장 완료! 내 팔레트 보러가기 🎨 ",
+                actionLabel = "이동",
+                duration = SnackbarDuration.Short
+            )
+        when (result) {
+            SnackbarResult.ActionPerformed -> {
+                navController.navigate("MyPaletteScreen")
+            }
+            SnackbarResult.Dismissed -> {
+
+            }
+        }
+    }
+}
+
+fun compressBitmapAndGetByteArray(bitmap: Bitmap): ByteArray? {
+    val baos = ByteArrayOutputStream()
+    return try {
+        bitmap.compress(
+            Bitmap.CompressFormat.PNG,
+            100,
+            baos
+        )
+        baos.toByteArray()
+    } catch (e: IOException) {
+        e.printStackTrace()
+        null
+    } finally {
+        try {
+            baos.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
 }
 
 fun saveBitmapToGalleryAndGetUri(bitmap: Bitmap, displayName: String, context: Context): Uri? {

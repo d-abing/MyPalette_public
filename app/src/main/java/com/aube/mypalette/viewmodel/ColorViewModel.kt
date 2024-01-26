@@ -19,10 +19,18 @@ class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel()
     val colorId: LiveData<Int?>
         get() = _colorId
 
-    fun changeIdForColor(color: Int) {
+    fun setIdNull() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val result: Int? = colorRepository.changeIdForColor(color)
+                _colorId.postValue(null)
+            }
+        }
+    }
+
+    fun checkIdForColor(color: Int) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val result: Int? = colorRepository.checkIdForColor(color)
                 _colorId.postValue(result)
             }
         }
@@ -31,6 +39,11 @@ class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel()
     fun insert(color: ColorEntity) {
         viewModelScope.launch {
             colorRepository.insert(color)
+
+            withContext(Dispatchers.IO) {
+                val result: Int? = colorRepository.checkIdForColor(color.color)
+                _colorId.postValue(result)
+            }
         }
     }
 

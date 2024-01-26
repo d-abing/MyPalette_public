@@ -13,7 +13,7 @@ class ImageRepository(private val imageDao: ImageDao) {
 
     suspend fun insert(image: ImageEntity) {
         Log.d("test다", "ImageRepository")
-        imageDao.insertImage(image)
+        imageDao.insertImageIfNotExists(image)
     }
 
     suspend fun delete(image: ImageEntity) {
