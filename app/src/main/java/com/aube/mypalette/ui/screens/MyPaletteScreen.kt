@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -37,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -122,16 +124,25 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Box(
-            modifier = Modifier
-                .padding(10.dp)
-                .size(80.dp)
-                .background(Color(colorItem.color))
-        )
+
+        if (colorItem.color == 0) {
+            Box(
+                modifier = Modifier
+                    .size(79.8.dp)
+                    .border(0.1.dp, Color.Gray)
+                    .background(Color(colorItem.color))
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .background(Color(colorItem.color))
+            )
+        }
 
         LazyRow(
             modifier = Modifier
-                .padding(start = 8.dp, top = 10.dp, bottom = 10.dp)
+                .padding(start = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -151,7 +162,7 @@ fun ImageItem(imageItem: ImageEntity) {
     )
 
     Image(
-        painter = imagePainter, // imageItem을 어떻게 불러올지
+        painter = imagePainter,
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -162,9 +173,19 @@ fun ImageItem(imageItem: ImageEntity) {
 
 @Composable
 fun PaletteColorItem(colorItem: ColorEntity) {
-    Box(
-        modifier = Modifier
-            .size(80.dp)
-            .background(Color(colorItem.color))
-    )
+    Log.d("test다", colorItem.color.toString())
+    if (colorItem.color == 0) {
+        Box(
+            modifier = Modifier
+                .size(79.8.dp)
+                .border(0.1.dp, Color.Gray)
+                .background(Color(colorItem.color))
+        )
+    } else {
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .background(Color(colorItem.color))
+        )
+    }
 }
