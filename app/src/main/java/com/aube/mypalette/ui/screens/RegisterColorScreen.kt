@@ -25,9 +25,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -60,14 +58,22 @@ import androidx.palette.graphics.Palette
 import coil.compose.rememberAsyncImagePainter
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
-import com.aube.mypalette.viewmodel.ImageViewModel
 import com.aube.mypalette.viewmodel.ColorViewModel
+import com.aube.mypalette.viewmodel.ImageViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.sqrt
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.MaterialTheme
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -216,7 +222,8 @@ fun RegisterColorScreen(
 
                                     colors.forEach { colorEntity ->
                                         val databaseColor = Color(colorEntity.color)
-                                        val distance = calculateColorDistance(selectedColor!!, databaseColor)
+                                        val distance =
+                                            calculateColorDistance(selectedColor!!, databaseColor)
 
                                         if (minDistance == null || distance < minDistance!!) {
                                             minDistance = distance
@@ -232,13 +239,61 @@ fun RegisterColorScreen(
                 }
             }
 
+            // 유사한 색상 정보 표시
+            ElevatedCard(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 6.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    val (similarColor, distance) = similarColorResult.value
+
+                    if (similarColor != null && distance != null) {
+                        val similarityPercentage = ((1 - distance) * 100).toInt()
+                        if (similarityPercentage >= 85) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .size(50.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                                    .background(Color(similarColor.toArgb()))
+                            )
+                            Text(
+                                text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage} % 유사해요 🙆‍♀️",
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        } else {
+                            Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
+                        }
+                    } else {
+                        Text(
+                            text = "🎨 내 팔레트의 색과 비교할 수 있습니다 🎨",
+                            modifier = Modifier
+                                .padding(8.dp),
+                        )
+                    }
+                }
+            }
+
             // 버튼 배치
             Row(
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
+                    .fillMaxSize()
+                    .padding(top = 20.dp)
             ) {
                 // 촬영하여 등록하기 버튼
                 Button(
@@ -247,8 +302,9 @@ fun RegisterColorScreen(
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
-                        .height(60.dp),
+                        .height(70.dp),
                 ) {
+                    Icon(imageVector = Icons.Default.Face, contentDescription = null, Modifier.padding(5.dp))
                     Text("촬영하여 등록하기")
                 }
 
@@ -259,46 +315,10 @@ fun RegisterColorScreen(
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
-                        .height(60.dp),
+                        .height(70.dp),
                 ) {
+                    Icon(imageVector = Icons.Default.DateRange, contentDescription = null, Modifier.padding(5.dp))
                     Text("사진첩에서 가져오기")
-                }
-            }
-
-            // 유사한 색상 정보 표시
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                val (similarColor, distance) = similarColorResult.value
-
-                if (similarColor != null && distance != null) {
-                    val similarityPercentage = ((1 - distance) * 100).toInt()
-                    if (similarityPercentage >= 80) {
-                        Box(
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(50.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
-                                .background(Color(similarColor.toArgb()))
-                        )
-                        Text(
-                            text = "내 팔레트의 색과 ${similarityPercentage} % 유사해요",
-                            modifier = Modifier.padding(8.dp)
-                        )
-                    } else {
-                        Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
-                    }
-                } else {
-                    Text(
-                        text = "🎨 내 팔레트의 색과 비교할 수 있습니다 🎨",
-                        modifier = Modifier
-                            .padding(8.dp),
-                        color = Color.DarkGray
-                    )
                 }
             }
         }
