@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -66,6 +67,7 @@ import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.sqrt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -81,6 +83,7 @@ fun RegisterColorScreen(
     var selectedImage: Uri? by remember { mutableStateOf(null) }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     val colorPalette = List(7) { remember { mutableStateOf(Color.White) } }.toMutableList()
+    val similarColorResult = remember { mutableStateOf<Pair<Color?, Double?>>(Color(0) to null) }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -142,11 +145,13 @@ fun RegisterColorScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .background(selectedColor ?: Color.White)
-                .padding(start = 20.dp, top = 20.dp, end = 20.dp)
+                .padding(20.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            // 이미지 박스 배치
             if (selectedImage != null) {
                 Image(
                     painter = rememberAsyncImagePainter(selectedImage),
@@ -192,7 +197,7 @@ fun RegisterColorScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 20.dp, end = 10.dp)
+                    .padding(start = 10.dp, top = 20.dp, end = 10.dp, bottom = 20.dp)
             ) {
 
                 for (color in colorPalette) {
@@ -205,17 +210,34 @@ fun RegisterColorScreen(
                             .clickable {
                                 selectedColor = color.value
                                 colorViewModel.checkIdForColor(selectedColor!!.toArgb())
+                                colorViewModel.allColors.observe(lifecycleOwner) { colors ->
+                                    var closestColor: Color? = null
+                                    var minDistance: Double? = null
+
+                                    colors.forEach { colorEntity ->
+                                        val databaseColor = Color(colorEntity.color)
+                                        val distance = calculateColorDistance(selectedColor!!, databaseColor)
+
+                                        if (minDistance == null || distance < minDistance!!) {
+                                            minDistance = distance
+                                            closestColor = databaseColor
+                                        }
+                                    }
+
+                                    similarColorResult.value = Pair(closestColor, minDistance)
+                                    Log.d("test다", similarColorResult.value.toString())
+                                }
                             }
                     )
                 }
             }
 
             // 버튼 배치
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(10.dp)
             ) {
                 // 촬영하여 등록하기 버튼
@@ -225,8 +247,7 @@ fun RegisterColorScreen(
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
-                        .height(50.dp)
-                        .width(200.dp)
+                        .height(60.dp),
                 ) {
                     Text("촬영하여 등록하기")
                 }
@@ -238,16 +259,50 @@ fun RegisterColorScreen(
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
-                        .height(50.dp)
-                        .width(200.dp)
+                        .height(60.dp),
                 ) {
                     Text("사진첩에서 가져오기")
                 }
             }
+
+            // 유사한 색상 정보 표시
+            Row(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val (similarColor, distance) = similarColorResult.value
+
+                if (similarColor != null && distance != null) {
+                    val similarityPercentage = ((1 - distance) * 100).toInt()
+                    if (similarityPercentage >= 80) {
+                        Box(
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                                .background(Color(similarColor.toArgb()))
+                        )
+                        Text(
+                            text = "내 팔레트의 색과 ${similarityPercentage} % 유사해요",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    } else {
+                        Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
+                    }
+                } else {
+                    Text(
+                        text = "🎨 내 팔레트의 색과 비교할 수 있습니다 🎨",
+                        modifier = Modifier
+                            .padding(8.dp),
+                        color = Color.DarkGray
+                    )
+                }
+            }
         }
     }
-
-
 }
 fun showSnackBar(
     scope: CoroutineScope,
@@ -335,3 +390,18 @@ fun Bitmap.toBytes(): ByteArray {
     return stream.toByteArray()
 }
 
+fun calculateColorDistance(color1: Color, color2: Color): Double {
+    val r1 = color1.red
+    val g1 = color1.green
+    val b1 = color1.blue
+
+    val r2 = color2.red
+    val g2 = color2.green
+    val b2 = color2.blue
+
+    val deltaR = r1 - r2
+    val deltaG = g1 - g2
+    val deltaB = b1 - b2
+
+    return sqrt((deltaR * deltaR + deltaG * deltaG + deltaB * deltaB).toDouble())
+}
