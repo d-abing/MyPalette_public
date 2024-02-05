@@ -93,7 +93,7 @@ fun MyPaletteNavGraph(
                     onClick = {
                         navController.navigate("myCombinationScreen")
                     },
-                    icon = { Icon(Icons.Default.Star, contentDescription = null) },
+                    icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
                     label = { Text("나만의 조합") }
                 )
 
