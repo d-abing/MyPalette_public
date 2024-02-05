@@ -1,7 +1,6 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,7 +19,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,12 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.aube.mypalette.R
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
 import com.aube.mypalette.viewmodel.ColorViewModel
@@ -67,13 +66,13 @@ fun MyPaletteScreen(
                 actions = {
                     IconButton(onClick = { listToggle = false }) {
                         Icon(
-                            imageVector = Icons.Filled.AccountBox,
-                            contentDescription = "Palette"
+                            painter = painterResource(R.drawable.baseline_grid_on_24),
+                            contentDescription = null
                         )
                     }
                     IconButton(onClick = { listToggle = true }) {
                         Icon(
-                            imageVector = Icons.Filled.List,
+                            painter = painterResource(R.drawable.baseline_view_list_24),
                             contentDescription = "List"
                         )
                     }
@@ -173,7 +172,6 @@ fun ImageItem(imageItem: ImageEntity) {
 
 @Composable
 fun PaletteColorItem(colorItem: ColorEntity) {
-    Log.d("test다", colorItem.color.toString())
     if (colorItem.color == 0) {
         Box(
             modifier = Modifier

@@ -26,12 +26,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -50,12 +54,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.palette.graphics.Palette
 import coil.compose.rememberAsyncImagePainter
+import com.aube.mypalette.R
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
 import com.aube.mypalette.viewmodel.ColorViewModel
@@ -66,13 +72,6 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import kotlin.math.sqrt
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -304,7 +303,7 @@ fun RegisterColorScreen(
                     modifier = Modifier
                         .height(70.dp),
                 ) {
-                    Icon(imageVector = Icons.Default.Face, contentDescription = null, Modifier.padding(5.dp))
+                    Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = null, Modifier.padding(5.dp))
                     Text("촬영하여 등록하기")
                 }
 
@@ -317,7 +316,7 @@ fun RegisterColorScreen(
                     modifier = Modifier
                         .height(70.dp),
                 ) {
-                    Icon(imageVector = Icons.Default.DateRange, contentDescription = null, Modifier.padding(5.dp))
+                    Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = null, Modifier.padding(5.dp))
                     Text("사진첩에서 가져오기")
                 }
             }
