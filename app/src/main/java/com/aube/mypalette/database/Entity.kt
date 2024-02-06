@@ -1,5 +1,6 @@
 package com.aube.mypalette.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -16,7 +17,8 @@ data class ColorEntity(
 data class CombinationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val colors: String // 조합에 속한 색의 ID 목록
+    @ColumnInfo(name = "int_list")
+    val colors: List<Int> // 조합에 속한 색의 ID 목록
 )
 
 @Entity(
@@ -52,17 +54,5 @@ data class ImageEntity(
         result = 31 * result + imageBytes.contentHashCode()
         result = 31 * result + colorId
         return result
-    }
-}
-
-class ColorListConverter {
-    @TypeConverter
-    fun fromList(colors: List<Int>?): String? {
-        return colors?.joinToString(",")
-    }
-
-    @TypeConverter
-    fun toList(colorsString: String?): List<Int>? {
-        return colorsString?.split(",")?.map { it.toInt() }
     }
 }
