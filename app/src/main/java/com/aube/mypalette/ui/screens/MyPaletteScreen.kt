@@ -93,8 +93,6 @@ fun MyPaletteScreen(
             if (!listToggle) {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 70.dp),
-                    modifier = Modifier
-
                 ) {
                     items(colorList) { colorItem ->
                         PaletteColorItem(colorItem)

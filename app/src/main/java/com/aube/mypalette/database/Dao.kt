@@ -43,8 +43,8 @@ interface CombinationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCombination(combination: CombinationEntity)
 
-    @Delete
-    suspend fun deleteCombination(combination: CombinationEntity)
+    @Query("DELETE FROM combinations WHERE id = :combinationId")
+    suspend fun deleteCombination(combinationId: Int)
 }
 
 @Dao

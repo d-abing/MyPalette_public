@@ -13,7 +13,7 @@ class CombinationRepository(private val combinationDao: CombinationDao) {
         combinationDao.insertCombination(combination)
     }
 
-    suspend fun delete(combination: CombinationEntity) {
-        combinationDao.deleteCombination(combination)
+    suspend fun delete(combinationId: Int) {
+        combinationDao.deleteCombination(combinationId)
     }
 }

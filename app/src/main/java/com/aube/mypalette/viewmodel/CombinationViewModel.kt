@@ -18,9 +18,9 @@ class CombinationViewModel(private val combinationRepository: CombinationReposit
         }
     }
 
-    fun delete(combination: CombinationEntity) {
+    fun delete(combinationId: Int) {
         viewModelScope.launch {
-            combinationRepository.delete(combination)
+            combinationRepository.delete(combinationId)
         }
     }
 }
