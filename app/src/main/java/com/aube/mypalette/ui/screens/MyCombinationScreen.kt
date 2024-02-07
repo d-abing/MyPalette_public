@@ -1,34 +1,35 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.aube.mypalette.database.ColorListConverter
 import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.viewmodel.CombinationViewModel
-import java.lang.reflect.TypeVariable
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +38,8 @@ fun MyCombinationScreen(
     combinationViewModel: CombinationViewModel
 ) {
     val combinationList by combinationViewModel.allCombinations.observeAsState(emptyList())
+    var selectedList by remember { mutableStateOf(ArrayList<Int>()) }
+    var has_modified: Boolean by remember { mutableStateOf(false) }
 
     // Room 데이터베이스에 초기 데이터 추가
     LaunchedEffect(combinationList) {
@@ -57,14 +60,20 @@ fun MyCombinationScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(Icons.Filled.Check, contentDescription = "Localized description")
+                    if (has_modified) {
+                        IconButton(onClick = { has_modified = false }) {
+                            Icon(Icons.Filled.Check, contentDescription = null)
+                        }
                     }
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            Icons.Filled.Edit,
-                            contentDescription = "Localized description",
-                        )
+                    if (selectedList.size == 1) {
+                        IconButton(onClick = { /* do something */ }) {
+                            Icon(Icons.Filled.Edit, contentDescription = null)
+                        }
+                    }
+                    if (selectedList.size >= 1) {
+                        IconButton(onClick = { /* do something */ }) {
+                            Icon(Icons.Filled.Delete, contentDescription = null)
+                        }
                     }
                 },
                 floatingActionButton = {
@@ -89,48 +98,78 @@ fun MyCombinationScreen(
                 .fillMaxSize(),
         ) {
             MyCombinationList(
-                combinationList
+                selectedList, combinationList
             )
         }
     }
 }
 
 @Composable
-fun MyCombinationList(combinationList: List<CombinationEntity>) {
+fun MyCombinationList(selectedList: ArrayList<Int>,combinationList: List<CombinationEntity>) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         ) {
         items(combinationList) { combinationItem ->
-            ListCombinationItem(combinationItem)
+            ListCombinationItem(selectedList, combinationItem)
         }
     }
 }
 
 @Composable
-fun ListCombinationItem(combinationItem: CombinationEntity) {
+fun ListCombinationItem(selectedList: ArrayList<Int>,combinationItem: CombinationEntity) {
+    var selectToggle: Boolean by remember { mutableStateOf(false) }
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(Color.LightGray, RoundedCornerShape(8.dp))
-            .clickable { /* Handle click event if needed */ }
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        items(combinationItem.colors) { colorItem ->
-            ColorItem(colorItem)
+    if (!selectToggle) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    selectToggle = true
+                    selectedList.add(combinationItem.id)
+                    Log.d("test다", selectedList.size.toString())
+                }
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            items(combinationItem.colors) { colorItem ->
+                ColorItem(colorItem)
+            }
+        }
+    } else{
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray, RoundedCornerShape(8.dp))
+                .clickable {
+                    selectToggle = false
+                    selectedList.remove(combinationItem.id)
+                    Log.d("test다", selectedList.size.toString())
+                }
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            items(combinationItem.colors) { colorItem ->
+                ColorItem(colorItem)
+            }
         }
     }
 }
 
 @Composable
 fun ColorItem(color: Int) {
-    Box(
-        modifier = Modifier
-            .size(50.dp)
-            .background(Color(color), RoundedCornerShape(8.dp))
-    )
+    if (color in -100..0) {
+        Box(
+            modifier = Modifier
+                .size(69.8.dp)
+                .border(0.1.dp, Color.Gray)
+                .background(Color(color))
+        )
+    } else {
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .background(Color(color))
+        )
+    }
 }

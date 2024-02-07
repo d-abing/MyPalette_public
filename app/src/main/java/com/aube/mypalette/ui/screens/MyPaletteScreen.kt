@@ -103,10 +103,8 @@ fun MyPaletteScreen(
 
             } else {
                 LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                            .verticalScroll(rememberScrollState())
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                     items(colorList) { colorItem ->
                         ListColorItem(colorItem, imageViewModel)

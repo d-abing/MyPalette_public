@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -20,15 +21,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
@@ -43,6 +47,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,14 +96,6 @@ fun RegisterColorScreen(
     val similarColorResult = remember { mutableStateOf<Pair<Color?, Double?>>(Color(0) to null) }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-
-    val photoFromGalleryLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            selectedImage = uri
-        }
-    }
-
     val photoFromCameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
@@ -106,6 +103,12 @@ fun RegisterColorScreen(
                 selectedImage = saveBitmapToGalleryAndGetUri(bitmap, "PaletteImage", context)
             }
         }
+    val photoFromGalleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            selectedImage = uri
+        }
+    }
 
 
     Scaffold(
@@ -157,45 +160,8 @@ fun RegisterColorScreen(
         ) {
 
             // 이미지 박스 배치
-            if (selectedImage != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(selectedImage),
-                    contentDescription = "Selected Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(350.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                )
+            imageBytes = ImageBox(selectedImage, context, colorPalette)
 
-                val bitmap = context.getBitmapFromUri(selectedImage!!)
-
-                Palette.from(bitmap!!).generate { palette ->
-                    val dominantSwatch = palette?.dominantSwatch?.rgb ?: 0
-                    val darkMutedSwatch = palette?.darkMutedSwatch?.rgb ?: 0
-                    val darkVibrantSwatch = palette?.darkVibrantSwatch?.rgb ?: 0
-                    val lightMutedSwatch = palette?.lightMutedSwatch?.rgb ?: 0
-                    val lightVibrantSwatch = palette?.lightVibrantSwatch?.rgb ?: 0
-                    val mutedSwatch = palette?.mutedSwatch?.rgb ?: 0
-                    val vibrantSwatch = palette?.vibrantSwatch?.rgb ?: 0
-
-                    colorPalette[0].value = Color(dominantSwatch)
-                    colorPalette[1].value = Color(darkMutedSwatch)
-                    colorPalette[2].value = Color(darkVibrantSwatch)
-                    colorPalette[3].value = Color(lightMutedSwatch)
-                    colorPalette[4].value = Color(lightVibrantSwatch)
-                    colorPalette[5].value = Color(mutedSwatch)
-                    colorPalette[6].value = Color(vibrantSwatch)
-                }
-
-                imageBytes = bitmap.toBytes()
-
-            } else {
-                Box(
-                    modifier = Modifier
-                        .size(350.dp)
-                        .background(Color.Gray, RoundedCornerShape(16.dp))
-                )
-            }
 
             // 팔레트 배치
             Row(
@@ -239,87 +205,147 @@ fun RegisterColorScreen(
             }
 
             // 유사한 색상 정보 표시
-            ElevatedCard(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    val (similarColor, distance) = similarColorResult.value
+            SimilarityColor(similarColorResult)
 
-                    if (similarColor != null && distance != null) {
-                        val similarityPercentage = ((1 - distance) * 100).toInt()
-                        if (similarityPercentage >= 85) {
-                            Box(
-                                modifier = Modifier
-                                    .padding(10.dp)
-                                    .size(50.dp)
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
-                                    .background(Color(similarColor.toArgb()))
-                            )
-                            Text(
-                                text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage} % 유사해요 🙆‍♀️",
-                                modifier = Modifier.padding(8.dp)
-                            )
-                        } else {
-                            Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
-                        }
-                    } else {
-                        Text(
-                            text = "🎨 내 팔레트의 색과 비교할 수 있습니다 🎨",
-                            modifier = Modifier
-                                .padding(8.dp),
-                        )
-                    }
-                }
-            }
 
             // 버튼 배치
-            Row(
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 20.dp)
-            ) {
-                // 촬영하여 등록하기 버튼
-                Button(
-                    onClick = {
-                        photoFromCameraLauncher.launch()
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .height(70.dp),
-                ) {
-                    Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = null, Modifier.padding(5.dp))
-                    Text("촬영하여 등록하기")
-                }
+            CameraAndGalleryButton(photoFromCameraLauncher, photoFromGalleryLauncher)
+        }
+    }
+}
 
-                // 사진첩에서 찾아보기 버튼
-                Button(
-                    onClick = {
-                        photoFromGalleryLauncher.launch("image/*")
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier
-                        .height(70.dp),
-                ) {
-                    Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = null, Modifier.padding(5.dp))
-                    Text("사진첩에서 가져오기")
+@Composable
+fun ImageBox(selectedImage: Uri?, context: Context, colorPalette: MutableList<MutableState<Color>>): ByteArray? {
+    if (selectedImage != null) {
+        Image(
+            painter = rememberAsyncImagePainter(selectedImage),
+            contentDescription = "Selected Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(350.dp)
+                .clip(RoundedCornerShape(16.dp))
+        )
+
+        val bitmap = context.getBitmapFromUri(selectedImage!!)
+
+        Palette.from(bitmap!!).generate { palette ->
+            val dominantSwatch = palette?.dominantSwatch?.rgb ?: 0
+            val darkMutedSwatch = palette?.darkMutedSwatch?.rgb ?: 0
+            val darkVibrantSwatch = palette?.darkVibrantSwatch?.rgb ?: 0
+            val lightMutedSwatch = palette?.lightMutedSwatch?.rgb ?: 0
+            val lightVibrantSwatch = palette?.lightVibrantSwatch?.rgb ?: 0
+            val mutedSwatch = palette?.mutedSwatch?.rgb ?: 0
+            val vibrantSwatch = palette?.vibrantSwatch?.rgb ?: 0
+
+            colorPalette[0].value = Color(dominantSwatch)
+            colorPalette[1].value = Color(darkMutedSwatch)
+            colorPalette[2].value = Color(darkVibrantSwatch)
+            colorPalette[3].value = Color(lightMutedSwatch)
+            colorPalette[4].value = Color(lightVibrantSwatch)
+            colorPalette[5].value = Color(mutedSwatch)
+            colorPalette[6].value = Color(vibrantSwatch)
+        }
+
+        return bitmap.toBytes()
+
+    } else {
+        Box(
+            modifier = Modifier
+                .size(350.dp)
+                .background(Color.Gray, RoundedCornerShape(16.dp))
+        )
+
+        return null
+    }
+}
+
+@Composable
+fun SimilarityColor(similarColorResult: MutableState<Pair<Color?, Double?>>) {
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            val (similarColor, distance) = similarColorResult.value
+
+            if (similarColor != null && distance != null) {
+                val similarityPercentage = ((1 - distance) * 100).toInt()
+                if (similarityPercentage >= 85) {
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                            .background(Color(similarColor.toArgb()))
+                    )
+                    Text(
+                        text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage} % 유사해요 🙆‍♀️",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                } else {
+                    Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
                 }
+            } else {
+                Text(
+                    text = "내 팔레트의 색과 비교할 수 있습니다",
+                    modifier = Modifier
+                        .padding(8.dp),
+                )
             }
+        }
+    }
+}
+
+@Composable
+fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>, photoFromGalleryLauncher: ManagedActivityResultLauncher<String, Uri?>) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 20.dp)
+    ) {
+        // 촬영하여 등록하기 버튼
+        Button(
+            onClick = {
+                photoFromCameraLauncher.launch()
+            },
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .height(70.dp)
+                .weight(1f)
+        ) {
+            Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = null, Modifier.padding(5.dp))
+            Text("지금 촬영하기")
+        }
+
+        Spacer(Modifier.width(10.dp))
+
+        // 사진첩에서 찾아보기 버튼
+        Button(
+            onClick = {
+                photoFromGalleryLauncher.launch("image/*")
+            },
+            shape = RoundedCornerShape(16.dp),
+            modifier = Modifier
+                .height(70.dp)
+                .weight(1f)
+        ) {
+            Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = null, Modifier.padding(5.dp))
+            Text("사진 가져오기")
         }
     }
 }
