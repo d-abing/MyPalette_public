@@ -61,6 +61,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.palette.graphics.Palette
@@ -116,12 +117,17 @@ fun RegisterColorScreen(
                 title = { Text("Register Color") },
                 actions = {
                     IconButton(onClick = {
+                        var saveToggle = false
+
                         if (selectedColor != null && selectedImage != null) {
-                            colorViewModel.colorId.observe(lifecycleOwner, Observer { colorId ->
+                            colorViewModel.colorId.observeOnce(lifecycleOwner, Observer { colorId ->
                                 if (colorId == null) {
                                     Log.d("test다", "$colorId")
                                     colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
-                                } else {
+                                }
+                            })
+                            colorViewModel.colorId.observe(lifecycleOwner, Observer { colorId ->
+                                if (!saveToggle && colorId != null) {
                                     Log.d("test다", "$colorId")
                                     imageViewModel.insert(
                                         ImageEntity(
@@ -129,9 +135,11 @@ fun RegisterColorScreen(
                                             colorId = colorId!!,
                                         )
                                     )
+                                    saveToggle = true
                                 }
                             })
-                            colorViewModel.setIdNull()
+                        }
+                        if (saveToggle) {
                             showSnackBar(scope, snackbarHostState, navController)
                         }
                     }) {
@@ -178,6 +186,7 @@ fun RegisterColorScreen(
                             .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
                             .background(color.value)
                             .clickable {
+                                similarColorResult.value = Color(0) to null // 클릭할 때마다 초기화
                                 selectedColor = color.value
                                 colorViewModel.checkIdForColor(selectedColor!!.toArgb())
                                 colorViewModel.allColors.observe(lifecycleOwner) { colors ->
@@ -196,7 +205,6 @@ fun RegisterColorScreen(
                                     }
 
                                     similarColorResult.value = Pair(closestColor, minDistance)
-                                    Log.d("test다", similarColorResult.value.toString())
                                 }
                             }
                     )
@@ -348,6 +356,16 @@ fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLaunche
         }
     }
 }
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
+}
+
 fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,

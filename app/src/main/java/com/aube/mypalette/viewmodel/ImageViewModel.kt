@@ -15,7 +15,6 @@ class ImageViewModel(private val imageRepository: ImageRepository) : ViewModel()
     }
 
     fun insert(image: ImageEntity) {
-        Log.d("test다", "ImageViewModel")
         viewModelScope.launch {
             imageRepository.insert(image)
         }
