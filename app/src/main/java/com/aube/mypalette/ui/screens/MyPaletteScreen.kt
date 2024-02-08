@@ -68,7 +68,7 @@ fun MyPaletteScreen(
                 actions = {
                     IconButton(onClick = { listToggle = false }) {
                         Icon(
-                            painter = painterResource(R.drawable.baseline_grid_on_24),
+                            painter = painterResource(R.drawable.baseline_border_all_24),
                             contentDescription = null
                         )
                     }

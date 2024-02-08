@@ -91,7 +91,11 @@ fun MyPaletteNavGraph(
                 NavigationBarItem(
                     selected = navController.currentDestination?.route == "myCombinationScreen",
                     onClick = {
-                        navController.navigate("myCombinationScreen")
+                        navController.navigate("myCombinationScreen") {
+                            popUpTo("myCombinationScreen") {
+                                inclusive = true
+                            }
+                        }
                     },
                     icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
                     label = { Text("나만의 조합") }
@@ -101,7 +105,11 @@ fun MyPaletteNavGraph(
                 NavigationBarItem(
                     selected = navController.currentDestination?.route == "myPaletteScreen",
                     onClick = {
-                        navController.navigate("myPaletteScreen")
+                        navController.navigate("myPaletteScreen") {
+                            popUpTo("myPaletteScreen") {
+                                inclusive = true
+                            }
+                        }
                     },
                     icon = {
                         Icon(
@@ -115,7 +123,11 @@ fun MyPaletteNavGraph(
                 NavigationBarItem(
                     selected = navController.currentDestination?.route == "registerColorScreen",
                     onClick = {
-                        navController.navigate("registerColorScreen")
+                        navController.navigate("registerColorScreen") {
+                            popUpTo("registerColorScreen") {
+                                inclusive = true
+                            }
+                        }
                     },
                     icon = { Icon(Icons.Default.AddCircle, contentDescription = null) },
                     label = { Text("색 등록하기") }
