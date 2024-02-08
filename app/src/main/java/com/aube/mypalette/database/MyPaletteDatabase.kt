@@ -6,10 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.aube.mypalette.database.ColorDao
-import com.aube.mypalette.database.ColorEntity
-import com.aube.mypalette.database.CombinationDao
-import com.aube.mypalette.database.CombinationEntity
 
 @Database(entities = [ColorEntity::class, CombinationEntity::class, ImageEntity::class], version = 1)
 @TypeConverters(ColorListConverter::class)

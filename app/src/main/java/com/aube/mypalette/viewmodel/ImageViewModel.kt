@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.database.ImageEntity
 import com.aube.mypalette.repository.ImageRepository
 import kotlinx.coroutines.launch

@@ -2,7 +2,6 @@ package com.aube.mypalette.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.database.ImageDao
 import com.aube.mypalette.database.ImageEntity
 

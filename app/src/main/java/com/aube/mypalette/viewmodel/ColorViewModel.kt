@@ -1,13 +1,11 @@
 package com.aube.mypalette.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.aube.mypalette.database.ColorEntity
-import com.aube.mypalette.database.MyPaletteDatabase
 import com.aube.mypalette.repository.ColorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

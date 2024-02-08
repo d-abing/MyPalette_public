@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.repository.CombinationRepository
 import kotlinx.coroutines.launch
