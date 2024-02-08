@@ -8,6 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -34,29 +37,24 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.CombinationEntity
+import com.aube.mypalette.viewmodel.ColorViewModel
 import com.aube.mypalette.viewmodel.CombinationViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyCombinationScreen(
-    combinationViewModel: CombinationViewModel
+    combinationViewModel: CombinationViewModel,
+    colorViewModel: ColorViewModel
 ) {
     val combinationList by combinationViewModel.allCombinations.observeAsState(emptyList())
     var selectedId: Int? by remember { mutableStateOf(null) }
     var has_modified: Boolean by remember { mutableStateOf(false) }
     val navController = rememberNavController()
     var isClickable by remember { mutableStateOf(true) }
-
-    // Room 데이터베이스에 초기 데이터 추가
-    LaunchedEffect(combinationList) {
-        if (combinationList.isEmpty()) {
-            // 초기 데이터 추가
-            combinationViewModel.insert(CombinationEntity(colors = listOf(Color.Red.toArgb(), Color.Yellow.toArgb(), Color.Green.toArgb(), Color.Blue.toArgb(), Color.Black.toArgb(), Color.White.toArgb(), Color.Cyan.toArgb(), Color.Magenta.toArgb(), Color.Gray.toArgb())))
-            combinationViewModel.insert(CombinationEntity(colors = listOf(Color.Red.toArgb(), Color.Yellow.toArgb(), Color.Green.toArgb())))
-        }
-    }
+    val newCombination: MutableList<Int> = remember { mutableListOf() }
 
     Scaffold(
         topBar = {
@@ -71,6 +69,7 @@ fun MyCombinationScreen(
                         onClick = {
                             has_modified = false
                             navController.popBackStack("myCombinationScreen", inclusive = false)
+                            combinationViewModel.insert(CombinationEntity(colors = newCombination.sorted()))
                             isClickable = true
                         }) {
                         Icon(Icons.Filled.Check, contentDescription = null)
@@ -128,9 +127,15 @@ fun MyCombinationScreen(
                 }
                 composable("addCombinationScreen") {
                     // 새로운 조합 화면
-                    AddCombinationScreen {
-                        navController.navigateUp()
-                    }
+                    AddCombinationScreen(newCombination, colorViewModel,
+                        content = {
+                            navController.navigateUp()
+                        },
+                        addColor = {
+                            newCombination.add(it)
+                            Log.d("test다", newCombination.toString())
+                        }
+                    )
                 }
             }
         }
@@ -220,9 +225,4 @@ fun CombinationItem(combinationItem: CombinationEntity, setId: (Int?) -> Unit) {
             }
         }
     }
-}
-
-@Composable
-fun AddCombinationScreen(content: () -> Boolean) {
-
 }
