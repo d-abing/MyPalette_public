@@ -136,11 +136,9 @@ fun RegisterColorScreen(
                                         )
                                     )
                                     saveToggle = true
+                                    showSnackBar(scope, snackbarHostState, navController)
                                 }
                             })
-                        }
-                        if (saveToggle) {
-                            showSnackBar(scope, snackbarHostState, navController)
                         }
                     }) {
                         Icon(

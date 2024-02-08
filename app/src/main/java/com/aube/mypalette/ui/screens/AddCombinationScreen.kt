@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,13 +36,15 @@ fun AddCombinationScreen(newCombination: List<Int>, colorViewModel: ColorViewMod
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NewCombination(newCombination)
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(10.dp))
         MyPaletteColor(colorViewModel, addColor)
     }
 }
 
 @Composable
 fun NewCombination(newCombination: List<Int>) {
+    val colors = remember { newCombination }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,7 +53,7 @@ fun NewCombination(newCombination: List<Int>) {
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        newCombination.forEach { colorItem ->
+        colors.forEach { colorItem ->
             if (colorItem in -100..0) {
                 Column(
                     modifier = Modifier

@@ -1,7 +1,6 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,7 +43,7 @@ fun MyCombinationScreen(
     var has_modified: Boolean by remember { mutableStateOf(false) }
     val navController = rememberNavController()
     var isClickable by remember { mutableStateOf(true) }
-    val newCombination: MutableList<Int> = remember { mutableListOf() }
+    var newCombination: MutableList<Int> = remember { mutableListOf() }
 
     Scaffold(
         topBar = {
@@ -59,8 +58,9 @@ fun MyCombinationScreen(
                         onClick = {
                             has_modified = false
                             navController.popBackStack("myCombinationScreen", inclusive = false)
-                            combinationViewModel.insert(CombinationEntity(colors = newCombination.sorted()))
+                            combinationViewModel.insert(CombinationEntity(colors = newCombination))
                             isClickable = true
+                            newCombination = mutableListOf()
                         }) {
                         Icon(Icons.Filled.Check, contentDescription = null)
                     }
@@ -123,7 +123,7 @@ fun MyCombinationScreen(
                         },
                         addColor = {
                             newCombination.add(it)
-                            Log.d("test다", newCombination.toString())
+                            newCombination.sort()
                         }
                     )
                 }
