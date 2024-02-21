@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,8 +45,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -93,19 +94,21 @@ fun RegisterColorScreen(
     var selectedImage: Uri? by remember { mutableStateOf(null) }
     var imageBytes: ByteArray? by remember { mutableStateOf(null) }
     val colorPalette = List(7) { remember { mutableStateOf(Color.White) } }.toMutableList()
+    var count: Int? by remember { mutableStateOf(0) }
     val similarColorResult = remember { mutableStateOf<Pair<Color?, Double?>>(Color(0) to null) }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val photoFromCameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
             if (bitmap != null) {
-                imageBytes = compressBitmapAndGetByteArray(bitmap)
+                similarColorResult.value = Color(0) to null
                 selectedImage = saveBitmapToGalleryAndGetUri(bitmap, "PaletteImage", context)
             }
         }
     val photoFromGalleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
+            similarColorResult.value = Color(0) to null
             selectedImage = uri
         }
     }
@@ -122,17 +125,19 @@ fun RegisterColorScreen(
                         if (selectedColor != null && selectedImage != null) {
                             colorViewModel.colorId.observeOnce(lifecycleOwner, Observer { colorId ->
                                 if (colorId == null) {
-                                    Log.d("test다", "$colorId")
-                                    colorViewModel.insert(ColorEntity(color = selectedColor!!.toArgb()))
+                                    colorViewModel.insert(
+                                        ColorEntity(
+                                            color = selectedColor!!.toArgb()
+                                        )
+                                    )
                                 }
                             })
                             colorViewModel.colorId.observe(lifecycleOwner, Observer { colorId ->
                                 if (!saveToggle && colorId != null) {
-                                    Log.d("test다", "$colorId")
                                     imageViewModel.insert(
                                         ImageEntity(
                                             imageBytes = imageBytes!!,
-                                            colorId = colorId!!,
+                                            colorId = colorId,
                                         )
                                     )
                                     saveToggle = true
@@ -165,7 +170,7 @@ fun RegisterColorScreen(
         ) {
 
             // 이미지 박스 배치
-            imageBytes = ImageBox(selectedImage, context, colorPalette)
+            imageBytes = imageBox(selectedImage, context, colorPalette)
 
 
             // 팔레트 배치
@@ -176,13 +181,22 @@ fun RegisterColorScreen(
                     .padding(start = 10.dp, top = 20.dp, end = 10.dp, bottom = 20.dp)
             ) {
 
+                var colorCount = 0
                 for (color in colorPalette) {
+                    var boxColor: Color?
+                    if (color.value.alpha != 0.0f) {
+                        boxColor = color.value
+                        colorCount += 1
+                    } else {
+                        boxColor = Color.White
+                    }
+
                     Box(
                         modifier = Modifier
                             .size(50.dp)
                             .clip(RoundedCornerShape(10.dp))
                             .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
-                            .background(color.value)
+                            .background(boxColor)
                             .clickable {
                                 similarColorResult.value = Color(0) to null // 클릭할 때마다 초기화
                                 selectedColor = color.value
@@ -207,10 +221,12 @@ fun RegisterColorScreen(
                             }
                     )
                 }
+
+                count = colorCount
             }
 
             // 유사한 색상 정보 표시
-            SimilarityColor(similarColorResult)
+            SimilarityColor(count!!, selectedImage, similarColorResult)
 
 
             // 버튼 배치
@@ -220,7 +236,7 @@ fun RegisterColorScreen(
 }
 
 @Composable
-fun ImageBox(selectedImage: Uri?, context: Context, colorPalette: MutableList<MutableState<Color>>): ByteArray? {
+fun imageBox(selectedImage: Uri?, context: Context, colorPalette: MutableList<MutableState<Color>>): ByteArray? {
     if (selectedImage != null) {
         Image(
             painter = rememberAsyncImagePainter(selectedImage),
@@ -231,7 +247,7 @@ fun ImageBox(selectedImage: Uri?, context: Context, colorPalette: MutableList<Mu
                 .clip(RoundedCornerShape(16.dp))
         )
 
-        val bitmap = context.getBitmapFromUri(selectedImage!!)
+        val bitmap = context.getBitmapFromUri(selectedImage)
 
         Palette.from(bitmap!!).generate { palette ->
             val dominantSwatch = palette?.dominantSwatch?.rgb ?: 0
@@ -265,7 +281,7 @@ fun ImageBox(selectedImage: Uri?, context: Context, colorPalette: MutableList<Mu
 }
 
 @Composable
-fun SimilarityColor(similarColorResult: MutableState<Pair<Color?, Double?>>) {
+fun SimilarityColor(count: Int, selectedImage: Uri?, similarColorResult: MutableState<Pair<Color?, Double?>>) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -303,9 +319,15 @@ fun SimilarityColor(similarColorResult: MutableState<Pair<Color?, Double?>>) {
                 } else {
                     Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
                 }
-            } else {
+            } else if (selectedImage == null){
                 Text(
                     text = "내 팔레트의 색과 비교할 수 있습니다",
+                    modifier = Modifier
+                        .padding(8.dp),
+                )
+            } else {
+                Text(
+                    text = "👨‍🎨 총 $count 개의 색이 추출되었습니다 👩‍🎨",
                     modifier = Modifier
                         .padding(8.dp),
                 )
@@ -387,26 +409,6 @@ fun showSnackBar(
     }
 }
 
-fun compressBitmapAndGetByteArray(bitmap: Bitmap): ByteArray? {
-    val baos = ByteArrayOutputStream()
-    return try {
-        bitmap.compress(
-            Bitmap.CompressFormat.PNG,
-            100,
-            baos
-        )
-        baos.toByteArray()
-    } catch (e: IOException) {
-        e.printStackTrace()
-        null
-    } finally {
-        try {
-            baos.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-}
 
 fun saveBitmapToGalleryAndGetUri(bitmap: Bitmap, displayName: String, context: Context): Uri? {
     val resolver = context?.contentResolver
