@@ -1,6 +1,5 @@
 package com.aube.mypalette.database
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -19,12 +18,9 @@ interface ColorDao {
     // 실제 insert 메서드
     suspend fun insertColorIfNotExists(color: ColorEntity) {
         val existingId = checkIdForColor(color.color)
-        Log.d("test다", "color insert 시도")
         if (existingId == null) {
-            Log.d("test다", "color insert 성공")
             insertColor(color)
         } else {
-            Log.d("test다", "color insert 실패")
         }
     }
 
@@ -58,12 +54,9 @@ interface ImageDao {
     // 실제 insert 메서드
     suspend fun insertImageIfNotExists(image: ImageEntity) {
         val existingId = checkIdForImage(image.imageBytes, image.colorId)
-        Log.d("test다", "image insert 시도")
         if (existingId == null) {
-            Log.d("test다", "image insert 성공")
             insertImage(image)
         } else {
-            Log.d("test다", "image insert 실패")
         }
     }
 

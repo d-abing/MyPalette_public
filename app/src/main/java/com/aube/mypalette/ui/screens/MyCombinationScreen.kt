@@ -56,11 +56,13 @@ fun MyCombinationScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            has_modified = false
-                            navController.popBackStack("myCombinationScreen", inclusive = false)
-                            combinationViewModel.insert(CombinationEntity(colors = newCombination))
-                            isClickable = true
-                            newCombination = mutableListOf()
+                            if (!isClickable && newCombination.isNotEmpty()) {
+                                has_modified = false
+                                navController.popBackStack("myCombinationScreen", inclusive = false)
+                                combinationViewModel.insert(CombinationEntity(colors = newCombination))
+                                isClickable = true
+                                newCombination = mutableListOf()
+                            }
                         }) {
                         Icon(Icons.Filled.Check, contentDescription = null)
                     }

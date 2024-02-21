@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -45,10 +46,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -184,42 +183,70 @@ fun RegisterColorScreen(
                 var colorCount = 0
                 for (color in colorPalette) {
                     var boxColor: Color?
+                    var noColor = false
                     if (color.value.alpha != 0.0f) {
                         boxColor = color.value
                         colorCount += 1
                     } else {
                         boxColor = Color.White
+                        noColor = true
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .size(50.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
-                            .background(boxColor)
-                            .clickable {
-                                similarColorResult.value = Color(0) to null // 클릭할 때마다 초기화
-                                selectedColor = color.value
-                                colorViewModel.checkIdForColor(selectedColor!!.toArgb())
-                                colorViewModel.allColors.observe(lifecycleOwner) { colors ->
-                                    var closestColor: Color? = null
-                                    var minDistance: Double? = null
+                    if (!noColor) {
+                        Box(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                                .background(boxColor)
+                                .clickable {
+                                    if(selectedImage != null) {
+                                        similarColorResult.value = Color(0) to null // 클릭할 때마다 초기화
+                                        selectedColor = color.value
+                                        colorViewModel.checkIdForColor(selectedColor!!.toArgb())
+                                        colorViewModel.allColors.observe(lifecycleOwner) { colors ->
+                                            var closestColor: Color? = null
+                                            var minDistance: Double? = null
 
-                                    colors.forEach { colorEntity ->
-                                        val databaseColor = Color(colorEntity.color)
-                                        val distance =
-                                            calculateColorDistance(selectedColor!!, databaseColor)
+                                            colors.forEach { colorEntity ->
+                                                val databaseColor = Color(colorEntity.color)
+                                                val distance =
+                                                    calculateColorDistance(
+                                                        selectedColor!!,
+                                                        databaseColor
+                                                    )
 
-                                        if (minDistance == null || distance < minDistance!!) {
-                                            minDistance = distance
-                                            closestColor = databaseColor
+                                                if (minDistance == null || distance < minDistance!!) {
+                                                    minDistance = distance
+                                                    closestColor = databaseColor
+                                                }
+                                            }
+
+                                            similarColorResult.value =
+                                                Pair(closestColor, minDistance)
                                         }
                                     }
-
-                                    similarColorResult.value = Pair(closestColor, minDistance)
                                 }
-                            }
-                    )
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(50.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
+                                .background(boxColor)
+                                .clickable {
+                                    similarColorResult.value = Color(0) to null
+                                }
+                            ,
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Save",
+                            )
+                        }
+                    }
                 }
 
                 count = colorCount
