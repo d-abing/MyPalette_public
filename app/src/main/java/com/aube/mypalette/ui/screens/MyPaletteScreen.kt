@@ -120,20 +120,18 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
             .fillMaxWidth()
     ) {
 
-        if (colorItem.color == 0) {
-            Box(
-                modifier = Modifier
+        Box(
+            modifier =  if (colorItem.color == 0) {
+                Modifier
                     .size(79.8.dp)
                     .border(0.1.dp, Color.Gray)
                     .background(Color(colorItem.color))
-            )
-        } else {
-            Box(
-                modifier = Modifier
+            } else {
+                Modifier
                     .size(80.dp)
                     .background(Color(colorItem.color))
-            )
-        }
+            }
+        )
 
         LazyRow(
             modifier = Modifier
@@ -168,18 +166,16 @@ fun ImageItem(imageItem: ImageEntity) {
 
 @Composable
 fun PaletteColorItem(colorItem: ColorEntity) {
-    if (colorItem.color == 0) {
-        Box(
-            modifier = Modifier
+    Box(
+        modifier = if (colorItem.color == 0) {
+            Modifier
                 .size(79.8.dp)
                 .border(0.1.dp, Color.Gray)
                 .background(Color(colorItem.color))
-        )
-    } else {
-        Box(
-            modifier = Modifier
+        } else {
+            Modifier
                 .size(80.dp)
                 .background(Color(colorItem.color))
-        )
-    }
+        }
+    )
 }
