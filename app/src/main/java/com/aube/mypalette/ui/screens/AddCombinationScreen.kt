@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,7 +29,7 @@ import com.aube.mypalette.viewmodel.ColorViewModel
 
 
 @Composable
-fun AddCombinationScreen(newCombination: List<Int>, colorViewModel: ColorViewModel, content: () -> Boolean, addColor: (Int) -> Unit) {
+fun AddCombinationScreen(newCombination: MutableList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -42,8 +41,8 @@ fun AddCombinationScreen(newCombination: List<Int>, colorViewModel: ColorViewMod
 }
 
 @Composable
-fun NewCombination(newCombination: List<Int>) {
-    val colors = remember { newCombination }
+fun NewCombination(newCombination: MutableList<Int>) {
+    val colors = newCombination
 
     Row(
         modifier = Modifier
@@ -54,22 +53,20 @@ fun NewCombination(newCombination: List<Int>) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
         colors.forEach { colorItem ->
-            if (colorItem in -100..0) {
-                Column(
-                    modifier = Modifier
+            Column(
+                modifier = if (colorItem in -100..0) {
+                    Modifier
                         .height(99.6.dp)
                         .weight(1f)
                         .border(0.1.dp, Color.Gray)
                         .background(Color(colorItem))
-                ){}
-            } else {
-                Column(
-                    modifier = Modifier
+                } else {
+                    Modifier
                         .height(100.dp)
                         .weight(1f)
                         .background(Color(colorItem))
-                ){}
-            }
+                }
+            ){}
         }
     }
 }
@@ -93,21 +90,19 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
 
 @Composable
 fun ClickablePaletteColorItem(colorItem: ColorEntity, addColor: (Int) -> Unit) {
-    if (colorItem.color == 0) {
-        Box(
-            modifier = Modifier
+    Box(
+        modifier = if (colorItem.color == 0) {
+            Modifier
                 .size(59.8.dp)
                 .border(0.1.dp, Color.Gray)
                 .background(Color(colorItem.color))
                 .clickable { addColor(colorItem.color) }
-        )
-    } else {
-        Box(
-            modifier = Modifier
+        } else {
+            Modifier
                 .size(60.dp)
                 .background(Color(colorItem.color))
                 .clickable { addColor(colorItem.color) }
-        )
-    }
+        }
+    )
 }
 

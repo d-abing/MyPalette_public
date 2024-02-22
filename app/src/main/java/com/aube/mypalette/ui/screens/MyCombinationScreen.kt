@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
@@ -39,10 +40,9 @@ fun MyCombinationScreen(
     colorViewModel: ColorViewModel
 ) {
     val combinationList by combinationViewModel.allCombinations.observeAsState(emptyList())
-    var selectedId: Int? by remember { mutableStateOf(null) }
-    var has_modified: Boolean by remember { mutableStateOf(false) }
+    val selectedIds: MutableList<Int> = remember { mutableListOf() }
     val navController = rememberNavController()
-    var isClickable by remember { mutableStateOf(true) }
+    var isAdding by remember { mutableStateOf(false) }
     var newCombination: MutableList<Int> = remember { mutableListOf() }
 
     Scaffold(
@@ -54,44 +54,62 @@ fun MyCombinationScreen(
         bottomBar = {
             BottomAppBar(
                 actions = {
-                    IconButton(
-                        onClick = {
-                            if (!isClickable && newCombination.isNotEmpty()) {
-                                has_modified = false
-                                navController.popBackStack("myCombinationScreen", inclusive = false)
-                                combinationViewModel.insert(CombinationEntity(colors = newCombination))
-                                isClickable = true
-                                newCombination = mutableListOf()
-                            }
-                        }) {
-                        Icon(Icons.Filled.Check, contentDescription = null)
-                    }
-
-
+                    // 수정
                     IconButton(onClick = { /* do something */ }) {
                         Icon(Icons.Filled.Edit, contentDescription = null)
                     }
 
-
+                    // 삭제
                     IconButton(onClick = {
-                        if (selectedId != null) {
-                            combinationViewModel.delete(selectedId!!)
+                        if (selectedIds.isNotEmpty()) {
+                            for (id in selectedIds) {
+                                combinationViewModel.delete(id)
+                            }
                         }
                     }) {
                         Icon(Icons.Filled.Delete, contentDescription = null)
                     }
                 },
+
+                // 추가
                 floatingActionButton = {
-                    FloatingActionButton(
-                        onClick = {
-                            if (isClickable) {
-                                isClickable = false
+                    if (!isAdding) {
+                        FloatingActionButton(
+                            onClick = {
+                                isAdding = true
                                 navController.navigate("addCombinationScreen")
-                            }},
-                        containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                        elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
-                    ) {
-                        Icon(Icons.Filled.Add, "Localized description")
+                            },
+                            containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                            elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                        ) {
+                            Icon(Icons.Filled.Add, "Localized description")
+                        }
+                    } else {
+                        if (newCombination.isNotEmpty()) {
+                            FloatingActionButton(
+                                onClick = {
+                                    navController.popBackStack("myCombinationScreen", inclusive = false)
+                                    combinationViewModel.insert(CombinationEntity(colors = newCombination))
+                                    isAdding = false
+                                    newCombination = mutableListOf()
+                                },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            ) {
+                                Icon(Icons.Filled.Check, contentDescription = null, tint = Color.Green)
+                            }
+                        } else {
+                            FloatingActionButton(
+                                onClick = {
+                                    navController.popBackStack("myCombinationScreen", inclusive = false)
+                                    isAdding = false
+                                },
+                                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                            ) {
+                                Icon(Icons.Filled.Close, contentDescription = null)
+                            }
+                        }
                     }
                 }
             )
@@ -109,20 +127,19 @@ fun MyCombinationScreen(
 
             NavHost(
                 navController = navController,
-                startDestination = "myCombinationScreen" // "addCombinationScreen"으로 시작하도록 수정
+                startDestination = "myCombinationScreen" // "addCombinationScreen"으로 시작
             ) {
                 composable("myCombinationScreen") {
                     // 기존 화면
-                    MyCombinationList(combinationList) {
-                        selectedId = it
-                    }
+                    MyCombinationList(combinationList, {
+                        selectedIds.add(it!!)
+                    }, {
+                        selectedIds.remove(it!!)
+                    })
                 }
                 composable("addCombinationScreen") {
                     // 새로운 조합 화면
                     AddCombinationScreen(newCombination, colorViewModel,
-                        content = {
-                            navController.navigateUp()
-                        },
                         addColor = {
                             newCombination.add(it)
                             newCombination.sort()
@@ -137,84 +154,60 @@ fun MyCombinationScreen(
 
 
 @Composable
-fun MyCombinationList(combinationList: List<CombinationEntity>, setId: (Int?) -> Unit) {
+fun MyCombinationList(combinationList: List<CombinationEntity>, addId: (Int?) -> Unit, removeId: (Int?) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         ) {
         items(combinationList) { combinationItem ->
-            CombinationItem(combinationItem, setId)
+            CombinationItem(combinationItem, addId, removeId)
         }
     }
 }
 
 @Composable
-fun CombinationItem(combinationItem: CombinationEntity, setId: (Int?) -> Unit) {
+fun CombinationItem(combinationItem: CombinationEntity, addId: (Int?) -> Unit, removeId: (Int?) -> Unit) {
     var selectToggle: Boolean by remember { mutableStateOf(false) }
 
-    if (!selectToggle) {
-        Row(
-            modifier = Modifier
+    Row (
+        modifier =  if (!selectToggle) {
+            Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
                 .clickable {
                     selectToggle = true
-                    setId(combinationItem.id)
+                    addId(combinationItem.id)
                 }
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            combinationItem.colors.forEach { colorItem ->
-                if (colorItem in -100..0) {
-                    Column(
-                        modifier = Modifier
-                            .height(99.6.dp)
-                            .weight(1f)
-                            .border(0.1.dp, Color.Gray)
-                            .background(Color(colorItem))
-                    ){}
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .weight(1f)
-                            .background(Color(colorItem))
-                    ){}
-                }
-            }
-        }
-    } else {
-        Row(
-            modifier = Modifier
+                .padding(10.dp)
+        } else {
+            Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .background(Color.LightGray, RoundedCornerShape(8.dp))
                 .clickable {
                     selectToggle = false
-                    setId(null)
+                    removeId(combinationItem.id)
                 }
-                .padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically,
+                .padding(10.dp)
+               },
+        verticalAlignment = Alignment.CenterVertically,
         ) {
-            combinationItem.colors.forEach { colorItem ->
-                if (colorItem in -100..0) {
-                    Column(
-                        modifier = Modifier
-                            .height(99.6.dp)
-                            .weight(1f)
-                            .border(0.1.dp, Color.Gray)
-                            .background(Color(colorItem))
-                    ){}
+        combinationItem.colors.forEach { colorItem ->
+            Column(
+                modifier =  if (colorItem in -100..0) {
+                    Modifier
+                        .height(99.6.dp)
+                        .weight(1f)
+                        .border(0.1.dp, Color.Gray)
+                        .background(Color(colorItem))
                 } else {
-                    Column(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .weight(1f)
-                            .background(Color(colorItem))
-                    ){}
+                    Modifier
+                        .height(100.dp)
+                        .weight(1f)
+                        .background(Color(colorItem))
                 }
-            }
+            ){}
         }
     }
 }
