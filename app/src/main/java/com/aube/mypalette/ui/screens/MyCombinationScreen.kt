@@ -21,6 +21,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +44,7 @@ fun MyCombinationScreen(
     val selectedIds: MutableList<Int> = remember { mutableListOf() }
     val navController = rememberNavController()
     var isAdding by remember { mutableStateOf(false) }
-    var newCombination: MutableList<Int> = remember { mutableListOf() }
+    var newCombination: SnapshotStateList<Int> by remember { mutableStateOf(SnapshotStateList()) }
 
     Scaffold(
         topBar = {
@@ -66,7 +67,9 @@ fun MyCombinationScreen(
                                 combinationViewModel.delete(id)
                             }
                         }
-                    }) {
+                    },
+                        modifier = Modifier.padding(start = 8.dp)
+                    ) {
                         Icon(Icons.Filled.Delete, contentDescription = null)
                     }
                 },
@@ -91,7 +94,7 @@ fun MyCombinationScreen(
                                     navController.popBackStack("myCombinationScreen", inclusive = false)
                                     combinationViewModel.insert(CombinationEntity(colors = newCombination))
                                     isAdding = false
-                                    newCombination = mutableListOf()
+                                    newCombination = SnapshotStateList()
                                 },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
@@ -142,7 +145,6 @@ fun MyCombinationScreen(
                     AddCombinationScreen(newCombination, colorViewModel,
                         addColor = {
                             newCombination.add(it)
-                            newCombination.sort()
                         }
                     )
                 }

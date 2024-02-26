@@ -340,7 +340,7 @@ fun SimilarityColor(count: Int, selectedImage: Uri?, similarColorResult: Mutable
                             .background(Color(similarColor.toArgb()))
                     )
                     Text(
-                        text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage} % 유사해요 🙆‍♀️",
+                        text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage}% 유사해요 🙆‍♀️",
                         modifier = Modifier.padding(8.dp)
                     )
                 } else {

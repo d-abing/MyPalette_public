@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +30,7 @@ import com.aube.mypalette.viewmodel.ColorViewModel
 
 
 @Composable
-fun AddCombinationScreen(newCombination: MutableList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
+fun AddCombinationScreen(newCombination: SnapshotStateList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -41,7 +42,7 @@ fun AddCombinationScreen(newCombination: MutableList<Int>, colorViewModel: Color
 }
 
 @Composable
-fun NewCombination(newCombination: MutableList<Int>) {
+fun NewCombination(newCombination: SnapshotStateList<Int>) {
     val colors = newCombination
 
     Row(
