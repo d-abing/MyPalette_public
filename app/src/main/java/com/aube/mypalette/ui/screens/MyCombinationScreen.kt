@@ -145,6 +145,9 @@ fun MyCombinationScreen(
                     AddCombinationScreen(newCombination, colorViewModel,
                         addColor = {
                             newCombination.add(it)
+                        },
+                        removeColor = {
+                          newCombination.remove(it)
                         }
                     )
                 }

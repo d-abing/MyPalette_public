@@ -30,19 +30,19 @@ import com.aube.mypalette.viewmodel.ColorViewModel
 
 
 @Composable
-fun AddCombinationScreen(newCombination: SnapshotStateList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
+fun AddCombinationScreen(newCombination: SnapshotStateList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit, removeColor: (Int) -> Unit) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        NewCombination(newCombination)
+        NewCombination(newCombination, removeColor)
         Spacer(Modifier.height(10.dp))
         MyPaletteColor(colorViewModel, addColor)
     }
 }
 
 @Composable
-fun NewCombination(newCombination: SnapshotStateList<Int>) {
+fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) -> Unit) {
     val colors = newCombination
 
     Row(
@@ -61,11 +61,17 @@ fun NewCombination(newCombination: SnapshotStateList<Int>) {
                         .weight(1f)
                         .border(0.1.dp, Color.Gray)
                         .background(Color(colorItem))
+                        .clickable {
+                            removeColor(colorItem)
+                        }
                 } else {
                     Modifier
                         .height(100.dp)
                         .weight(1f)
                         .background(Color(colorItem))
+                        .clickable {
+                            removeColor(colorItem)
+                        }
                 }
             ){}
         }
