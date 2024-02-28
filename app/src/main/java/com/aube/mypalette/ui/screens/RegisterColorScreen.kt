@@ -1,11 +1,9 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
-import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -40,10 +38,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -61,7 +57,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.palette.graphics.Palette
@@ -69,14 +64,14 @@ import coil.compose.rememberAsyncImagePainter
 import com.aube.mypalette.R
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
+import com.aube.mypalette.utils.calculateColorDistance
+import com.aube.mypalette.utils.getBitmapFromUri
+import com.aube.mypalette.utils.observeOnce
+import com.aube.mypalette.utils.showSnackBar
+import com.aube.mypalette.utils.toBytes
 import com.aube.mypalette.viewmodel.ColorViewModel
 import com.aube.mypalette.viewmodel.ImageViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.io.InputStream
-import kotlin.math.sqrt
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,7 +146,7 @@ fun RegisterColorScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Check,
-                            contentDescription = "Save"
+                            contentDescription = "저장"
                         )
                     }
                 }
@@ -386,7 +381,7 @@ fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLaunche
                 .height(70.dp)
                 .weight(1f)
         ) {
-            Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = null, Modifier.padding(5.dp))
+            Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = "카메라", Modifier.padding(5.dp))
             Text("지금 촬영하기")
         }
 
@@ -402,42 +397,8 @@ fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLaunche
                 .height(70.dp)
                 .weight(1f)
         ) {
-            Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = null, Modifier.padding(5.dp))
+            Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = "갤러리", Modifier.padding(5.dp))
             Text("사진 가져오기")
-        }
-    }
-}
-
-fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-    observe(lifecycleOwner, object : Observer<T> {
-        override fun onChanged(t: T) {
-            observer.onChanged(t)
-            removeObserver(this)
-        }
-    })
-}
-
-fun showSnackBar(
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-    message: String,
-    actionLabel: String,
-    action: () -> Unit,
-) {
-    scope.launch {
-        val result = snackbarHostState
-            .showSnackbar(
-                message = message,
-                actionLabel = actionLabel,
-                duration = SnackbarDuration.Short
-            )
-        when (result) {
-            SnackbarResult.ActionPerformed -> {
-                action()
-            }
-            SnackbarResult.Dismissed -> {
-
-            }
         }
     }
 }
@@ -464,38 +425,4 @@ fun saveBitmapToGalleryAndGetUri(bitmap: Bitmap, displayName: String, context: C
     }
 
     return null
-}
-
-fun Context.getBitmapFromUri(uri: Uri): Bitmap? {
-    val contentResolver: ContentResolver = this.contentResolver
-    try {
-        // URI로부터 InputStream을 열어서 BitmapFactory를 사용하여 Bitmap으로 변환
-        val inputStream: InputStream? = contentResolver.openInputStream(uri)
-        return BitmapFactory.decodeStream(inputStream)
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-    return null
-}
-
-fun Bitmap.toBytes(): ByteArray {
-    val stream = ByteArrayOutputStream()
-    compress(Bitmap.CompressFormat.PNG, 100, stream)
-    return stream.toByteArray()
-}
-
-fun calculateColorDistance(color1: Color, color2: Color): Double {
-    val r1 = color1.red
-    val g1 = color1.green
-    val b1 = color1.blue
-
-    val r2 = color2.red
-    val g2 = color2.green
-    val b2 = color2.blue
-
-    val deltaR = r1 - r2
-    val deltaG = g1 - g2
-    val deltaB = b1 - b2
-
-    return sqrt((deltaR * deltaR + deltaG * deltaG + deltaB * deltaB).toDouble())
 }

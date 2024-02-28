@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
@@ -33,6 +34,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aube.mypalette.database.CombinationEntity
+import com.aube.mypalette.utils.observeOnce
+import com.aube.mypalette.utils.showSnackBar
 import com.aube.mypalette.viewmodel.ColorViewModel
 import com.aube.mypalette.viewmodel.CombinationViewModel
 
@@ -50,6 +53,8 @@ fun MyCombinationScreen(
     var isUpdating by remember { mutableStateOf(false) }
     var isAdding by remember { mutableStateOf(false) }
     var newCombination: SnapshotStateList<Int> by remember { mutableStateOf(SnapshotStateList())}
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         topBar = {
@@ -72,6 +77,8 @@ fun MyCombinationScreen(
                                 isUpdating = true
                                 navController.navigate("addCombinationScreen")
                                 selectedIds.clear()
+                            } else {
+                                showSnackBar(scope, snackbarHostState, " ☝ 한 개의 조합을 선택해 주세요 ☝ ", "확인"){}
                             }
                         },
                             modifier = Modifier.padding(start = 8.dp)
@@ -146,6 +153,9 @@ fun MyCombinationScreen(
                 }
             )
         },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
         innerPadding ->
 
