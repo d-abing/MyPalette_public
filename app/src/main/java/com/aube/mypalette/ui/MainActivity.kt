@@ -144,7 +144,8 @@ fun MyPaletteNavGraph(
             composable("myCombinationScreen") {
                 MyCombinationScreen(
                     combinationViewModel = combinationViewModel,
-                    colorViewModel = colorViewModel
+                    colorViewModel = colorViewModel,
+                    lifecycleOwner = lifecycleOwner,
                 )
             }
             composable("myPaletteScreen") {

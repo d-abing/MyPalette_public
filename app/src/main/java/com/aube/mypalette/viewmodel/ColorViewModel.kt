@@ -17,14 +17,6 @@ class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel()
     val colorId: LiveData<Int?>
         get() = _colorId
 
-    fun setIdNull() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _colorId.postValue(null)
-            }
-        }
-    }
-
     fun checkIdForColor(color: Int) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

@@ -43,17 +43,16 @@ fun AddCombinationScreen(newCombination: SnapshotStateList<Int>, colorViewModel:
 
 @Composable
 fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) -> Unit) {
-    val colors = newCombination
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .background(Color.LightGray, RoundedCornerShape(8.dp))
+            .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
+            .background(Color.White, RoundedCornerShape(8.dp))
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        colors.forEach { colorItem ->
+        newCombination.forEach { colorItem ->
             Column(
                 modifier = if (colorItem in -100..0) {
                     Modifier

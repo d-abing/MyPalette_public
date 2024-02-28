@@ -140,7 +140,11 @@ fun RegisterColorScreen(
                                         )
                                     )
                                     saveToggle = true
-                                    showSnackBar(scope, snackbarHostState, navController)
+                                    showSnackBar(scope, snackbarHostState,
+                                        " 🎨 저장 완료! 내 팔레트 보러가기 🎨 ",
+                                        "이동"){
+                                        navController.navigate("MyPaletteScreen")
+                                    }
                                 }
                             })
                         }
@@ -416,18 +420,20 @@ fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observ
 fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
-    navController: NavController
+    message: String,
+    actionLabel: String,
+    action: () -> Unit,
 ) {
     scope.launch {
         val result = snackbarHostState
             .showSnackbar(
-                message = " 🎨 저장 완료! 내 팔레트 보러가기 🎨 ",
-                actionLabel = "이동",
+                message = message,
+                actionLabel = actionLabel,
                 duration = SnackbarDuration.Short
             )
         when (result) {
             SnackbarResult.ActionPerformed -> {
-                navController.navigate("MyPaletteScreen")
+                action()
             }
             SnackbarResult.Dismissed -> {
 
@@ -435,7 +441,6 @@ fun showSnackBar(
         }
     }
 }
-
 
 fun saveBitmapToGalleryAndGetUri(bitmap: Bitmap, displayName: String, context: Context): Uri? {
     val resolver = context?.contentResolver

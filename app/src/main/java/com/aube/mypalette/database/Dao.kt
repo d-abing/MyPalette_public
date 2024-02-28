@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ColorDao {
@@ -36,11 +37,17 @@ interface CombinationDao {
     @Query("SELECT * FROM combinations")
     fun getAllCombinations(): LiveData<List<CombinationEntity>>
 
+    @Query("SELECT * FROM combinations WHERE id = :id")
+    suspend fun getCombination(id: Int): CombinationEntity
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCombination(combination: CombinationEntity)
 
     @Query("DELETE FROM combinations WHERE id = :combinationId")
     suspend fun deleteCombination(combinationId: Int)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateCombination(combination: CombinationEntity)
 }
 
 @Dao

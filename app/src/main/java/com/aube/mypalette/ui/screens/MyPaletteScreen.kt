@@ -53,7 +53,6 @@ fun MyPaletteScreen(
     colorViewModel: ColorViewModel,
     imageViewModel: ImageViewModel
 ) {
-    // ColorViewModel을 통해 LiveData를 observe하여 상태 감지
     val colorList by colorViewModel.allColors.observeAsState(emptyList())
     var listToggle: Boolean by remember { mutableStateOf(false) }
 
@@ -65,7 +64,7 @@ fun MyPaletteScreen(
                     IconButton(onClick = { listToggle = false }) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_border_all_24),
-                            contentDescription = null
+                            contentDescription = "Gallery"
                         )
                     }
                     IconButton(onClick = { listToggle = true }) {
@@ -91,14 +90,16 @@ fun MyPaletteScreen(
                     columns = GridCells.Adaptive(minSize = 70.dp),
                 ) {
                     items(colorList) { colorItem ->
-                        PaletteColorItem(colorItem)
+                        GalleryColorItem(colorItem)
                     }
                 }
 
             } else {
-                LazyColumn(
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 168.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier
+                        .fillMaxSize()
                     ) {
                     items(colorList) { colorItem ->
                         ListColorItem(colorItem, imageViewModel)
@@ -156,7 +157,7 @@ fun ImageItem(imageItem: ImageEntity) {
 
     Image(
         painter = imagePainter,
-        contentDescription = null,
+        contentDescription = "해당 색 이미지",
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(80.dp)
@@ -165,7 +166,7 @@ fun ImageItem(imageItem: ImageEntity) {
 }
 
 @Composable
-fun PaletteColorItem(colorItem: ColorEntity) {
+fun GalleryColorItem(colorItem: ColorEntity) {
     Box(
         modifier = if (colorItem.color == 0) {
             Modifier

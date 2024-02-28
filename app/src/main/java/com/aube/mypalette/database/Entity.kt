@@ -17,7 +17,8 @@ data class CombinationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "int_list")
-    val colors: List<Int> // 조합에 속한 색의 ID 목록
+    val colors: List<Int>, // 조합에 속한 색의 ID 목록
+    var isSelected: Boolean = false
 )
 
 @Entity(
