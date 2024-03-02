@@ -120,16 +120,16 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
     ) {
 
         Box(
-            modifier =  if (colorItem.color == 0) {
-                Modifier
-                    .size(79.8.dp)
-                    .border(0.1.dp, Color.Gray)
-                    .background(Color(colorItem.color))
-            } else {
-                Modifier
-                    .size(80.dp)
-                    .background(Color(colorItem.color))
-            }
+            modifier = Modifier
+                .size(if (colorItem.color == 0) 79.8.dp else 80.dp)
+                .let { baseModifier ->
+                    if (colorItem.color == 0) {
+                        baseModifier.border(0.1.dp, Color.Gray)
+                    } else {
+                        baseModifier
+                    }
+                }
+                .background(Color(colorItem.color))
         )
 
         LazyRow(
@@ -166,15 +166,15 @@ fun ImageItem(imageItem: ImageEntity) {
 @Composable
 fun GalleryColorItem(colorItem: ColorEntity) {
     Box(
-        modifier = if (colorItem.color == 0) {
-            Modifier
-                .size(79.8.dp)
-                .border(0.1.dp, Color.Gray)
-                .background(Color(colorItem.color))
-        } else {
-            Modifier
-                .size(80.dp)
-                .background(Color(colorItem.color))
-        }
+        modifier = Modifier
+            .size(if (colorItem.color == 0) 79.8.dp else 80.dp)
+            .let { boxModifier ->
+                if (colorItem.color == 0) {
+                    boxModifier.border(0.1.dp, Color.Gray)
+                } else {
+                    boxModifier
+                }
+            }
+            .background(Color(colorItem.color))
     )
 }

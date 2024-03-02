@@ -54,24 +54,23 @@ fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) ->
     ) {
         newCombination.forEach { colorItem ->
             Column(
-                modifier = if (colorItem in -100..0) {
-                    Modifier
-                        .height(99.6.dp)
-                        .weight(1f)
-                        .border(0.1.dp, Color.Gray)
-                        .background(Color(colorItem))
-                        .clickable {
-                            removeColor(colorItem)
+                modifier = Modifier
+                    .let { baseModifier ->
+                        if (colorItem in -100..0) {
+                            baseModifier
+                                .height(99.6.dp)
+                                .border(0.1.dp, Color.Gray)
+                        } else {
+                            baseModifier
+                                .height(100.dp)
+
                         }
-                } else {
-                    Modifier
-                        .height(100.dp)
-                        .weight(1f)
-                        .background(Color(colorItem))
-                        .clickable {
-                            removeColor(colorItem)
-                        }
-                }
+                    }
+                    .weight(1f)
+                    .background(Color(colorItem))
+                    .clickable {
+                        removeColor(colorItem)
+                    }
             ){}
         }
     }
@@ -97,18 +96,17 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
 @Composable
 fun ClickablePaletteColorItem(colorItem: ColorEntity, addColor: (Int) -> Unit) {
     Box(
-        modifier = if (colorItem.color == 0) {
-            Modifier
-                .size(59.8.dp)
-                .border(0.1.dp, Color.Gray)
-                .background(Color(colorItem.color))
-                .clickable { addColor(colorItem.color) }
-        } else {
-            Modifier
-                .size(60.dp)
-                .background(Color(colorItem.color))
-                .clickable { addColor(colorItem.color) }
-        }
+        modifier = Modifier
+            .size(if (colorItem.color == 0) 59.8.dp else 60.dp)
+            .let { baseModifier ->
+                if (colorItem.color == 0) {
+                    baseModifier.border(0.1.dp, Color.Gray)
+                } else {
+                    baseModifier
+                }
+            }
+            .background(Color(colorItem.color))
+            .clickable { addColor(colorItem.color) }
     )
 }
 

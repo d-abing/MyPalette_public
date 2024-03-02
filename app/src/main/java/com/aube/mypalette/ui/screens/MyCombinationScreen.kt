@@ -235,18 +235,21 @@ fun CombinationItem(combinationItem: CombinationEntity, addId: (Int?) -> Unit, r
         ) {
         combinationItem.colors.forEach { colorItem ->
             Column(
-                modifier =  if (colorItem in -100..0) {
-                    Modifier
-                        .height(99.6.dp)
-                        .weight(1f)
-                        .border(0.1.dp, Color.Gray)
-                        .background(Color(colorItem))
-                } else {
-                    Modifier
-                        .height(100.dp)
-                        .weight(1f)
-                        .background(Color(colorItem))
-                }
+                modifier = Modifier
+                    .let { baseModifier ->
+                        if (colorItem in -100..0) {
+                            baseModifier
+                                .height(99.6.dp)
+                                .border(0.1.dp, Color.Gray)
+                                .background(Color(colorItem))
+                        } else {
+                            baseModifier
+                                .height(100.dp)
+
+                        }
+                    }
+                    .weight(1f)
+                    .background(Color(colorItem))
             ){}
         }
     }
