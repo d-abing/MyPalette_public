@@ -28,8 +28,8 @@ interface ColorDao {
     @Insert
     suspend fun insertColor(color: ColorEntity)
 
-    @Delete
-    suspend fun deleteColor(color: ColorEntity)
+    @Query("DELETE FROM colors WHERE id = :colorId")
+    suspend fun deleteColor(colorId: Int)
 }
 
 @Dao

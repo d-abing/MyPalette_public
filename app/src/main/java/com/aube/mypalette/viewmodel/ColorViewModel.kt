@@ -37,9 +37,9 @@ class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel()
         }
     }
 
-    fun delete(color: ColorEntity) {
+    fun delete(colorId: Int) {
         viewModelScope.launch {
-            colorRepository.delete(color)
+            colorRepository.delete(colorId)
         }
     }
 }
