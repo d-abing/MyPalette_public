@@ -1,6 +1,7 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,12 +28,14 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.aube.mypalette.R
 import com.aube.mypalette.database.CombinationEntity
 import com.aube.mypalette.utils.observeOnce
 import com.aube.mypalette.utils.showSnackBar
@@ -46,6 +49,7 @@ fun MyCombinationScreen(
     combinationViewModel: CombinationViewModel,
     colorViewModel: ColorViewModel,
     lifecycleOwner: LifecycleOwner,
+    context: Context,
 ) {
     val combinationList by combinationViewModel.allCombinations.observeAsState(emptyList())
     val selectedIds: MutableList<Int> = remember { mutableListOf() }
@@ -59,7 +63,7 @@ fun MyCombinationScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("My Combinations") }
+                title = { Text(stringResource(R.string.my_combination)) }
             )
         },
         bottomBar = {
@@ -75,15 +79,15 @@ fun MyCombinationScreen(
 
                                 })
                                 isUpdating = true
-                                navController.navigate("addCombinationScreen")
+                                navController.navigate(context.getString(R.string.addCombinationScreen))
                                 selectedIds.clear()
                             } else {
-                                showSnackBar(scope, snackbarHostState, " ☝ 한 개의 조합을 선택해 주세요 ☝ ", "확인"){}
+                                showSnackBar(scope, snackbarHostState, context.getString(R.string.one_combination), context.getString(R.string.yes)){}
                             }
                         },
                             modifier = Modifier.padding(start = 8.dp)
                         ) {
-                            Icon(Icons.Filled.Edit, contentDescription = "수정")
+                            Icon(Icons.Filled.Edit, contentDescription = stringResource(id = R.string.modify))
                         }
 
                         // 삭제
@@ -97,7 +101,7 @@ fun MyCombinationScreen(
                                 }
                             },
                         ) {
-                            Icon(Icons.Filled.Delete, contentDescription = "삭제")
+                            Icon(Icons.Filled.Delete, contentDescription = stringResource(id = R.string.delete))
                         }
                     }
                 },
@@ -114,7 +118,7 @@ fun MyCombinationScreen(
                             containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                             elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                         ) {
-                            Icon(Icons.Filled.Add, "추가")
+                            Icon(Icons.Filled.Add, stringResource(id = R.string.add))
                         }
                     } else {
                         if (newCombination.isNotEmpty()) {
@@ -129,24 +133,24 @@ fun MyCombinationScreen(
                                         combinationViewModel.insert(CombinationEntity(colors = newCombination))
                                         isAdding = false
                                     }
-                                    navController.popBackStack("myCombinationScreen", inclusive = false)
+                                    navController.popBackStack(context.getString(R.string.myCombinationScreen), inclusive = false)
                                     newCombination = SnapshotStateList()
                                 },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                             ) {
-                                Icon(Icons.Filled.Check, contentDescription = "저장")
+                                Icon(Icons.Filled.Check, contentDescription = stringResource(id = R.string.save))
                             }
                         } else {
                             FloatingActionButton(
                                 onClick = {
-                                    navController.popBackStack("myCombinationScreen", inclusive = false)
+                                    navController.popBackStack(context.getString(R.string.myCombinationScreen), inclusive = false)
                                     isAdding = false
                                 },
                                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
                             ) {
-                                Icon(Icons.Filled.Close, contentDescription = "닫기")
+                                Icon(Icons.Filled.Close, contentDescription = stringResource(id = R.string.close))
                             }
                         }
                     }
@@ -168,16 +172,16 @@ fun MyCombinationScreen(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = "myCombinationScreen"
+                startDestination = stringResource(id = R.string.myCombinationScreen)
             ) {
-                composable("myCombinationScreen") {
+                composable(context.getString(R.string.myCombinationScreen)) {
                     MyCombinationList(combinationList, {
                         selectedIds.add(it!!)
                     }, {
                         selectedIds.remove(it!!)
                     })
                 }
-                composable("addCombinationScreen") {
+                composable(context.getString(R.string.addCombinationScreen)) {
                     AddCombinationScreen(newCombination, colorViewModel,
                         addColor = {
                             newCombination.add(it)

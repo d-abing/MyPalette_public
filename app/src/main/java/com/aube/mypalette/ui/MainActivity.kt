@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -87,24 +88,24 @@ fun MyPaletteNavGraph(
             ) {
                 // 나만의 조합 버튼
                 NavigationBarItem(
-                    selected = navController.currentDestination?.route == "myCombinationScreen",
+                    selected = navController.currentDestination?.route == stringResource(id = R.string.myCombinationScreen),
                     onClick = {
-                        navController.navigate("myCombinationScreen") {
-                            popUpTo("myCombinationScreen") {
+                        navController.navigate(context.getString(R.string.myCombinationScreen)) {
+                            popUpTo(context.getString(R.string.myCombinationScreen)) {
                                 inclusive = true
                             }
                         }
                     },
                     icon = { Icon(Icons.Default.Favorite, contentDescription = null) },
-                    label = { Text("나만의 조합") }
+                    label = { Text(stringResource(id = R.string.myCombination)) }
                 )
 
                 // 내 팔레트 버튼
                 NavigationBarItem(
-                    selected = navController.currentDestination?.route == "myPaletteScreen",
+                    selected = navController.currentDestination?.route == stringResource(id = R.string.myPaletteScreen),
                     onClick = {
-                        navController.navigate("myPaletteScreen") {
-                            popUpTo("myPaletteScreen") {
+                        navController.navigate(context.getString(R.string.myPaletteScreen)) {
+                            popUpTo(context.getString(R.string.myPaletteScreen)) {
                                 inclusive = true
                             }
                         }
@@ -114,21 +115,21 @@ fun MyPaletteNavGraph(
                         painter = painterResource(R.drawable.baseline_palette_24),
                         contentDescription = null
                         )},
-                    label = { Text("내 팔레트") }
+                    label = { Text(stringResource(id = R.string.myPalette)) }
                 )
 
                 // 색 등록하기 버튼
                 NavigationBarItem(
-                    selected = navController.currentDestination?.route == "registerColorScreen",
+                    selected = navController.currentDestination?.route == stringResource(id = R.string.registerColorScreen),
                     onClick = {
-                        navController.navigate("registerColorScreen") {
-                            popUpTo("registerColorScreen") {
+                        navController.navigate(context.getString(R.string.registerColorScreen)) {
+                            popUpTo(context.getString(R.string.registerColorScreen)) {
                                 inclusive = true
                             }
                         }
                     },
                     icon = { Icon(Icons.Default.AddCircle, contentDescription = null) },
-                    label = { Text("색 등록하기") }
+                    label = { Text(stringResource(id = R.string.registerColor)) }
                 )
 
 
@@ -138,23 +139,24 @@ fun MyPaletteNavGraph(
         // NavHost 내용을 이곳에 놓습니다.
         NavHost(
             navController = navController,
-            startDestination = "myPaletteScreen",
+            startDestination = stringResource(id = R.string.myPaletteScreen),
             Modifier.padding(innerPadding)
         ) {
-            composable("myCombinationScreen") {
+            composable(context.getString(R.string.myCombinationScreen)) {
                 MyCombinationScreen(
                     combinationViewModel = combinationViewModel,
                     colorViewModel = colorViewModel,
                     lifecycleOwner = lifecycleOwner,
+                    context = context,
                 )
             }
-            composable("myPaletteScreen") {
+            composable(context.getString(R.string.myPaletteScreen)) {
                 MyPaletteScreen(
                     colorViewModel = colorViewModel,
                     imageViewModel = imageViewModel
                 )
             }
-            composable("registerColorScreen") {
+            composable(context.getString(R.string.registerColorScreen)) {
                 RegisterColorScreen(
                     colorViewModel = colorViewModel,
                     imageViewModel = imageViewModel,

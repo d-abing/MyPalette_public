@@ -55,6 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -136,9 +137,9 @@ fun RegisterColorScreen(
                                     )
                                     saveToggle = true
                                     showSnackBar(scope, snackbarHostState,
-                                        " 🎨 저장 완료! 내 팔레트 보러가기 🎨 ",
-                                        "이동"){
-                                        navController.navigate("MyPaletteScreen")
+                                        context.getString(R.string.save_message),
+                                        context.getString(R.string.move)){
+                                        navController.navigate(context.getString(R.string.myPaletteScreen))
                                     }
                                 }
                             })
@@ -146,7 +147,7 @@ fun RegisterColorScreen(
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Check,
-                            contentDescription = "저장"
+                            contentDescription = stringResource(id = R.string.save)
                         )
                     }
                 }
@@ -176,7 +177,7 @@ fun RegisterColorScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 20.dp, end = 10.dp, bottom = 20.dp)
+                    .padding(top = 20.dp, bottom = 20.dp)
             ) {
 
                 var colorCount = 0
@@ -194,12 +195,12 @@ fun RegisterColorScreen(
                     if (!noColor) {
                         Box(
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(49.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
                                 .background(boxColor)
                                 .clickable {
-                                    if(selectedImage != null) {
+                                    if (selectedImage != null) {
                                         similarColorResult.value = Color(0) to null // 클릭할 때마다 초기화
                                         selectedColor = color.value
                                         colorViewModel.checkIdForColor(selectedColor!!.toArgb())
@@ -242,7 +243,7 @@ fun RegisterColorScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Filled.Close,
-                                contentDescription = "Save",
+                                contentDescription = stringResource(id = R.string.no),
                             )
                         }
                     }
@@ -339,21 +340,21 @@ fun SimilarityColor(count: Int, selectedImage: Uri?, similarColorResult: Mutable
                             .background(Color(similarColor.toArgb()))
                     )
                     Text(
-                        text = "🙆‍♂️ 내 팔레트의 색과 ${similarityPercentage}% 유사해요 🙆‍♀️",
+                        text = stringResource(id = R.string.yes_similarity_message, similarityPercentage),
                         modifier = Modifier.padding(8.dp)
                     )
                 } else {
-                    Text(text = "🙅‍♂️ 아직 이 색과 유사한 색이 없어요 🙅‍♀️", modifier = Modifier.padding(8.dp))
+                    Text(text = stringResource(id = R.string.no_similarity_message), modifier = Modifier.padding(8.dp))
                 }
             } else if (selectedImage == null){
                 Text(
-                    text = "내 팔레트의 색과 비교할 수 있습니다",
+                    text = stringResource(id = R.string.comparison_message),
                     modifier = Modifier
                         .padding(8.dp),
                 )
             } else {
                 Text(
-                    text = "👨‍🎨 총 $count 개의 색이 추출되었습니다 👩‍🎨",
+                    text = stringResource(id = R.string.extracted_colors_message, count),
                     modifier = Modifier
                         .padding(8.dp),
                 )
@@ -381,8 +382,10 @@ fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLaunche
                 .height(70.dp)
                 .weight(1f)
         ) {
-            Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = "카메라", Modifier.padding(5.dp))
-            Text("지금 촬영하기")
+            Icon(painter = painterResource(R.drawable.baseline_photo_camera_24), contentDescription = stringResource(
+                id = R.string.camera
+            ), Modifier.padding(5.dp))
+            Text(stringResource(id = R.string.from_camera))
         }
 
         Spacer(Modifier.width(10.dp))
@@ -397,8 +400,10 @@ fun CameraAndGalleryButton(photoFromCameraLauncher: ManagedActivityResultLaunche
                 .height(70.dp)
                 .weight(1f)
         ) {
-            Icon(painter = painterResource(R.drawable.baseline_image_24), contentDescription = "갤러리", Modifier.padding(5.dp))
-            Text("사진 가져오기")
+            Icon(painter = painterResource(R.drawable.baseline_image_24), stringResource(
+                id = R.string.gallery
+            ), Modifier.padding(5.dp))
+            Text(stringResource(id = R.string.from_gallery))
         }
     }
 }

@@ -42,12 +42,14 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.aube.mypalette.R
 import com.aube.mypalette.database.ColorEntity
 import com.aube.mypalette.database.ImageEntity
+import com.aube.mypalette.utils.GetCurrentScreenWidth
 import com.aube.mypalette.viewmodel.ColorViewModel
 import com.aube.mypalette.viewmodel.ImageViewModel
 
@@ -66,14 +68,14 @@ fun MyPaletteScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("My Palette") },
+                title = { Text(stringResource(id = R.string.my_palette)) },
                 actions = {
                     IconButton(onClick = {
                         listToggle = false
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_border_all_24),
-                            contentDescription = "Gallery"
+                            contentDescription = stringResource(id = R.string.gallery)
                         )
                     }
                     IconButton(onClick = {
@@ -82,7 +84,7 @@ fun MyPaletteScreen(
                     ) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_view_list_24),
-                            contentDescription = "List"
+                            contentDescription = stringResource(id = R.string.list)
                         )
                     }
                 }
@@ -96,7 +98,13 @@ fun MyPaletteScreen(
                 .padding(innerPadding)
                 .padding(top = 10.dp, start = 20.dp, bottom = 10.dp, end = 20.dp)
                 .fillMaxSize()
-                .clickable { isDragging = false }
+                .let { baseModifier ->
+                    if (!listToggle) {
+                        baseModifier.clickable { isDragging = false }
+                    } else {
+                        baseModifier
+                    }
+                }
             ,
         ) {
             if (!listToggle) {
@@ -113,7 +121,8 @@ fun MyPaletteScreen(
 
             } else {
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 170.dp),
+                    columns = GridCells.Adaptive(minSize = 168.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier
                         .fillMaxSize()
@@ -129,16 +138,19 @@ fun MyPaletteScreen(
         if (isDragging) {
             Log.d("test다","드래그 중")
 
+            val width = GetCurrentScreenWidth()
+
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(top = 500.dp, start = 180.dp)
+                    .padding(top = 500.dp, start = (width / 2 - 40).dp)
                     .size(80.dp)
                     .border(1.dp, Color.Gray, RoundedCornerShape(50))
                     .background(Color(selectedColor!!.color), RoundedCornerShape(50))
                     .clickable {
                         isDragging = false
                         colorViewModel.delete(selectedColor!!.id)
+                        selectedColor = null
                     },
                 contentAlignment = Alignment.Center,
             ) {
@@ -147,7 +159,7 @@ fun MyPaletteScreen(
                     modifier = Modifier
                         .size(40.dp),
                     tint = Color.Gray,
-                    contentDescription = "삭제",
+                    contentDescription = stringResource(id = R.string.delete),
                 )
             }
         }
@@ -199,11 +211,11 @@ fun ImageItem(imageItem: ImageEntity) {
 
     Image(
         painter = imagePainter,
-        contentDescription = "해당 색 이미지",
+        contentDescription = stringResource(id = R.string.image),
         contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(80.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(8.dp))
     )
 }
 

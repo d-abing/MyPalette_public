@@ -1,3 +1,32 @@
 <resources>
-    <string name="app_name">MyPalette</string>
+    <string name="app_name">My Palette</string>
+    <string name="my_combination">My Combination</string>
+    <string name="my_palette">My Palette</string>
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="myCombination">My Combination</string>
+    <string name="myPalette">My Palette</string>
+    <string name="registerColor">Register Color</string>
+    <string name="one_combination"> ☝ Please choose one combination ☝ </string>
+    <string name="save_message"> 🎨 Saved! Go see my palette 🎨 </string>
+    <string name="yes_similarity_message">It\'s %1$d%% similar to the color of my palette 🙆‍♀️</string>
+    <string name="no_similarity_message">There\'s no color similar to this one yet 🙅‍♀️</string>
+    <string name="comparison_message">You can compare it to the color of my palette</string>
+    <string name="extracted_colors_message">A total of %1$d colors were extracted 👩‍🎨</string>
+    <string name="yes">check</string>
+    <string name="no">no</string>
+    <string name="modify">modify</string>
+    <string name="delete">delete</string>
+    <string name="add">add</string>
+    <string name="save">save</string>
+    <string name="close">close</string>
+    <string name="move">move</string>
+    <string name="gallery">gallery</string>
+    <string name="list">list</string>
+    <string name="image">image</string>
+    <string name="camera">camera</string>
+    <string name="from_camera">From Camera</string>
+    <string name="from_gallery">From Gallery</string>
 </resources>
