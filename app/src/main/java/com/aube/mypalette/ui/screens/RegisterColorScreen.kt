@@ -112,7 +112,7 @@ fun RegisterColorScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Register Color") },
+                title = { Text(stringResource(id = R.string.registerColor)) },
                 actions = {
                     IconButton(onClick = {
                         var saveToggle = false

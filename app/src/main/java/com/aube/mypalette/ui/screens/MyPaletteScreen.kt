@@ -68,7 +68,7 @@ fun MyPaletteScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(id = R.string.my_palette)) },
+                title = { Text(stringResource(id = R.string.myPalette)) },
                 actions = {
                     IconButton(onClick = {
                         listToggle = false

@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">My Palette</string>
-    <string name="my_combination">My Combination</string>
-    <string name="my_palette">My Palette</string>
     <string name="addCombinationScreen">addCombinationScreen</string>
     <string name="myCombinationScreen">myCombinationScreen</string>
     <string name="myPaletteScreen">myPaletteScreen</string>

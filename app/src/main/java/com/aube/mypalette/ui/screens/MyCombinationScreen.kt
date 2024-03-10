@@ -63,7 +63,7 @@ fun MyCombinationScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(stringResource(R.string.my_combination)) }
+                title = { Text(stringResource(R.string.myCombination)) }
             )
         },
         bottomBar = {
