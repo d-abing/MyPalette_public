@@ -1,7 +1,6 @@
 package com.aube.mypalette.ui.screens
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -99,7 +99,7 @@ fun MyPaletteScreen(
                 .padding(top = 10.dp, start = 20.dp, bottom = 10.dp, end = 20.dp)
                 .fillMaxSize()
                 .let { baseModifier ->
-                    if (!listToggle) {
+                    if (isDragging) {
                         baseModifier.clickable { isDragging = false }
                     } else {
                         baseModifier
@@ -136,32 +136,12 @@ fun MyPaletteScreen(
 
 
         if (isDragging) {
-            Log.d("test다","드래그 중")
-
-            val width = GetCurrentScreenWidth()
-
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(top = 500.dp, start = (width / 2 - 40).dp)
-                    .size(80.dp)
-                    .border(1.dp, Color.Gray, RoundedCornerShape(50))
-                    .background(Color(selectedColor!!.color), RoundedCornerShape(50))
-                    .clickable {
-                        isDragging = false
-                        colorViewModel.delete(selectedColor!!.id)
-                        selectedColor = null
-                    },
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    modifier = Modifier
-                        .size(40.dp),
-                    tint = Color.Gray,
-                    contentDescription = stringResource(id = R.string.delete),
-                )
-            }
+            DeleteButton(innerPadding, selectedColor, colorViewModel,
+                {
+                    isDragging = it
+                }, {
+                    selectedColor = null
+                })
         }
     }
 }
@@ -242,3 +222,30 @@ fun GalleryColorItem(colorItem: ColorEntity, onItemSelected: (ColorEntity) -> Un
     )
 }
 
+@Composable
+fun DeleteButton(innerPadding: PaddingValues, selectedColor: ColorEntity?, colorViewModel: ColorViewModel, updateDragState: (Boolean) -> Unit, updateSelectedColor: () -> Unit) {
+    val width = GetCurrentScreenWidth()
+
+    Box(
+        modifier = Modifier
+            .padding(innerPadding)
+            .padding(top = 500.dp, start = (width / 2 - 40).dp)
+            .size(80.dp)
+            .border(1.dp, Color.LightGray, RoundedCornerShape(50))
+            .background(Color(selectedColor!!.color), RoundedCornerShape(50))
+            .clickable {
+                updateDragState(false)
+                colorViewModel.delete(selectedColor.id)
+                updateSelectedColor()
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Delete,
+            modifier = Modifier
+                .size(40.dp),
+            tint = Color.Gray,
+            contentDescription = stringResource(id = R.string.delete),
+        )
+    }
+}
