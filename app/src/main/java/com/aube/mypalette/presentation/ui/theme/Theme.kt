@@ -1,4 +1,4 @@
-package com.aube.mypalette.ui.theme
+package com.aube.mypalette.presentation.ui.theme
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
 
     onPrimary = PurpleGrey40,
 
-)
+    )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
@@ -42,7 +42,7 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun MyPaletteTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         darkTheme -> DarkColorScheme

@@ -1,4 +1,4 @@
-package com.aube.mypalette.ui.screens
+package com.aube.mypalette.presentation.ui.screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -47,22 +47,22 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.aube.mypalette.R
-import com.aube.mypalette.database.ColorEntity
-import com.aube.mypalette.database.ImageEntity
+import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.data.model.ImageEntity
+import com.aube.mypalette.presentation.viewmodel.ColorViewModel
+import com.aube.mypalette.presentation.viewmodel.ImageViewModel
 import com.aube.mypalette.utils.GetCurrentScreenWidth
-import com.aube.mypalette.viewmodel.ColorViewModel
-import com.aube.mypalette.viewmodel.ImageViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyPaletteScreen(
     colorViewModel: ColorViewModel,
-    imageViewModel: ImageViewModel
+    imageViewModel: ImageViewModel,
 ) {
     val colorList by colorViewModel.allColors.observeAsState(emptyList())
-    var listToggle: Boolean by remember { mutableStateOf(false) }
-    var selectedColor: ColorEntity? by remember { mutableStateOf(null) }
+    var listToggle by remember { mutableStateOf(false) }
+    var selectedColor by remember { mutableStateOf<ColorEntity?>(null) }
     var isDragging by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -70,9 +70,7 @@ fun MyPaletteScreen(
             CenterAlignedTopAppBar(
                 title = { Text(stringResource(id = R.string.myPalette)) },
                 actions = {
-                    IconButton(onClick = {
-                        listToggle = false
-                    }) {
+                    IconButton(onClick = { listToggle = false }) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_border_all_24),
                             contentDescription = stringResource(id = R.string.gallery)
@@ -80,8 +78,8 @@ fun MyPaletteScreen(
                     }
                     IconButton(onClick = {
                         listToggle = true
-                        isDragging = false}
-                    ) {
+                        isDragging = false
+                    }) {
                         Icon(
                             painter = painterResource(R.drawable.baseline_view_list_24),
                             contentDescription = stringResource(id = R.string.list)
@@ -91,57 +89,61 @@ fun MyPaletteScreen(
             )
         }
     ) { innerPadding ->
-
         Box(
             modifier = Modifier
                 .background(Color.White)
                 .padding(innerPadding)
-                .padding(top = 10.dp, start = 20.dp, bottom = 10.dp, end = 20.dp)
+                .padding(10.dp)
                 .fillMaxSize()
-                .let { baseModifier ->
-                    if (isDragging) {
-                        baseModifier.clickable { isDragging = false }
-                    } else {
-                        baseModifier
-                    }
-                }
-            ,
+                .clickable(enabled = isDragging) { isDragging = false },
         ) {
             if (!listToggle) {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 70.dp),
-                ) {
-                    items(colorList) { colorItem ->
-                        GalleryColorItem(colorItem) {
-                            selectedColor = it
-                            isDragging = true
-                        }
-                    }
-                }
-
+                ColorGrid(colorList, onColorSelected = {
+                    selectedColor = it
+                    isDragging = true
+                })
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = 168.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                    ) {
-                    items(colorList) { colorItem ->
-                        ListColorItem(colorItem, imageViewModel)
-                    }
+                ColorList(colorList, imageViewModel)
+            }
+
+            if (isDragging) {
+                selectedColor?.let { color ->
+                    DeleteButton(
+                        innerPadding = innerPadding,
+                        selectedColor = color,
+                        colorViewModel = colorViewModel,
+                        updateDragState = { isDragging = it },
+                        updateSelectedColor = { selectedColor = null }
+                    )
                 }
             }
         }
+    }
+}
 
+@Composable
+fun ColorGrid(colorList: List<ColorEntity>, onColorSelected: (ColorEntity) -> Unit) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 70.dp)
+    ) {
+        items(colorList) { colorItem ->
+            GalleryColorItem(colorItem) {
+                onColorSelected(it)
+            }
+        }
+    }
+}
 
-        if (isDragging) {
-            DeleteButton(innerPadding, selectedColor, colorViewModel,
-                {
-                    isDragging = it
-                }, {
-                    selectedColor = null
-                })
+@Composable
+fun ColorList(colorList: List<ColorEntity>, imageViewModel: ImageViewModel) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 168.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(colorList) { colorItem ->
+            ListColorItem(colorItem, imageViewModel)
         }
     }
 }
@@ -150,24 +152,12 @@ fun MyPaletteScreen(
 fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
     val imageList by imageViewModel.getImagesForColor(colorItem.id).observeAsState(emptyList())
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-
+    Row(modifier = Modifier.fillMaxWidth()) {
         Box(
             modifier = Modifier
                 .size(if (colorItem.color == 0) 79.8.dp else 80.dp)
-                .let { baseModifier ->
-                    if (colorItem.color == 0) {
-                        baseModifier.border(0.1.dp, Color.Gray)
-                    } else {
-                        baseModifier
-                    }
-                }
                 .background(Color(colorItem.color))
         )
-
         LazyRow(
             modifier = Modifier
                 .padding(start = 8.dp)
@@ -184,9 +174,9 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
 @Composable
 fun ImageItem(imageItem: ImageEntity) {
     val imagePainter = rememberAsyncImagePainter(
-        ImageRequest.Builder(LocalContext.current).data(data = imageItem.imageBytes).apply(block = fun ImageRequest.Builder.() {
+        ImageRequest.Builder(LocalContext.current).data(imageItem.imageBytes).apply {
             crossfade(true)
-        }).build()
+        }.build()
     )
 
     Image(
@@ -204,13 +194,6 @@ fun GalleryColorItem(colorItem: ColorEntity, onItemSelected: (ColorEntity) -> Un
     Box(
         modifier = Modifier
             .size(if (colorItem.color == 0) 79.8.dp else 80.dp)
-            .let { boxModifier ->
-                if (colorItem.color == 0) {
-                    boxModifier.border(0.1.dp, Color.Gray)
-                } else {
-                    boxModifier
-                }
-            }
             .background(Color(colorItem.color))
             .pointerInput(Unit) {
                 detectTapGestures(
@@ -223,7 +206,13 @@ fun GalleryColorItem(colorItem: ColorEntity, onItemSelected: (ColorEntity) -> Un
 }
 
 @Composable
-fun DeleteButton(innerPadding: PaddingValues, selectedColor: ColorEntity?, colorViewModel: ColorViewModel, updateDragState: (Boolean) -> Unit, updateSelectedColor: () -> Unit) {
+fun DeleteButton(
+    innerPadding: PaddingValues,
+    selectedColor: ColorEntity,
+    colorViewModel: ColorViewModel,
+    updateDragState: (Boolean) -> Unit,
+    updateSelectedColor: () -> Unit,
+) {
     val width = GetCurrentScreenWidth()
 
     Box(
@@ -232,7 +221,7 @@ fun DeleteButton(innerPadding: PaddingValues, selectedColor: ColorEntity?, color
             .padding(top = 500.dp, start = (width / 2 - 40).dp)
             .size(80.dp)
             .border(1.dp, Color.LightGray, RoundedCornerShape(50))
-            .background(Color(selectedColor!!.color), RoundedCornerShape(50))
+            .background(Color(selectedColor.color), RoundedCornerShape(50))
             .clickable {
                 updateDragState(false)
                 colorViewModel.delete(selectedColor.id)
@@ -242,10 +231,9 @@ fun DeleteButton(innerPadding: PaddingValues, selectedColor: ColorEntity?, color
     ) {
         Icon(
             imageVector = Icons.Filled.Delete,
-            modifier = Modifier
-                .size(40.dp),
+            modifier = Modifier.size(40.dp),
             tint = Color.Gray,
-            contentDescription = stringResource(id = R.string.delete),
+            contentDescription = stringResource(id = R.string.delete)
         )
     }
 }

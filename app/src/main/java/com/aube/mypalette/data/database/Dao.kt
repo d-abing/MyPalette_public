@@ -1,4 +1,4 @@
-package com.aube.mypalette.database
+package com.aube.mypalette.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -7,6 +7,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.data.model.CombinationEntity
+import com.aube.mypalette.data.model.ImageEntity
 
 @Dao
 interface ColorDao {

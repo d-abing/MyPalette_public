@@ -1,8 +1,8 @@
-package com.aube.mypalette.repository
+package com.aube.mypalette.data.repository
 
 import androidx.lifecycle.LiveData
-import com.aube.mypalette.database.ColorDao
-import com.aube.mypalette.database.ColorEntity
+import com.aube.mypalette.data.database.ColorDao
+import com.aube.mypalette.data.model.ColorEntity
 
 class ColorRepository(private val colorDao: ColorDao) {
     val allColors: LiveData<List<ColorEntity>> = colorDao.getAllColors()

@@ -27,4 +27,6 @@
     <string name="camera">camera</string>
     <string name="from_camera">From Camera</string>
     <string name="from_gallery">From Gallery</string>
+    <string name="empty">Empty</string>
+    <string name="selected_image">Selected Image</string>
 </resources>

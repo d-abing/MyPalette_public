@@ -1,4 +1,4 @@
-package com.aube.mypalette.database
+package com.aube.mypalette.data.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class ColorEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val color: Int
+    val color: Int,
 )
 
 @Entity(tableName = "combinations")
@@ -18,7 +18,7 @@ data class CombinationEntity(
     val id: Int = 0,
     @ColumnInfo(name = "int_list")
     val colors: List<Int>, // 조합에 속한 색의 ID 목록
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
 )
 
 @Entity(
@@ -36,7 +36,7 @@ data class ImageEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val imageBytes: ByteArray,
-    val colorId: Int // 외래키
+    val colorId: Int, // 외래키
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

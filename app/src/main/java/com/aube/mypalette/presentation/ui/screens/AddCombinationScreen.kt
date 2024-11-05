@@ -1,4 +1,4 @@
-package com.aube.mypalette.ui.screens
+package com.aube.mypalette.presentation.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,13 +25,21 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.aube.mypalette.database.ColorEntity
-import com.aube.mypalette.viewmodel.ColorViewModel
+import com.aube.mypalette.R
+import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.presentation.ui.theme.PurpleGrey40
+import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 
 
 @Composable
-fun AddCombinationScreen(newCombination: SnapshotStateList<Int>, colorViewModel: ColorViewModel, addColor: (Int) -> Unit, removeColor: (Int) -> Unit) {
+fun AddCombinationScreen(
+    newCombination: SnapshotStateList<Int>,
+    colorViewModel: ColorViewModel,
+    addColor: (Int) -> Unit,
+    removeColor: (Int) -> Unit,
+) {
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -71,7 +80,7 @@ fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) ->
                     .clickable {
                         removeColor(colorItem)
                     }
-            ){}
+            ) {}
         }
     }
 }
@@ -80,15 +89,30 @@ fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) ->
 fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
     val colorList by colorViewModel.allColors.observeAsState(emptyList())
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 60.dp),
-        modifier = Modifier
-            .fillMaxSize()
-            .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
-            .padding(20.dp)
-    ) {
-        items(colorList) { colorItem ->
-            ClickablePaletteColorItem(colorItem, addColor)
+    if (colorList.isEmpty()) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                text = stringResource(R.string.empty),
+                color = PurpleGrey40
+            )
+        }
+    } else {
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 60.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
+                .padding(20.dp)
+        ) {
+            items(colorList) { colorItem ->
+                ClickablePaletteColorItem(colorItem, addColor)
+            }
         }
     }
 }

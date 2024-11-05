@@ -1,17 +1,21 @@
-package com.aube.mypalette.viewmodel
+package com.aube.mypalette.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.aube.mypalette.database.ColorEntity
-import com.aube.mypalette.repository.ColorRepository
+import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.data.repository.ColorRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel() {
+@HiltViewModel
+class ColorViewModel @Inject constructor(
+    private val colorRepository: ColorRepository,
+) : ViewModel() {
     val allColors: LiveData<List<ColorEntity>> = colorRepository.allColors
     private val _colorId = MutableLiveData<Int?>()
     val colorId: LiveData<Int?>
@@ -41,15 +45,5 @@ class ColorViewModel(private val colorRepository: ColorRepository) : ViewModel()
         viewModelScope.launch {
             colorRepository.delete(colorId)
         }
-    }
-}
-
-class ColorViewModelFactory(private val repository: ColorRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ColorViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return ColorViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -1,4 +1,4 @@
-package com.aube.mypalette.ui.theme
+package com.aube.mypalette.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

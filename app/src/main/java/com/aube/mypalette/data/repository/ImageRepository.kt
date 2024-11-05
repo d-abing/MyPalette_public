@@ -1,8 +1,8 @@
-package com.aube.mypalette.repository
+package com.aube.mypalette.data.repository
 
 import androidx.lifecycle.LiveData
-import com.aube.mypalette.database.ImageDao
-import com.aube.mypalette.database.ImageEntity
+import com.aube.mypalette.data.database.ImageDao
+import com.aube.mypalette.data.model.ImageEntity
 
 class ImageRepository(private val imageDao: ImageDao) {
     fun getImagesForColor(colorId: Int): LiveData<List<ImageEntity>> {

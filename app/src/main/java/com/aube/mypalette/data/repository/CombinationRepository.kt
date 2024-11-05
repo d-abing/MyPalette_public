@@ -1,8 +1,8 @@
-package com.aube.mypalette.repository
+package com.aube.mypalette.data.repository
 
 import androidx.lifecycle.LiveData
-import com.aube.mypalette.database.CombinationDao
-import com.aube.mypalette.database.CombinationEntity
+import com.aube.mypalette.data.database.CombinationDao
+import com.aube.mypalette.data.model.CombinationEntity
 
 class CombinationRepository(private val combinationDao: CombinationDao) {
     val allCombinations: LiveData<List<CombinationEntity>> = combinationDao.getAllCombinations()

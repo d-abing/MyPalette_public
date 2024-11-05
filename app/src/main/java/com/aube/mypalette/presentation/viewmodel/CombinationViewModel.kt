@@ -1,18 +1,22 @@
-package com.aube.mypalette.viewmodel
+package com.aube.mypalette.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.aube.mypalette.database.CombinationEntity
-import com.aube.mypalette.repository.CombinationRepository
+import com.aube.mypalette.data.model.CombinationEntity
+import com.aube.mypalette.data.repository.CombinationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CombinationViewModel(private val combinationRepository: CombinationRepository) : ViewModel() {
-    val allCombinations: LiveData<List<CombinationEntity>>  = combinationRepository.allCombinations
+@HiltViewModel
+class CombinationViewModel @Inject constructor(
+    private val combinationRepository: CombinationRepository,
+) : ViewModel() {
+    val allCombinations: LiveData<List<CombinationEntity>> = combinationRepository.allCombinations
     private val _combination = MutableLiveData<CombinationEntity>()
     val combination: LiveData<CombinationEntity>
         get() = _combination
@@ -42,15 +46,5 @@ class CombinationViewModel(private val combinationRepository: CombinationReposit
         viewModelScope.launch {
             combinationRepository.update(combination)
         }
-    }
-}
-
-class CombinationViewModelFactory(private val repository: CombinationRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CombinationViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return CombinationViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
