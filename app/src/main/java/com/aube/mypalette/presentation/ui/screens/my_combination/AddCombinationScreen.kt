@@ -1,4 +1,4 @@
-package com.aube.mypalette.presentation.ui.screens
+package com.aube.mypalette.presentation.ui.screens.my_combination
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

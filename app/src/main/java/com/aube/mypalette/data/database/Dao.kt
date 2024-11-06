@@ -20,16 +20,14 @@ interface ColorDao {
     suspend fun checkIdForColor(colorValue: Int): Int?
 
     // 실제 insert 메서드
-    suspend fun insertColorIfNotExists(color: ColorEntity) {
+    suspend fun insertColorIfNotExists(color: ColorEntity): Int {
         val existingId = checkIdForColor(color.color)
-        if (existingId == null) {
-            insertColor(color)
-        } else {
-        }
+        return existingId ?: insertColor(color).toInt()
     }
 
     @Insert
-    suspend fun insertColor(color: ColorEntity)
+    suspend fun insertColor(color: ColorEntity): Long
+    // Long을 반환하면 성공적으로 삽입된 행의 ID를 반환함
 
     @Query("DELETE FROM colors WHERE id = :colorId")
     suspend fun deleteColor(colorId: Int)
@@ -66,7 +64,6 @@ interface ImageDao {
         val existingId = checkIdForImage(image.imageBytes, image.colorId)
         if (existingId == null) {
             insertImage(image)
-        } else {
         }
     }
 

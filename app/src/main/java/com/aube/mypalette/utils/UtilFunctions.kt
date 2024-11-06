@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
@@ -45,8 +46,9 @@ fun showSnackBar(
             SnackbarResult.ActionPerformed -> {
                 action()
             }
-            SnackbarResult.Dismissed -> {
 
+            SnackbarResult.Dismissed -> {
+                cancel()
             }
         }
     }

@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.aube.mypalette.presentation.ui.screens.MyCombinationScreen
-import com.aube.mypalette.presentation.ui.screens.MyPaletteScreen
-import com.aube.mypalette.presentation.ui.screens.RegisterColorScreen
+import com.aube.mypalette.presentation.ui.screens.my_combination.MyCombinationScreen
+import com.aube.mypalette.presentation.ui.screens.my_palette.MyPaletteScreen
+import com.aube.mypalette.presentation.ui.screens.register_color.RegisterColorScreen
 import com.aube.mypalette.presentation.ui.theme.MyPaletteTheme
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.CombinationViewModel

@@ -1,4 +1,4 @@
-package com.aube.mypalette.presentation.ui.screens
+package com.aube.mypalette.presentation.ui.screens.my_palette
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
