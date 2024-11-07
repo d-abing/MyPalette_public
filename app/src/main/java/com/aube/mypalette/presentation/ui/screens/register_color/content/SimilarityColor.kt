@@ -28,6 +28,10 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
+import com.aube.mypalette.presentation.ui.theme.Paddings
+import com.aube.mypalette.presentation.ui.theme.Sizes
+
+const val STANDARD_FOR_SIMILARITY = 85
 
 @Composable
 fun SimilarityColor(
@@ -40,7 +44,8 @@ fun SimilarityColor(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         modifier = Modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(Sizes.similarityColorCardHeight)
+            .padding(bottom = Paddings.medium)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -53,10 +58,10 @@ fun SimilarityColor(
             when {
                 similarColor != null && distance != null -> {
                     val similarityPercentage = ((1 - distance) * 100).toInt()
-                    if (similarityPercentage >= 85) {
+                    if (similarityPercentage >= STANDARD_FOR_SIMILARITY) {
                         Box(
                             modifier = Modifier
-                                .padding(10.dp)
+                                .padding(Paddings.large)
                                 .size(50.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
@@ -68,14 +73,14 @@ fun SimilarityColor(
                                 similarityPercentage
                             ),
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(Paddings.medium)
                                 .verticalScroll(scrollState)
                         )
                     } else {
                         Text(
                             text = stringResource(id = R.string.no_similarity_message),
                             modifier = Modifier
-                                .padding(8.dp)
+                                .padding(Paddings.medium)
                                 .verticalScroll(scrollState)
                         )
                     }
@@ -85,7 +90,7 @@ fun SimilarityColor(
                     Text(
                         text = stringResource(id = R.string.comparison_message),
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(Paddings.medium)
                             .verticalScroll(scrollState)
                     )
                 }
@@ -94,7 +99,7 @@ fun SimilarityColor(
                     Text(
                         text = stringResource(id = R.string.extracted_colors_message, count),
                         modifier = Modifier
-                            .padding(8.dp)
+                            .padding(Paddings.medium)
                             .verticalScroll(scrollState)
                     )
                 }

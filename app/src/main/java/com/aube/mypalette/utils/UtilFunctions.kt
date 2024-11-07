@@ -1,5 +1,8 @@
 package com.aube.mypalette.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -7,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.aube.mypalette.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -28,12 +32,37 @@ fun calculateColorDistance(color1: Color, color2: Color): Double {
     return sqrt((deltaR * deltaR + deltaG * deltaG + deltaB * deltaB).toDouble())
 }
 
+fun isColorBright(color: Int): Boolean {
+    val red = android.graphics.Color.red(color)
+    val green = android.graphics.Color.green(color)
+    val blue = android.graphics.Color.blue(color)
+
+    val luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255
+    return luminance > 0.5
+}
+
+fun colorToHexString(color: Int): String {
+    return String.format("#%06X", color and 0xFFFFFF)
+}
+
+fun Context.copyToClipboard(
+    text: String,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+) {
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(this.getString(R.string.label), text)
+    clipboard.setPrimaryClip(clip)
+
+    showSnackBar(scope, snackbarHostState, this.getString(R.string.copy_message))
+}
+
 fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
     message: String,
-    actionLabel: String,
-    action: () -> Unit,
+    actionLabel: String? = null,
+    action: () -> Unit = {},
 ) {
     scope.launch {
         val result = snackbarHostState

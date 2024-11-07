@@ -18,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType.Companion.Scroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import com.aube.mypalette.R
 import com.aube.mypalette.presentation.ui.screens.register_color.content.RegisterColorContent
 import com.aube.mypalette.presentation.ui.screens.register_color.top_app_bar.RegisterColorTopAppBar
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
@@ -65,6 +67,7 @@ fun RegisterColorScreen(
             }
         }
 
+    Scroll
     Scaffold(
         topBar = {
             RegisterColorTopAppBar(
@@ -90,12 +93,12 @@ fun RegisterColorScreen(
             similarColorResult = similarColorResult,
             onColorSelected = { selectedColor = it },
             onCameraClick = {
-                photoUri = createImageUri(context, "PaletteImage")
+                photoUri = createImageUri(context, context.getString(R.string.uri_display_name))
                 photoUri?.let {
                     photoFromCameraLauncher.launch(it)
                 }
             },
-            onGalleryClick = { photoFromGalleryLauncher.launch("image/*") }
+            onGalleryClick = { photoFromGalleryLauncher.launch(context.getString(R.string.gallery_launcher_input)) }
         )
     }
 }
@@ -106,8 +109,11 @@ fun resetSimilarColorResult(similarColorResult: MutableState<Pair<Color?, Double
 
 fun createImageUri(context: Context, displayName: String): Uri? {
     val contentValues = ContentValues().apply {
-        put(MediaStore.Images.Media.DISPLAY_NAME, "$displayName.jpg")
-        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        put(
+            MediaStore.Images.Media.DISPLAY_NAME,
+            context.getString(R.string.file_name, displayName)
+        )
+        put(MediaStore.Images.Media.MIME_TYPE, context.getString(R.string.mime_type))
         put(
             MediaStore.Images.Media.RELATIVE_PATH,
             Environment.DIRECTORY_PICTURES

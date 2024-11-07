@@ -16,8 +16,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
+import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 
 @Composable
@@ -38,7 +38,7 @@ fun RegisterColorContent(
         modifier = Modifier
             .padding(innerPadding)
             .background(selectedColor ?: Color.White)
-            .padding(10.dp)
+            .padding(Paddings.large)
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +46,8 @@ fun RegisterColorContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f),
+                .aspectRatio(1f)
+                .padding(bottom = Paddings.medium),
             contentAlignment = Alignment.Center
         ) {
             ImageBox(selectedImage)

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -26,6 +27,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.palette.graphics.Palette
 import com.aube.mypalette.R
 import com.aube.mypalette.presentation.ui.screens.register_color.resetSimilarColorResult
+import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.utils.calculateColorDistance
 import com.aube.mypalette.utils.getBitmapFromUri
@@ -44,6 +46,7 @@ fun ColorPaletteRow(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
+            .padding(bottom = Paddings.medium)
     ) {
         selectedImage?.let {
             val bitmap = context.getBitmapFromUri(it)

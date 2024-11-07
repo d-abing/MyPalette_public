@@ -8,9 +8,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
-import com.aube.mypalette.presentation.ui.component.PaletteButton
+import com.aube.mypalette.presentation.ui.component.MPIconButton
+import com.aube.mypalette.presentation.ui.theme.Paddings
+import com.aube.mypalette.presentation.ui.theme.Sizes
 
 @Composable
 fun ImportingButton(
@@ -21,15 +22,15 @@ fun ImportingButton(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(Sizes.importingButtonRowHeight)
     ) {
-        PaletteButton(R.drawable.baseline_photo_camera_24, R.string.camera) {
+        MPIconButton(R.drawable.baseline_photo_camera_24, R.string.camera) {
             onCameraClick()
         }
 
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(Paddings.medium))
 
-        PaletteButton(R.drawable.baseline_image_24, R.string.gallery) {
+        MPIconButton(R.drawable.baseline_image_24, R.string.gallery) {
             onGalleryClick()
         }
     }

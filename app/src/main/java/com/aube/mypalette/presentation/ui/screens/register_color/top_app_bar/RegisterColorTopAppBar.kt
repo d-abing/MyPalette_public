@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.aube.mypalette.PALETTE_STATE
 import com.aube.mypalette.R
+import com.aube.mypalette.presentation.ui.theme.Sizes
 import com.aube.mypalette.presentation.viewmodel.ImageViewModel
 import com.aube.mypalette.utils.getBitmapFromUri
 import com.aube.mypalette.utils.showSnackBar
@@ -41,7 +41,7 @@ fun RegisterColorTopAppBar(
 ) {
 
     CenterAlignedTopAppBar(
-        modifier = Modifier.heightIn(max = 50.dp),
+        modifier = Modifier.heightIn(max = Sizes.topBarMaxHeight),
         title = { Text(stringResource(id = R.string.registerColor)) },
         actions = {
             IconButton(onClick = {
