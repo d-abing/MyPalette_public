@@ -44,7 +44,10 @@ fun ColorGrid(
         modifier = modifier,
         columns = GridCells.Adaptive(minSize = Sizes.colorCardSize)
     ) {
-        items(colorList) { colorItem ->
+        items(
+            items = colorList,
+            key = { colorItem -> colorItem.id }
+        ) { colorItem ->
             GalleryColorItem(
                 colorItem = colorItem,
                 onColorSelected = {

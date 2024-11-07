@@ -1,5 +1,6 @@
 package com.aube.mypalette.presentation.ui.screens.my_palette
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -41,7 +42,7 @@ fun MyPaletteScreen(
     var selectedColor by remember { mutableStateOf<ColorEntity?>(null) }
 
     var isListType by remember { mutableStateOf(false) }
-    var isDragging by remember { mutableStateOf(false) }
+    var isLongClicking by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,7 +69,8 @@ fun MyPaletteScreen(
                     colorList = colorList,
                     onColorSelected = {
                         selectedColor = it
-                        isDragging = true
+                        isLongClicking = true
+                        Log.e("selectedColor", "${selectedColor!!.id}")
                     },
                     onTextClick = {
                         context.copyToClipboard(it, coroutineScope, snackbarHostState)
@@ -84,13 +86,13 @@ fun MyPaletteScreen(
                 )
             }
 
-            if (isDragging) {
+            if (isLongClicking) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black.copy(alpha = 0.5f))
                         .clickable {
-                            isDragging = false
+                            isLongClicking = false
                             selectedColor = null
                         },
                     contentAlignment = Alignment.Center,
@@ -100,11 +102,11 @@ fun MyPaletteScreen(
                         onDeleteClick = {
                             selectedColor?.let {
                                 colorViewModel.delete(it.id)
-                                isDragging = false
+                                isLongClicking = false
                             }
                         },
                         onCancelClick = {
-                            isDragging = false
+                            isLongClicking = false
                             selectedColor = null
                         }
                     )

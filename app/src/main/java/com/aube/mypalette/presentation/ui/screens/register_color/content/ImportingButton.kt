@@ -22,7 +22,7 @@ fun ImportingButton(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .height(Sizes.importingButtonRowHeight)
+            .height(Sizes.buttonRowHeight)
     ) {
         MPIconButton(R.drawable.baseline_photo_camera_24, R.string.camera) {
             onCameraClick()

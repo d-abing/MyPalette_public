@@ -8,7 +8,7 @@
     <string name="myPalette">My Palette</string>
     <string name="registerColor">Register Color</string>
     <string name="one_combination"> ☝ Please choose one combination ☝ </string>
-    <string name="save_message"> 🎨 Saved! Go see my palette 🎨 </string>
+    <string name="save_message">Saved! Go see my palette 🎨</string>
     <string name="yes_similarity_message">It\'s %1$d%% similar to the color of my palette 🙆‍♀️</string>
     <string name="no_similarity_message">There\'s no color similar to this one yet 🙅‍♀️</string>
     <string name="comparison_message">You can compare it to the color of my palette</string>
@@ -30,7 +30,7 @@
     <string name="label">Label</string>
     <string name="copy_message">Hexadecimal Color Code copied to clipboard!</string>
     <string name="cancel">Cancel</string>
-    <string name="delete_message">Do you want to delete color?</string>
+    <string name="delete_message">Do you want to delete the color?</string>
     <string name="uri_display_name">PaletteImage</string>
     <string name="gallery_launcher_input">image/*</string>
     <string name="file_name">%s.jpg</string>

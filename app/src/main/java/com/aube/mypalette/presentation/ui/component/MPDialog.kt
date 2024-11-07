@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
+import com.aube.mypalette.presentation.ui.theme.Paddings
+import com.aube.mypalette.presentation.ui.theme.Sizes
 
 @Composable
 fun MPDialog(
@@ -40,16 +42,16 @@ fun MPDialog(
                     .background(Color.Transparent)
                     .fillMaxWidth()
                     .padding(
-                        start = 20.dp,
-                        end = 20.dp,
+                        start = Paddings.extra,
+                        end = Paddings.extra,
                     )
             ) {
                 Text(
                     text = bodyText,
                     modifier = Modifier
                         .padding(
-                            top = 20.dp,
-                            bottom = 20.dp
+                            top = Paddings.extra,
+                            bottom = Paddings.extra
                         )
                         .align(Alignment.CenterHorizontally),
                     textAlign = TextAlign.Center,
@@ -58,7 +60,7 @@ fun MPDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(60.dp)
+                        .height(Sizes.buttonRowHeight)
                 ) {
                     MPSmallButton(R.string.cancel) {
                         onCancelClick()

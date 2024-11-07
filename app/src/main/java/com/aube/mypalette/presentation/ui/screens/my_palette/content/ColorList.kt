@@ -90,7 +90,7 @@ fun ImageItem(imageItem: ImageEntity) {
         contentDescription = stringResource(id = R.string.image),
         contentScale = ContentScale.Crop,
         modifier = Modifier
-            .size(70.dp)
+            .size(Sizes.colorCardSize)
             .clip(RoundedCornerShape(8.dp))
     )
 }
