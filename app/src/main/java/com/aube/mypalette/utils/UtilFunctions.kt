@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.math.sqrt
 
@@ -77,7 +76,7 @@ fun showSnackBar(
             }
 
             SnackbarResult.Dismissed -> {
-                cancel()
+                snackbarHostState.currentSnackbarData?.dismiss()
             }
         }
     }

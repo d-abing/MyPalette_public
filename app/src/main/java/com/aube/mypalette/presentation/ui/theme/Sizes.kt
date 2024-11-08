@@ -8,4 +8,7 @@ object Sizes {
     val buttonRowHeight = 60.dp
     val colorCardSize = 70.dp
     val colorBoxAndImageRowWidth = 148.dp
+    val combinationItemRowHeight = 100.dp
+    val newCombinationRowHeight = 100.dp
+    val colorColumnSize = 60.dp
 }

@@ -17,9 +17,9 @@ class CombinationViewModel @Inject constructor(
     private val combinationRepository: CombinationRepository,
 ) : ViewModel() {
     val allCombinations: LiveData<List<CombinationEntity>> = combinationRepository.allCombinations
+
     private val _combination = MutableLiveData<CombinationEntity>()
-    val combination: LiveData<CombinationEntity>
-        get() = _combination
+    val combination: LiveData<CombinationEntity> = _combination
 
     fun insert(combination: CombinationEntity) {
         viewModelScope.launch {

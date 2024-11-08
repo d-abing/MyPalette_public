@@ -51,7 +51,6 @@ fun RegisterColorContent(
             contentAlignment = Alignment.Center
         ) {
             ImageBox(selectedImage)
-            /*CircularProgressIndicator()*/
         }
 
         ColorPaletteRow(

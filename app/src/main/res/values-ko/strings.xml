@@ -7,7 +7,7 @@
     <string name="myCombination">나만의 조합</string>
     <string name="myPalette">내 팔레트</string>
     <string name="registerColor">색 등록하기</string>
-    <string name="one_combination"> ☝ 한 개의 조합을 선택해 주세요 ☝ </string>
+    <string name="one_combination_message">한 개의 조합을 선택해 주세요 ☝ </string>
     <string name="save_message">저장 완료! 내 팔레트 보러가기 🎨</string>
     <string name="yes_similarity_message">내 팔레트의 색과 %1$d%% 유사해요 🙆‍♀️</string>
     <string name="no_similarity_message">아직 이 색과 유사한 색이 없어요 🙅‍♀️</string>

@@ -1,6 +1,5 @@
 package com.aube.mypalette.presentation.ui.screens.my_palette
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,7 +67,6 @@ fun MyPaletteScreen(
                     onColorSelected = {
                         selectedColor = it
                         isLongClicking = true
-                        Log.e("selectedColor", "${selectedColor!!.id}")
                     },
                     onTextClick = {
                         context.copyToClipboard(it, coroutineScope, snackbarHostState)

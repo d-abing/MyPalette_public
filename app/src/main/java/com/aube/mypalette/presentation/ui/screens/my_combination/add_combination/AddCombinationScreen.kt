@@ -1,5 +1,6 @@
-package com.aube.mypalette.presentation.ui.screens.my_combination
+package com.aube.mypalette.presentation.ui.screens.my_combination.add_combination
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -7,7 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,12 +25,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.ui.theme.PurpleGrey40
+import com.aube.mypalette.presentation.ui.theme.Sizes
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 
 
@@ -39,14 +43,18 @@ fun AddCombinationScreen(
     colorViewModel: ColorViewModel,
     addColor: (Int) -> Unit,
     removeColor: (Int) -> Unit,
+    onBackPressed: () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(Paddings.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NewCombination(newCombination, removeColor)
-        Spacer(Modifier.height(10.dp))
         MyPaletteColor(colorViewModel, addColor)
+    }
+
+    BackHandler {
+        onBackPressed()
     }
 }
 
@@ -55,26 +63,16 @@ fun NewCombination(newCombination: SnapshotStateList<Int>, removeColor: (Int) ->
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(Sizes.newCombinationRowHeight)
             .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
             .background(Color.White, RoundedCornerShape(8.dp))
-            .padding(10.dp),
+            .padding(Paddings.large),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         newCombination.forEach { colorItem ->
             Column(
                 modifier = Modifier
-                    .let { baseModifier ->
-                        if (colorItem in -100..0) {
-                            baseModifier
-                                .height(99.6.dp)
-                                .border(0.1.dp, Color.Gray)
-                        } else {
-                            baseModifier
-                                .height(100.dp)
-
-                        }
-                    }
+                    .fillMaxHeight()
                     .weight(1f)
                     .background(Color(colorItem))
                     .clickable {
@@ -104,11 +102,11 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
         }
     } else {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 60.dp),
+            columns = GridCells.Adaptive(minSize = Sizes.colorColumnSize),
             modifier = Modifier
                 .fillMaxSize()
                 .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
-                .padding(20.dp)
+                .padding(Paddings.large)
         ) {
             items(colorList) { colorItem ->
                 ClickablePaletteColorItem(colorItem, addColor)
@@ -121,14 +119,8 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
 fun ClickablePaletteColorItem(colorItem: ColorEntity, addColor: (Int) -> Unit) {
     Box(
         modifier = Modifier
-            .size(if (colorItem.color == 0) 59.8.dp else 60.dp)
-            .let { baseModifier ->
-                if (colorItem.color == 0) {
-                    baseModifier.border(0.1.dp, Color.Gray)
-                } else {
-                    baseModifier
-                }
-            }
+            .size(Sizes.colorCardSize)
+            .clip(RoundedCornerShape(12.dp))
             .background(Color(colorItem.color))
             .clickable { addColor(colorItem.color) }
     )
