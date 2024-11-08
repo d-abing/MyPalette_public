@@ -23,12 +23,12 @@
     <string name="move">move</string>
     <string name="gallery">gallery type</string>
     <string name="list">list type</string>
-    <string name="image">image</string>
+    <string name="image">gallery</string>
     <string name="camera">camera</string>
     <string name="empty">Empty</string>
     <string name="selected_image">Selected Image</string>
     <string name="label">Label</string>
-    <string name="copy_message">Hexadecimal Color Code copied to clipboard!</string>
+    <string name="copy_message">Hexadecimal Color Code copied to clipboard! 📎</string>
     <string name="cancel">Cancel</string>
     <string name="delete_message">Do you want to delete the color?</string>
     <string name="uri_display_name">PaletteImage</string>

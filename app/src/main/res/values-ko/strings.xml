@@ -23,12 +23,12 @@
     <string name="move">이동</string>
     <string name="gallery">갤러리</string>
     <string name="list">리스트</string>
-    <string name="image">이미지</string>
+    <string name="image">갤러리</string>
     <string name="camera">카메라</string>
     <string name="empty">비어있음</string>
     <string name="selected_image">선택된 이미지</string>
     <string name="label">Label</string>
-    <string name="copy_message">Hex 색상 코드를 클립보드에 복사했습니다!</string>
+    <string name="copy_message">Hex 색상 코드를 클립보드에 복사했습니다! 📎</string>
     <string name="cancel">취소</string>
     <string name="delete_message">색상을 삭제하시겠습니까?</string>
     <string name="uri_display_name">PaletteImage</string>

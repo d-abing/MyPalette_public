@@ -30,7 +30,7 @@ fun ImportingButton(
 
         Spacer(Modifier.width(Paddings.medium))
 
-        MPIconButton(R.drawable.baseline_image_24, R.string.gallery) {
+        MPIconButton(R.drawable.baseline_image_24, R.string.image) {
             onGalleryClick()
         }
     }

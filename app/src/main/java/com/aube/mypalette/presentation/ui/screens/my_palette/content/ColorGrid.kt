@@ -23,11 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.presentation.ui.theme.MyPaletteTheme
 import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.ui.theme.Sizes
 import com.aube.mypalette.utils.colorToHexString
@@ -117,4 +119,36 @@ fun calculateColumnWidth(minSize: Dp): Dp {
     val columnCount = (actualScreenWidth / minSize).toInt() // 생성될 열의 개수 계산
     val paddingWidth = (columnCount + 1) * Paddings.small // 패딩의 총 너비 계산
     return (actualScreenWidth - paddingWidth) / columnCount // 각 열의 너비 계산
+}
+
+@Preview
+@Composable
+private fun ColorGridPreview() {
+    MyPaletteTheme {
+        ColorGrid(
+            modifier = Modifier
+                .padding(Paddings.medium),
+            colorList =  listOf(
+                ColorEntity(color = -8890344),
+                ColorEntity(color = -4165512),
+                ColorEntity(color = -16220080),
+                ColorEntity(color = -16213968),
+                ColorEntity(color = -1525656),
+            ),
+            onColorSelected = {},
+            onTextClick = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun GalleryColorItemPreview() {
+    MyPaletteTheme {
+        GalleryColorItem(
+            colorItem = ColorEntity(color = -8890344),
+            onColorSelected = {},
+            onTextClick = {},
+        )
+    }
 }

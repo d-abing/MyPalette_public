@@ -8,7 +8,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.aube.mypalette.R
+import com.aube.mypalette.presentation.ui.theme.MyPaletteTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,4 +40,13 @@ fun MyPaletteTopAppBar(onViewTypeChange: (Boolean) -> Unit) {
             }
         }
     )
+}
+
+@Preview
+@Composable
+private fun MyPaletteTopAppBarPreview() {
+    val onViewTypeChange: (Boolean) -> Unit = {}
+    MyPaletteTheme {
+        MyPaletteTopAppBar(onViewTypeChange)
+    }
 }
