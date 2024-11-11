@@ -11,7 +11,7 @@ class ColorRepository(private val colorDao: ColorDao) {
         return colorDao.insertColorIfNotExists(color)
     }
 
-    suspend fun delete(colorId: Int) {
-        colorDao.deleteColor(colorId)
+    suspend fun delete(color: ColorEntity) {
+        colorDao.deleteColor(color)
     }
 }

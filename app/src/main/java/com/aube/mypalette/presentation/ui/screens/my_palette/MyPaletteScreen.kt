@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.data.model.ImageEntity
 import com.aube.mypalette.presentation.ui.component.MPDialog
 import com.aube.mypalette.presentation.ui.screens.my_palette.content.ColorGrid
 import com.aube.mypalette.presentation.ui.screens.my_palette.content.ColorList
@@ -37,6 +38,7 @@ fun MyPaletteScreen(
     val colorList by colorViewModel.allColors.observeAsState(emptyList())
 
     var selectedColor by remember { mutableStateOf<ColorEntity?>(null) }
+    var selectedImage by remember { mutableStateOf<ImageEntity?>(null) }
 
     var isListType by remember { mutableStateOf(false) }
     var isLongClicking by remember { mutableStateOf(false) }
@@ -78,24 +80,50 @@ fun MyPaletteScreen(
                         .padding(innerPadding)
                         .padding(Paddings.large),
                     colorList = colorList,
-                    imageViewModel = imageViewModel
+                    imageViewModel = imageViewModel,
+                    onColorSelected = {
+                        selectedColor = it
+                        isLongClicking = true
+                    },
+                    onImageSelected = {
+                        selectedImage = it
+                        isLongClicking = true
+                    },
                 )
             }
 
             if (isLongClicking) {
-                MPDialog(
-                    bodyText = stringResource(id = R.string.delete_message),
-                    onDeleteClick = {
-                        selectedColor?.let {
-                            colorViewModel.delete(it.id)
+                if (selectedColor != null) {
+                    MPDialog(
+                        bodyText = stringResource(id = R.string.delete_message),
+                        onDeleteClick = {
+                            selectedColor?.let {
+                                colorViewModel.delete(it)
+                                isLongClicking = false
+                                selectedColor = null
+                            }
+                        },
+                        onCancelClick = {
                             isLongClicking = false
+                            selectedColor = null
                         }
-                    },
-                    onCancelClick = {
-                        isLongClicking = false
-                        selectedColor = null
-                    }
-                )
+                    )
+                } else if (selectedImage != null) {
+                    MPDialog(
+                        bodyText = stringResource(id = R.string.delete_image),
+                        onDeleteClick = {
+                            selectedImage?.let {
+                                imageViewModel.delete(it)
+                                isLongClicking = false
+                                selectedImage = null
+                            }
+                        },
+                        onCancelClick = {
+                            isLongClicking = false
+                            selectedImage = null
+                        }
+                    )
+                }
             }
         }
     }

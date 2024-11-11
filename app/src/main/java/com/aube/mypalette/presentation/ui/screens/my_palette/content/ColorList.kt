@@ -2,6 +2,7 @@ package com.aube.mypalette.presentation.ui.screens.my_palette.content
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,8 @@ fun ColorList(
     modifier: Modifier,
     colorList: List<ColorEntity>,
     imageViewModel: ImageViewModel,
+    onColorSelected: (ColorEntity) -> Unit,
+    onImageSelected: (ImageEntity) -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = Sizes.colorBoxAndImageRowWidth),
@@ -47,13 +50,18 @@ fun ColorList(
         modifier = modifier.fillMaxSize()
     ) {
         items(colorList) { colorItem ->
-            ListColorItem(colorItem, imageViewModel)
+            ListColorItem(colorItem, imageViewModel, onColorSelected, onImageSelected)
         }
     }
 }
 
 @Composable
-fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
+fun ListColorItem(
+    colorItem: ColorEntity,
+    imageViewModel: ImageViewModel,
+    onColorSelected: (ColorEntity) -> Unit,
+    onImageSelected: (ImageEntity) -> Unit,
+) {
     val imageList by imageViewModel.getImagesForColor(colorItem.id).observeAsState(emptyList())
 
     Row(modifier = Modifier.fillMaxWidth()) {
@@ -62,6 +70,7 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
                 .size(Sizes.colorCardSize)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color(colorItem.color))
+                .clickable { onColorSelected(colorItem) }
         )
         LazyRow(
             modifier = Modifier
@@ -70,14 +79,16 @@ fun ListColorItem(colorItem: ColorEntity, imageViewModel: ImageViewModel) {
             horizontalArrangement = Arrangement.spacedBy(Paddings.xlarge)
         ) {
             items(imageList) { imageItem ->
-                ImageItem(imageItem)
+                ImageItem(imageItem) {
+                    onImageSelected(it)
+                }
             }
         }
     }
 }
 
 @Composable
-fun ImageItem(imageItem: ImageEntity) {
+fun ImageItem(imageItem: ImageEntity, onImageSelected: (ImageEntity) -> Unit) {
     val imagePainter = rememberAsyncImagePainter(
         ImageRequest.Builder(LocalContext.current)
             .data(imageItem.imageBytes)
@@ -92,5 +103,8 @@ fun ImageItem(imageItem: ImageEntity) {
         modifier = Modifier
             .size(Sizes.colorCardSize)
             .clip(RoundedCornerShape(8.dp))
+            .clickable {
+                onImageSelected(imageItem)
+            }
     )
 }

@@ -29,8 +29,8 @@ interface ColorDao {
     suspend fun insertColor(color: ColorEntity): Long
     // Long을 반환하면 성공적으로 삽입된 행의 ID를 반환함
 
-    @Query("DELETE FROM colors WHERE id = :colorId")
-    suspend fun deleteColor(colorId: Int)
+    @Delete
+    suspend fun deleteColor(color: ColorEntity)
 }
 
 @Dao

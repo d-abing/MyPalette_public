@@ -16,9 +16,9 @@ class ColorViewModel @Inject constructor(
 ) : ViewModel() {
     val allColors: LiveData<List<ColorEntity>> = colorRepository.allColors
 
-    fun delete(colorId: Int) {
+    fun delete(color: ColorEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            colorRepository.delete(colorId)
+            colorRepository.delete(color)
         }
     }
 }
