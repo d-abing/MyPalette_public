@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.PointerEventType.Companion.Scroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.aube.mypalette.R
@@ -67,7 +66,6 @@ fun RegisterColorScreen(
             }
         }
 
-    Scroll
     Scaffold(
         topBar = {
             RegisterColorTopAppBar(

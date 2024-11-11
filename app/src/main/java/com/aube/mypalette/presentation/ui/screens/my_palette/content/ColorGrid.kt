@@ -71,7 +71,7 @@ fun GalleryColorItem(
     onTextClick: (String) -> Unit,
 ) {
     var isClicking by remember { mutableStateOf(false) }
-    val actualSize = calculateColumnWidth(Sizes.colorCardSize)
+    val actualSize = calculateColorSize(Sizes.colorCardSize, Paddings.medium, Paddings.small)
 
     Card(
         modifier = Modifier
@@ -112,12 +112,12 @@ fun GalleryColorItem(
 }
 
 @Composable
-fun calculateColumnWidth(minSize: Dp): Dp {
+fun calculateColorSize(minSize: Dp, layoutPaddings: Dp, contentPaddings: Dp): Dp {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp // 화면의 너비를 dp로 가져옴
-    val actualScreenWidth = screenWidth - (Paddings.medium * 2) // 패딩을 제외한 실제 화면 너비 계산
+    val actualScreenWidth = screenWidth - (layoutPaddings * 2) // 패딩을 제외한 실제 화면 너비 계산
     val columnCount = (actualScreenWidth / minSize).toInt() // 생성될 열의 개수 계산
-    val paddingWidth = (columnCount + 1) * Paddings.small // 패딩의 총 너비 계산
+    val paddingWidth = (columnCount + 1) * contentPaddings // 패딩의 총 너비 계산
     return (actualScreenWidth - paddingWidth) / columnCount // 각 열의 너비 계산
 }
 
@@ -128,7 +128,7 @@ private fun ColorGridPreview() {
         ColorGrid(
             modifier = Modifier
                 .padding(Paddings.medium),
-            colorList =  listOf(
+            colorList = listOf(
                 ColorEntity(color = -8890344),
                 ColorEntity(color = -4165512),
                 ColorEntity(color = -16220080),

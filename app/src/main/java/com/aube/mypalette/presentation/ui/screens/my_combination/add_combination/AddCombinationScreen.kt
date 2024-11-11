@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.ColorEntity
+import com.aube.mypalette.presentation.ui.screens.my_palette.content.calculateColorSize
 import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.ui.theme.PurpleGrey40
 import com.aube.mypalette.presentation.ui.theme.Sizes
@@ -46,6 +49,9 @@ fun AddCombinationScreen(
     onBackPressed: () -> Unit,
 ) {
     Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(Paddings.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -102,9 +108,10 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
         }
     } else {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = Sizes.colorColumnSize),
+            columns = GridCells.Adaptive(minSize = Sizes.colorCardSize),
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(Sizes.colorLazyVerticalGridHeight)
                 .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp))
                 .padding(Paddings.large)
         ) {
@@ -117,12 +124,18 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
 
 @Composable
 fun ClickablePaletteColorItem(colorItem: ColorEntity, addColor: (Int) -> Unit) {
+
+    val actualSize = calculateColorSize(Sizes.colorCardSize, Paddings.large * 2, Paddings.none)
+
     Box(
         modifier = Modifier
-            .size(Sizes.colorCardSize)
+            .width(Sizes.colorCardSize)
+            .height(actualSize)
             .clip(RoundedCornerShape(12.dp))
             .background(Color(colorItem.color))
             .clickable { addColor(colorItem.color) }
     )
 }
+
+
 
