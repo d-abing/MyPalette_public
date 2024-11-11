@@ -30,10 +30,11 @@
     <string name="label">Label</string>
     <string name="copy_message">Hex 색상 코드를 클립보드에 복사했습니다! 📎</string>
     <string name="cancel">취소</string>
-    <string name="delete_message">색상을 삭제하시겠습니까?</string>
+    <string name="delete_color_message">색상을 삭제하시겠습니까?</string>
     <string name="uri_display_name">PaletteImage</string>
     <string name="gallery_launcher_input">image/*</string>
     <string name="file_name">%s.jpg</string>
     <string name="mime_type">image/jpeg</string>
-    <string name="delete_image">이미지를 삭제하시겠습니까?</string>
+    <string name="delete_image_message">이미지를 삭제하시겠습니까?</string>
+    <string name="color_select_message">색을 선택해주세요 🖌</string>
 </resources>

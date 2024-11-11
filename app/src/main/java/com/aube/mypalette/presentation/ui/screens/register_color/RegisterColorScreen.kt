@@ -86,6 +86,7 @@ fun RegisterColorScreen(
             colorPalette = colorPalette,
             selectedImage = selectedImage,
             context = context,
+            onColorPicked = { selectedColor = it },
             colorViewModel = colorViewModel,
             lifecycleOwner = lifecycleOwner,
             similarColorResult = similarColorResult,

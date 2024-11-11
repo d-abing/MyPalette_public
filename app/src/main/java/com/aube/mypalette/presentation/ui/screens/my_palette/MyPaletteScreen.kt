@@ -95,7 +95,7 @@ fun MyPaletteScreen(
             if (isLongClicking) {
                 if (selectedColor != null) {
                     MPDialog(
-                        bodyText = stringResource(id = R.string.delete_message),
+                        bodyText = stringResource(id = R.string.delete_color_message),
                         onDeleteClick = {
                             selectedColor?.let {
                                 colorViewModel.delete(it)
@@ -110,7 +110,7 @@ fun MyPaletteScreen(
                     )
                 } else if (selectedImage != null) {
                     MPDialog(
-                        bodyText = stringResource(id = R.string.delete_image),
+                        bodyText = stringResource(id = R.string.delete_image_message),
                         onDeleteClick = {
                             selectedImage?.let {
                                 imageViewModel.delete(it)

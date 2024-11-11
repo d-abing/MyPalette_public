@@ -30,10 +30,11 @@
     <string name="label">Label</string>
     <string name="copy_message">Hexadecimal Color Code copied to clipboard! 📎</string>
     <string name="cancel">Cancel</string>
-    <string name="delete_message">Do you want to delete the color?</string>
+    <string name="delete_color_message">Do you want to delete the color?</string>
     <string name="uri_display_name">PaletteImage</string>
     <string name="gallery_launcher_input">image/*</string>
     <string name="file_name">%s.jpg</string>
     <string name="mime_type">image/jpeg</string>
-    <string name="delete_image">Do you want to delete the image?</string>
+    <string name="delete_image_message">Do you want to delete the image?</string>
+    <string name="color_select_message">Please choose the color 🖌</string>
 </resources>

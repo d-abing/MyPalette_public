@@ -95,7 +95,7 @@ fun MPDialog(
 private fun MPDialogPreview() {
     MyPaletteTheme {
         MPDialog(
-            bodyText = stringResource(id = R.string.delete_message),
+            bodyText = stringResource(id = R.string.delete_color_message),
             onDeleteClick = {},
             onCancelClick = {}
         )

@@ -63,6 +63,13 @@ fun RegisterColorTopAppBar(
                             pagerState.animateScrollToPage(PALETTE_STATE)
                         }
                     }
+                } else {
+                    showSnackBar(
+                        scope = coroutineScope,
+                        snackbarHostState = snackbarHostState,
+                        message = context.getString(R.string.color_select_message),
+                        actionLabel = context.getString(R.string.yes)
+                    )
                 }
             }) {
                 Icon(

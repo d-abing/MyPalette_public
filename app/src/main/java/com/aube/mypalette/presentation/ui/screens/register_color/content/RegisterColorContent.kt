@@ -29,6 +29,7 @@ fun RegisterColorContent(
     colorPalette: List<MutableState<Color>>,
     selectedImage: Uri?,
     context: Context,
+    onColorPicked: (Color) -> Unit,
     colorViewModel: ColorViewModel,
     lifecycleOwner: LifecycleOwner,
     similarColorResult: MutableState<Pair<Color?, Double?>>,
@@ -53,7 +54,9 @@ fun RegisterColorContent(
                 .padding(bottom = Paddings.medium),
             contentAlignment = Alignment.Center
         ) {
-            ImageBox(selectedImage)
+            ImageBox(selectedImage, context) {
+                onColorPicked(it)
+            }
         }
 
         ColorPaletteRow(
