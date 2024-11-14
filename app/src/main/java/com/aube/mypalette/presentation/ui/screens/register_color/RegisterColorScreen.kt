@@ -27,6 +27,7 @@ import com.aube.mypalette.presentation.ui.screens.register_color.content.Registe
 import com.aube.mypalette.presentation.ui.screens.register_color.top_app_bar.RegisterColorTopAppBar
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.ImageViewModel
+import com.aube.mypalette.utils.calculateColorDistance
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.yalantis.ucrop.UCrop
@@ -105,11 +106,30 @@ fun RegisterColorScreen(
             colorPalette = colorPalette,
             selectedImage = selectedImage,
             context = context,
-            onColorPicked = { selectedColor = it },
-            colorViewModel = colorViewModel,
-            lifecycleOwner = lifecycleOwner,
+            onColorPicked = { color ->
+                if (selectedImage != null && color.alpha != 0.0f) {
+                    resetSimilarColorResult(similarColorResult)
+                    selectedColor = color
+                    colorViewModel.allColors.observe(lifecycleOwner) { colors ->
+                        var closestColor: Color? = null
+                        var minDistance: Double? = null
+
+                        colors.forEach { colorEntity ->
+                            val databaseColor = Color(colorEntity.color)
+                            val distance =
+                                calculateColorDistance(color, databaseColor)
+
+                            if (minDistance == null || distance < minDistance!!) {
+                                minDistance = distance
+                                closestColor = databaseColor
+                            }
+                        }
+
+                        similarColorResult.value = Pair(closestColor, minDistance)
+                    }
+                }
+            },
             similarColorResult = similarColorResult,
-            onColorSelected = { selectedColor = it },
             onCameraClick = {
                 photoUri = createImageUri(context, context.getString(R.string.uri_display_name))
                 photoUri?.let {

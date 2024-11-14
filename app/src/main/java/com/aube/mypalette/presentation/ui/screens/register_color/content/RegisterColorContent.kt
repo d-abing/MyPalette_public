@@ -18,9 +18,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.LifecycleOwner
 import com.aube.mypalette.presentation.ui.theme.Paddings
-import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 
 @Composable
 fun RegisterColorContent(
@@ -30,10 +28,7 @@ fun RegisterColorContent(
     selectedImage: Uri?,
     context: Context,
     onColorPicked: (Color) -> Unit,
-    colorViewModel: ColorViewModel,
-    lifecycleOwner: LifecycleOwner,
     similarColorResult: MutableState<Pair<Color?, Double?>>,
-    onColorSelected: (Color) -> Unit,
     onCameraClick: () -> Unit,
     onGalleryClick: () -> Unit,
 ) {
@@ -54,19 +49,18 @@ fun RegisterColorContent(
                 .padding(bottom = Paddings.medium),
             contentAlignment = Alignment.Center
         ) {
-            ImageBox(selectedImage, context) {
-                onColorPicked(it)
-            }
+            ImageBox(
+                selectedImage = selectedImage,
+                context = context,
+                onColorPicked = { onColorPicked(it) },
+            )
         }
 
         ColorPaletteRow(
             context = context,
             colorPalette = colorPalette,
             selectedImage = selectedImage,
-            colorViewModel = colorViewModel,
-            lifecycleOwner = lifecycleOwner,
-            similarColorResult = similarColorResult,
-            onColorSelected = onColorSelected
+            onColorPicked = onColorPicked,
         )
 
         SimilarityColor(

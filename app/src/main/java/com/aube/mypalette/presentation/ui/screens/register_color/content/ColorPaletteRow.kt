@@ -23,13 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.LifecycleOwner
 import androidx.palette.graphics.Palette
 import com.aube.mypalette.R
-import com.aube.mypalette.presentation.ui.screens.register_color.resetSimilarColorResult
 import com.aube.mypalette.presentation.ui.theme.Paddings
-import com.aube.mypalette.presentation.viewmodel.ColorViewModel
-import com.aube.mypalette.utils.calculateColorDistance
 import com.aube.mypalette.utils.getBitmapFromUri
 
 @Composable
@@ -37,10 +33,7 @@ fun ColorPaletteRow(
     context: Context,
     colorPalette: List<MutableState<Color>>,
     selectedImage: Uri?,
-    colorViewModel: ColorViewModel,
-    lifecycleOwner: LifecycleOwner,
-    similarColorResult: MutableState<Pair<Color?, Double?>>,
-    onColorSelected: (Color) -> Unit,
+    onColorPicked: (Color) -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -72,29 +65,7 @@ fun ColorPaletteRow(
                     .clip(RoundedCornerShape(10.dp))
                     .border(1.dp, Color.DarkGray, RoundedCornerShape(10.dp))
                     .background(boxColor)
-                    .clickable {
-                        if (selectedImage != null && color.value.alpha != 0.0f) {
-                            resetSimilarColorResult(similarColorResult)
-                            onColorSelected(color.value)
-                            colorViewModel.allColors.observe(lifecycleOwner) { colors ->
-                                var closestColor: Color? = null
-                                var minDistance: Double? = null
-
-                                colors.forEach { colorEntity ->
-                                    val databaseColor = Color(colorEntity.color)
-                                    val distance =
-                                        calculateColorDistance(color.value, databaseColor)
-
-                                    if (minDistance == null || distance < minDistance!!) {
-                                        minDistance = distance
-                                        closestColor = databaseColor
-                                    }
-                                }
-
-                                similarColorResult.value = Pair(closestColor, minDistance)
-                            }
-                        }
-                    },
+                    .clickable { onColorPicked(color.value) },
                 contentAlignment = Alignment.Center
             ) {
                 if (color.value.alpha == 0.0f) {
