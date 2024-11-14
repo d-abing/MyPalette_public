@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.dp
 
 object Sizes {
     val topBarMaxHeight = 50.dp
-    val similarityColorCardHeight = 80.dp
+    val similarityColorCardHeight = 100.dp
     val buttonRowHeight = 60.dp
     val colorCardSize = 70.dp
     val colorBoxAndImageRowWidth = 148.dp

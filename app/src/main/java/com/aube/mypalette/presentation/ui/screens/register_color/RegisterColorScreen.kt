@@ -1,7 +1,9 @@
 package com.aube.mypalette.presentation.ui.screens.register_color
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
@@ -27,6 +29,9 @@ import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.ImageViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.yalantis.ucrop.UCrop
+import java.io.File
+import java.util.UUID
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -47,22 +52,36 @@ fun RegisterColorScreen(
     val similarColorResult = remember { mutableStateOf<Pair<Color?, Double?>>(Color(0) to null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val cropImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val resultUri = UCrop.getOutput(result.data!!)
+            resultUri?.let {
+                resetSimilarColorResult(similarColorResult)
+                selectedImage = it
+            }
+        }
+    }
+
     val photoFromCameraLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
-                resetSimilarColorResult(similarColorResult)
                 photoUri?.let { uri ->
-                    // 성공적으로 저장된 URI 처리
-                    selectedImage = uri
+                    startCrop(context, uri) { uCropIntent ->
+                        cropImageLauncher.launch(uCropIntent)
+                    }
                 }
             }
             photoUri = null
         }
+
     val photoFromGalleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let {
-                resetSimilarColorResult(similarColorResult)
-                selectedImage = it
+            uri?.let { uri ->
+                startCrop(context, uri) { uCropIntent ->
+                    cropImageLauncher.launch(uCropIntent)
+                }
             }
         }
 
@@ -122,4 +141,24 @@ fun createImageUri(context: Context, displayName: String): Uri? {
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
         contentValues
     )
+}
+
+
+fun startCrop(
+    context: Context,
+    sourceUri: Uri,
+    launch: (Intent) -> Unit,
+) {
+    val destinationUri = Uri.fromFile(
+        File(
+            context.cacheDir,
+            context.getString(
+                R.string.file_name,
+                context.getString(R.string.uri_display_name) + "${UUID.randomUUID()}"
+            )
+        )
+    )
+    val uCropIntent = UCrop.of(sourceUri, destinationUri).withAspectRatio(1f, 1f) // 정사각형 비율
+        .getIntent(context)
+    launch(uCropIntent)
 }

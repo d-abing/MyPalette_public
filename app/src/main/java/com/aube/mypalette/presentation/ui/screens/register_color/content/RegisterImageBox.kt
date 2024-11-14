@@ -1,6 +1,7 @@
 package com.aube.mypalette.presentation.ui.screens.register_color.content
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,16 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.aube.mypalette.R
-import com.aube.mypalette.utils.getBitmapFromUri
+import com.aube.mypalette.utils.getOriginalBitmapFromUri
 
 @Composable
 fun ImageBox(
@@ -32,37 +33,28 @@ fun ImageBox(
     context: Context,
     onColorPicked: (Color) -> Unit,
 ) {
-    var imageSize by remember { mutableStateOf(IntSize.Zero) }
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) } // 터치 좌표
+    var tapOffset by remember { mutableStateOf(Offset.Zero) }
 
-    return if (selectedImage != null) {
-        val bitmap = context.getBitmapFromUri(selectedImage)
+    if (selectedImage != null) {
+        bitmap = context.getOriginalBitmapFromUri(selectedImage)
 
         Image(
-            painter = rememberAsyncImagePainter(
-                model = selectedImage
-            ),
+            painter = rememberAsyncImagePainter(model = selectedImage),
             contentDescription = stringResource(id = R.string.selected_image),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(16.dp))
-                .onGloballyPositioned { layoutCoordinates ->
-                    imageSize = layoutCoordinates.size
-                }
                 .pointerInput(Unit) {
-                    detectTapGestures { tapOffset ->
-                        bitmap.let { bmp ->
-                            val x = (tapOffset.x * bmp.width / imageSize.width).toInt()
-                            val y = (tapOffset.y * bmp.height / imageSize.height).toInt()
-
-                            // x, y 위치의 색상 추출
-                            if (x in 0 until bmp.width && y in 0 until bmp.height) {
-                                val pixelColor = bmp.getPixel(x, y)
-                                onColorPicked(Color(pixelColor))
-                            }
-                        }
+                    detectTapGestures { offset ->
+                        tapOffset = offset
+                        // 이미지 영역에서의 위치를 비트맵 좌표로 변환
+                        val bitmapColor = getBitmapColorFromTap(bitmap, tapOffset, size)
+                        bitmapColor?.let { onColorPicked(it) }
                     }
                 }
+
         )
     } else {
         Box(
@@ -70,5 +62,24 @@ fun ImageBox(
                 .fillMaxSize()
                 .background(Color.Gray, RoundedCornerShape(16.dp))
         )
+    }
+}
+
+// 사용자가 터치한 위치의 색상 추출
+fun getBitmapColorFromTap(bitmap: Bitmap?, tapOffset: Offset, imageSize: IntSize): Color? {
+    if (bitmap == null) return null
+
+    // 이미지의 표시된 사이즈와 비트맵의 사이즈 비율 계산
+    val scaleX = bitmap.width.toFloat() / imageSize.width
+    val scaleY = bitmap.height.toFloat() / imageSize.height
+
+    // 터치 좌표를 비트맵 좌표로 변환
+    val x = (tapOffset.x * scaleX).toInt()
+    val y = (tapOffset.y * scaleY).toInt()
+
+    return if (x in 0 until bitmap.width && y in 0 until bitmap.height) {
+        Color(bitmap.getPixel(x, y))
+    } else {
+        null
     }
 }

@@ -1,5 +1,6 @@
 package com.aube.mypalette
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.aube.mypalette.presentation.ui.screens.my_combination.MyCombinationScreen
 import com.aube.mypalette.presentation.ui.screens.my_palette.MyPaletteScreen
 import com.aube.mypalette.presentation.ui.screens.register_color.RegisterColorScreen
@@ -46,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyPaletteTheme {
-                AppContent(colorViewModel, combinationViewModel, imageViewModel)
+                AppContent(colorViewModel, combinationViewModel, imageViewModel, this)
             }
         }
     }
@@ -62,9 +64,11 @@ fun AppContent(
     colorViewModel: ColorViewModel,
     combinationViewModel: CombinationViewModel,
     imageViewModel: ImageViewModel,
+    context: Context,
 ) {
     val pagerState = rememberPagerState(initialPage = REGISTER_STATE)
     val coroutineScope = rememberCoroutineScope()
+    val navController = rememberNavController()
 
     Scaffold(
         bottomBar = {
@@ -85,6 +89,10 @@ fun AppContent(
                         coroutineScope.launch {
                             pagerState.scrollToPage(COMBINATION_STATE)
                         }
+                        navController.popBackStack(
+                            context.getString(R.string.myCombinationScreen),
+                            inclusive = false
+                        )
                     },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -142,7 +150,12 @@ fun AppContent(
             modifier = Modifier.padding(innerPadding)
         ) { page ->
             when (page) {
-                COMBINATION_STATE -> MyCombinationScreen(combinationViewModel, colorViewModel)
+                COMBINATION_STATE -> MyCombinationScreen(
+                    combinationViewModel,
+                    colorViewModel,
+                    navController
+                )
+
                 PALETTE_STATE -> MyPaletteScreen(colorViewModel, imageViewModel)
                 REGISTER_STATE -> RegisterColorScreen(colorViewModel, imageViewModel, pagerState)
             }

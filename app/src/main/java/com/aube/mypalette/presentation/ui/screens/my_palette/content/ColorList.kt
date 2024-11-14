@@ -2,7 +2,7 @@ package com.aube.mypalette.presentation.ui.screens.my_palette.content
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -22,6 +22,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -70,7 +71,13 @@ fun ListColorItem(
                 .size(Sizes.colorCardSize)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color(colorItem.color))
-                .clickable { onColorSelected(colorItem) }
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = {
+                            onColorSelected(colorItem)
+                        }
+                    )
+                }
         )
         LazyRow(
             modifier = Modifier
@@ -103,8 +110,12 @@ fun ImageItem(imageItem: ImageEntity, onImageSelected: (ImageEntity) -> Unit) {
         modifier = Modifier
             .size(Sizes.colorCardSize)
             .clip(RoundedCornerShape(8.dp))
-            .clickable {
-                onImageSelected(imageItem)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onImageSelected(imageItem)
+                    },
+                )
             }
     )
 }

@@ -68,6 +68,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager-indicators:0.21.3-beta")
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("com.github.yalantis:ucrop:2.2.9")
+
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")

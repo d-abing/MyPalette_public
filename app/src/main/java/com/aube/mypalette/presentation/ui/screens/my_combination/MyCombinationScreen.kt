@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.CombinationEntity
 import com.aube.mypalette.domain.model.Combination
@@ -47,6 +47,7 @@ import com.aube.mypalette.utils.showSnackBar
 fun MyCombinationScreen(
     combinationViewModel: CombinationViewModel,
     colorViewModel: ColorViewModel,
+    navController: NavHostController,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -59,7 +60,6 @@ fun MyCombinationScreen(
     }
 
     val selectedIds: MutableList<Int> = remember { mutableListOf() }
-    val navController = rememberNavController()
     var isModifying by remember { mutableStateOf(false) }
     var isAdding by remember { mutableStateOf(false) }
     var newCombination: SnapshotStateList<Int> by remember { mutableStateOf(SnapshotStateList()) }

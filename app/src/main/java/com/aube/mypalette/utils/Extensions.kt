@@ -7,24 +7,25 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import java.io.ByteArrayOutputStream
-
-fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-    observe(lifecycleOwner, object : Observer<T> {
-        override fun onChanged(t: T) {
-            observer.onChanged(t)
-            removeObserver(this)
-        }
-    })
-}
 
 fun Bitmap.toBytes(): ByteArray {
     val stream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.JPEG, 50, stream)
     return stream.toByteArray()
+}
+
+fun Context.getOriginalBitmapFromUri(uri: Uri): Bitmap {
+    val contentResolver: ContentResolver = this.contentResolver
+    val options = BitmapFactory.Options().apply {
+        inSampleSize = 1 // 원본 해상도로 가져오기 위해 1로 설정
+        inJustDecodeBounds = false // 이미지를 실제로 디코딩
+    }
+
+    // 이미지를 디코딩하여 비트맵 생성
+    return contentResolver.openInputStream(uri)?.use { inputStream ->
+        BitmapFactory.decodeStream(inputStream, null, options)
+    } ?: Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) // 실패 시 빈 비트맵 반환
 }
 
 fun Context.getBitmapFromUri(uri: Uri): Bitmap {

@@ -73,14 +73,14 @@ fun SimilarityColor(
                                 similarityPercentage
                             ),
                             modifier = Modifier
-                                .padding(Paddings.medium)
+                                .padding(vertical = Paddings.small, horizontal = Paddings.medium)
                                 .verticalScroll(scrollState)
                         )
                     } else {
                         Text(
                             text = stringResource(id = R.string.no_similarity_message),
                             modifier = Modifier
-                                .padding(Paddings.medium)
+                                .padding(vertical = Paddings.small, horizontal = Paddings.medium)
                                 .verticalScroll(scrollState)
                         )
                     }
@@ -90,7 +90,7 @@ fun SimilarityColor(
                     Text(
                         text = stringResource(id = R.string.comparison_message),
                         modifier = Modifier
-                            .padding(Paddings.medium)
+                            .padding(vertical = Paddings.small, horizontal = Paddings.medium)
                             .verticalScroll(scrollState)
                     )
                 }
@@ -99,7 +99,7 @@ fun SimilarityColor(
                     Text(
                         text = stringResource(id = R.string.extracted_colors_message, count),
                         modifier = Modifier
-                            .padding(Paddings.medium)
+                            .padding(vertical = Paddings.small, horizontal = Paddings.medium)
                             .verticalScroll(scrollState)
                     )
                 }
