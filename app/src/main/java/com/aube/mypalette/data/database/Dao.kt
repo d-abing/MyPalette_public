@@ -6,7 +6,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.aube.mypalette.data.model.ColorEntity
 import com.aube.mypalette.data.model.CombinationEntity
 import com.aube.mypalette.data.model.ImageEntity
@@ -16,16 +15,7 @@ interface ColorDao {
     @Query("SELECT * FROM colors ORDER BY color")
     fun getAllColors(): LiveData<List<ColorEntity>>
 
-    @Query("SELECT id FROM colors WHERE color = :colorValue")
-    suspend fun checkIdForColor(colorValue: Int): Int?
-
-    // 실제 insert 메서드
-    suspend fun insertColorIfNotExists(color: ColorEntity): Int {
-        val existingId = checkIdForColor(color.color)
-        return existingId ?: insertColor(color).toInt()
-    }
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertColor(color: ColorEntity): Long
     // Long을 반환하면 성공적으로 삽입된 행의 ID를 반환함
 
@@ -46,28 +36,17 @@ interface CombinationDao {
 
     @Query("DELETE FROM combinations WHERE id = :combinationId")
     suspend fun deleteCombination(combinationId: Int)
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateCombination(combination: CombinationEntity)
 }
 
 @Dao
 interface ImageDao {
     @Query("SELECT * FROM images WHERE colorId = :colorId")
-    fun getImagesForColor(colorId: Int): LiveData<List<ImageEntity>>
+    fun getImagesByColorId(colorId: Int): LiveData<List<ImageEntity>>
 
-    @Query("SELECT id FROM images WHERE imageBytes = :imageBytes and colorId = :colorId")
-    suspend fun checkIdForImage(imageBytes: ByteArray, colorId: Int): Int?
+    @Query("SELECT * FROM images WHERE hash = :hash AND colorId = :colorId")
+    suspend fun getImageByHash(hash: String, colorId: Int): ImageEntity?
 
-    // 실제 insert 메서드
-    suspend fun insertImageIfNotExists(image: ImageEntity) {
-        val existingId = checkIdForImage(image.imageBytes, image.colorId)
-        if (existingId == null) {
-            insertImage(image)
-        }
-    }
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertImage(image: ImageEntity)
 
     @Delete

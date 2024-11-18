@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.aube.mypalette.domain.model.Combination
+import com.aube.mypalette.presentation.model.Combination
 import com.aube.mypalette.presentation.ui.theme.MyPaletteTheme
 import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.ui.theme.Sizes

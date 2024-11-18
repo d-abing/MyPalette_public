@@ -31,8 +31,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.CombinationEntity
-import com.aube.mypalette.domain.model.Combination
-import com.aube.mypalette.domain.model.toDomainModel
+import com.aube.mypalette.presentation.model.Combination
+import com.aube.mypalette.presentation.model.toUiModel
 import com.aube.mypalette.presentation.ui.screens.my_combination.add_combination.AddCombinationScreen
 import com.aube.mypalette.presentation.ui.screens.my_combination.bottom_bar.MyCombinationBottomAppBar
 import com.aube.mypalette.presentation.ui.screens.my_combination.content.MyCombinationList
@@ -55,7 +55,7 @@ fun MyCombinationScreen(
     val combinationEntities = combinationViewModel.allCombinations.observeAsState(emptyList())
     val combinationList = remember(combinationEntities.value) {
         combinationEntities.value.map { combinationEntity ->
-            mutableStateOf(combinationEntity.toDomainModel())
+            mutableStateOf(combinationEntity.toUiModel())
         }
     }
 
@@ -108,7 +108,7 @@ fun MyCombinationScreen(
                 },
                 onCompleteButtonClick = {
                     if (isModifying) { // 수정 중
-                        combinationViewModel.update(
+                        combinationViewModel.insert(
                             CombinationEntity(
                                 id = selectedIds[0],
                                 colors = newCombination

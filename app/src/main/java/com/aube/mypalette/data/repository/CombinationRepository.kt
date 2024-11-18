@@ -18,8 +18,4 @@ class CombinationRepository(private val combinationDao: CombinationDao) {
     suspend fun delete(combinationId: Int) {
         combinationDao.deleteCombination(combinationId)
     }
-
-    suspend fun update(combination: CombinationEntity) {
-        combinationDao.updateCombination(combination)
-    }
 }

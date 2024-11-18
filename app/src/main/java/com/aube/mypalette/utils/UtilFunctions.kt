@@ -6,13 +6,11 @@ import android.content.Context
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.dp
 import com.aube.mypalette.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
 import kotlin.math.sqrt
 
 fun calculateColorDistance(color1: Color, color2: Color): Double {
@@ -82,8 +80,7 @@ fun showSnackBar(
     }
 }
 
-@Composable
-fun GetCurrentScreenWidth(): Int {
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    return screenWidth.value.toInt() // 화면 너비를 픽셀로 반환
+fun generateMD5Hash(input: ByteArray): String {
+    val md = MessageDigest.getInstance("MD5")
+    return md.digest(input).joinToString("") { "%02x".format(it) }
 }

@@ -3,9 +3,13 @@ package com.aube.mypalette.data.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "colors")
+@Entity(
+    tableName = "colors",
+    indices = [Index(value = ["color"], unique = true)]
+)
 data class ColorEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -34,24 +38,7 @@ data class CombinationEntity(
 data class ImageEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val hash: String = "",
     val imageBytes: ByteArray,
     val colorId: Int, // 외래키
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as ImageEntity
-
-        if (id != other.id) return false
-        if (!imageBytes.contentEquals(other.imageBytes)) return false
-        return colorId == other.colorId
-    }
-
-    override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + imageBytes.contentHashCode()
-        result = 31 * result + colorId
-        return result
-    }
-}
+)

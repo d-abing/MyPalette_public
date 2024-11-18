@@ -41,10 +41,4 @@ class CombinationViewModel @Inject constructor(
             }
         }
     }
-
-    fun update(combination: CombinationEntity) {
-        viewModelScope.launch {
-            combinationRepository.update(combination)
-        }
-    }
 }

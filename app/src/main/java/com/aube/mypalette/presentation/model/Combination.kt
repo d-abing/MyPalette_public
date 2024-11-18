@@ -1,4 +1,4 @@
-package com.aube.mypalette.domain.model
+package com.aube.mypalette.presentation.model
 
 import com.aube.mypalette.data.model.CombinationEntity
 
@@ -8,7 +8,7 @@ data class Combination(
     var isSelected: Boolean,
 )
 
-fun CombinationEntity.toDomainModel(): Combination {
+fun CombinationEntity.toUiModel(): Combination {
     return Combination(
         id = id,
         colors = colors,

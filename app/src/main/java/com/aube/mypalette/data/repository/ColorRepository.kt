@@ -8,7 +8,7 @@ class ColorRepository(private val colorDao: ColorDao) {
     val allColors: LiveData<List<ColorEntity>> = colorDao.getAllColors()
 
     suspend fun insert(color: ColorEntity): Int {
-        return colorDao.insertColorIfNotExists(color)
+        return colorDao.insertColor(color).toInt()
     }
 
     suspend fun delete(color: ColorEntity) {

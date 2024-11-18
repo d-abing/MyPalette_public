@@ -8,9 +8,11 @@ import com.aube.mypalette.data.model.ColorEntity
 import com.aube.mypalette.data.model.CombinationEntity
 import com.aube.mypalette.data.model.ImageEntity
 
+const val DATABASE_VERSION = 1
+
 @Database(
     entities = [ColorEntity::class, CombinationEntity::class, ImageEntity::class],
-    version = 1
+    version = DATABASE_VERSION
 )
 @TypeConverters(ColorListConverter::class)
 abstract class MyPaletteDatabase : RoomDatabase() {
@@ -27,6 +29,10 @@ class ColorListConverter {
 
     @TypeConverter
     fun toList(colorsString: String?): List<Int>? {
-        return colorsString?.split(",")?.map { it.toInt() }
+        return try {
+            colorsString?.split(",")?.map { it.toInt() }
+        } catch (e: NumberFormatException) {
+            null
+        }
     }
 }
