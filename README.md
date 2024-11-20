@@ -19,7 +19,7 @@
 - 플레이스토어에 배포 후 유지 보수 중
 
 ### 실행화면
-<img src="https://github.com/user-attachments/assets/b1bfd7e2-590e-433a-b47e-189c9217bffe" width="210" height="420"/>
-<img src="https://github.com/user-attachments/assets/e5cddb73-6f8e-4190-a2ee-84727e219bb1" width="210" height="420"/>
-<img src="https://github.com/user-attachments/assets/9b26b4cf-46aa-4de1-bedf-c04f694e77d4" width="210" height="420"/>
-<img src="https://github.com/user-attachments/assets/c5ff0f3b-7330-4758-93bb-0b27ebd9f78a" width="210" height="420"/>
+<img src="https://github.com/user-attachments/assets/b1bfd7e2-590e-433a-b47e-189c9217bffe" width="200" height="400"/>
+<img src="https://github.com/user-attachments/assets/e5cddb73-6f8e-4190-a2ee-84727e219bb1" width="200" height="400"/>
+<img src="https://github.com/user-attachments/assets/9b26b4cf-46aa-4de1-bedf-c04f694e77d4" width="200" height="400"/>
+<img src="https://github.com/user-attachments/assets/c5ff0f3b-7330-4758-93bb-0b27ebd9f78a" width="200" height="400"/>
