@@ -71,7 +71,7 @@ fun ColorPaletteRow(
                 if (color.value.alpha == 0.0f) {
                     Icon(
                         imageVector = Icons.Filled.Close,
-                        contentDescription = stringResource(id = R.string.no),
+                        contentDescription = stringResource(id = R.string.empty),
                     )
                 }
             }

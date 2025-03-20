@@ -1,9 +1,19 @@
 <resources>
-    <string name="app_name">마이 팔레트</string>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
     <string name="addCombinationScreen">addCombinationScreen</string>
     <string name="myCombinationScreen">myCombinationScreen</string>
     <string name="myPaletteScreen">myPaletteScreen</string>
     <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">마이 팔레트</string>
     <string name="myCombination">나만의 조합</string>
     <string name="myPalette">내 팔레트</string>
     <string name="registerColor">색 등록하기</string>
@@ -12,29 +22,29 @@
     <string name="yes_similarity_message">내 팔레트의 색과 %1$d%% 유사해요 🙆‍♀️</string>
     <string name="no_similarity_message">아직 이 색과 유사한 색이 없어요 🙅‍♀️</string>
     <string name="comparison_message">내 팔레트의 색과 비교할 수 있습니다</string>
-    <string name="extracted_colors_message">총 %1$d개의 색이 추출되었습니다 👩‍🎨</string>
-    <string name="yes">확인</string>
-    <string name="no">없음</string>
+    <string name="extracted_colors_message">총 %1$d개의 색이 추출되었습니다 👩‍🎨\n사진의 원하는 부분을 눌러 색을 추출해보세요</string>
+    <string name="ok">확인</string>
+    <string name="empty">비어있음</string>
     <string name="modify">수정</string>
     <string name="delete">삭제</string>
     <string name="add">추가</string>
     <string name="save">저장</string>
     <string name="close">닫기</string>
     <string name="move">이동</string>
-    <string name="gallery">갤러리</string>
-    <string name="list">리스트</string>
+    <string name="gallery_type">갤러리</string>
+    <string name="list_type">리스트</string>
     <string name="image">갤러리</string>
     <string name="camera">카메라</string>
-    <string name="empty">비어있음</string>
     <string name="selected_image">선택된 이미지</string>
-    <string name="label">Label</string>
     <string name="copy_message">Hex 색상 코드를 클립보드에 복사했습니다! 📎</string>
     <string name="cancel">취소</string>
     <string name="delete_color_message">색상을 삭제하시겠습니까?</string>
-    <string name="uri_display_name">PaletteImage</string>
-    <string name="gallery_launcher_input">image/*</string>
-    <string name="file_name">%s.jpg</string>
-    <string name="mime_type">image/jpeg</string>
     <string name="delete_image_message">이미지를 삭제하시겠습니까?</string>
     <string name="color_select_message">색을 선택해주세요 🖌</string>
+    <string name="setting">설정</string>
+    <string name="privacy_policy">개인정보처리방침</string>
+    <string name="language">언어</string>
+    <string name="language_description">앱 언어를 선택하세요</string>
+    <string name="privacy_policy_description">개인정보 보호 정책 보기</string>
+    <string name="choose_language">언어 선택</string>
 </resources>

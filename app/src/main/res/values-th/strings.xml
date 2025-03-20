@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">My Palette</string>
+    <string name="myCombination">ชุดสีของฉัน</string>
+    <string name="myPalette">พาเลตของฉัน</string>
+    <string name="registerColor">ลงทะเบียนสี</string>
+    <string name="one_combination_message">โปรดเลือกชุดสีหนึ่งชุด ☝</string>
+    <string name="save_message">บันทึกแล้ว! ไปที่พาเลตของฉัน 🎨</string>
+    <string name="yes_similarity_message">คล้ายกับสีในพาเลตของฉัน %1$d%% 🙆‍♀️</string>
+    <string name="no_similarity_message">ยังไม่มีสีที่คล้ายกันในพาเลตของฉัน 🙅‍♀️</string>
+    <string name="comparison_message">คุณสามารถเปรียบเทียบสีที่สกัดกับสีในพาเลตของฉัน</string>
+    <string name="extracted_colors_message">สกัดสีทั้งหมด %1$d สี 👩‍🎨\nแตะส่วนที่ต้องการของภาพเพื่อดึงสีออกมา</string>
+    <string name="ok">ตกลง</string>
+    <string name="empty">ว่างเปล่า</string>
+    <string name="modify">แก้ไข</string>
+    <string name="delete">ลบ</string>
+    <string name="add">เพิ่ม</string>
+    <string name="save">บันทึก</string>
+    <string name="close">ปิด</string>
+    <string name="move">ย้าย</string>
+    <string name="gallery_type">ประเภทแกลเลอรี</string>
+    <string name="list_type">ประเภทรายการ</string>
+    <string name="image">แกลเลอรี</string>
+    <string name="camera">กล้อง</string>
+    <string name="selected_image">ภาพที่เลือก</string>
+    <string name="copy_message">คัดลอกรหัสสี Hex ไปยังคลิปบอร์ดแล้ว! 📎</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="delete_color_message">คุณต้องการลบสีนี้หรือไม่?</string>
+    <string name="delete_image_message">คุณต้องการลบภาพนี้หรือไม่?</string>
+    <string name="color_select_message">โปรดเลือกสี 🖌</string>
+    <string name="setting">การตั้งค่า</string>
+    <string name="privacy_policy">นโยบายความเป็นส่วนตัว</string>
+    <string name="language">ภาษา</string>
+    <string name="language_description">เลือกภาษาของแอป</string>
+    <string name="privacy_policy_description">ดูนโยบายความเป็นส่วนตัวของเรา</string>
+    <string name="choose_language">เลือกภาษา</string>
+</resources>

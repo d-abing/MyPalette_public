@@ -1,16 +1,15 @@
 package com.aube.mypalette.utils
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.ui.graphics.Color
-import com.aube.mypalette.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
+import java.util.Locale
 import kotlin.math.sqrt
 
 fun calculateColorDistance(color1: Color, color2: Color): Double {
@@ -42,18 +41,6 @@ fun colorToHexString(color: Int): String {
     return String.format("#%06X", color and 0xFFFFFF)
 }
 
-fun Context.copyToClipboard(
-    text: String,
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-) {
-    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-    val clip = ClipData.newPlainText(this.getString(R.string.label), text)
-    clipboard.setPrimaryClip(clip)
-
-    showSnackBar(scope, snackbarHostState, this.getString(R.string.copy_message))
-}
-
 fun showSnackBar(
     scope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
@@ -83,4 +70,12 @@ fun showSnackBar(
 fun generateMD5Hash(input: ByteArray): String {
     val md = MessageDigest.getInstance("MD5")
     return md.digest(input).joinToString("") { "%02x".format(it) }
+}
+
+fun setAppLocale(context: Context, language: String) {
+    val locale = Locale(language)
+    Locale.setDefault(locale)
+    val config = Configuration()
+    config.setLocale(locale)
+    context.resources.updateConfiguration(config, context.resources.displayMetrics)
 }

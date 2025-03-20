@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">मेरा पैलेट</string>
+    <string name="myCombination">मेरा संयोजन</string>
+    <string name="myPalette">मेरा पैलेट</string>
+    <string name="registerColor">रंग पंजीकृत करें</string>
+    <string name="one_combination_message">कृपया एक संयोजन चुनें ☝</string>
+    <string name="save_message">सहेजा गया! मेरे पैलेट पर जाएं 🎨</string>
+    <string name="yes_similarity_message">%1$d%% मेरे पैलेट के रंग के समान है 🙆‍♀️</string>
+    <string name="no_similarity_message">अभी तक मेरे पैलेट में कोई समान रंग नहीं है 🙅‍♀️</string>
+    <string name="comparison_message">आप निकाले गए रंग की तुलना मेरे पैलेट के रंगों से कर सकते हैं</string>
+    <string name="extracted_colors_message">कुल %1$d रंग निकाले गए हैं 👩‍🎨\nचित्र के इच्छित भाग को दबाएं और रंग निकालें।</string>
+    <string name="ok">ठीक है</string>
+    <string name="empty">खाली</string>
+    <string name="modify">संशोधित करें</string>
+    <string name="delete">हटाएं</string>
+    <string name="add">जोड़ें</string>
+    <string name="save">सहेजें</string>
+    <string name="close">बंद करें</string>
+    <string name="move">स्थानांतरित करें</string>
+    <string name="gallery_type">गैलरी प्रकार</string>
+    <string name="list_type">सूची प्रकार</string>
+    <string name="image">गैलरी</string>
+    <string name="camera">कैमरा</string>
+    <string name="selected_image">चयनित छवि</string>
+    <string name="copy_message">हेक्स रंग कोड क्लिपबोर्ड पर कॉपी किया गया! 📎</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="delete_color_message">क्या आप इस रंग को हटाना चाहते हैं?</string>
+    <string name="delete_image_message">क्या आप इस छवि को हटाना चाहते हैं?</string>
+    <string name="color_select_message">कृपया एक रंग चुनें 🖌</string>
+    <string name="setting">सेटिंग्स</string>
+    <string name="privacy_policy">गोपनीयता नीति</string>
+    <string name="language">भाषा</string>
+    <string name="language_description">ऐप की भाषा चुनें</string>
+    <string name="privacy_policy_description">हमारी गोपनीयता नीति देखें</string>
+    <string name="choose_language">एक भाषा चुनें</string>
+</resources>

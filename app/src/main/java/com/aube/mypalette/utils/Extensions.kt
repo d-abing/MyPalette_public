@@ -1,5 +1,7 @@
 package com.aube.mypalette.utils
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,12 +9,27 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import androidx.compose.material3.SnackbarHostState
+import com.aube.mypalette.R
+import kotlinx.coroutines.CoroutineScope
 import java.io.ByteArrayOutputStream
 
 fun Bitmap.toBytes(): ByteArray {
     val stream = ByteArrayOutputStream()
     compress(Bitmap.CompressFormat.JPEG, 50, stream)
     return stream.toByteArray()
+}
+
+fun Context.copyToClipboard(
+    text: String,
+    scope: CoroutineScope,
+    snackbarHostState: SnackbarHostState,
+) {
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(this.getString(R.string.label), text)
+    clipboard.setPrimaryClip(clip)
+
+    showSnackBar(scope, snackbarHostState, this.getString(R.string.copy_message))
 }
 
 fun Context.getOriginalBitmapFromUri(uri: Uri): Bitmap {
@@ -74,7 +91,6 @@ fun getRotationDegrees(contentResolver: ContentResolver, uri: Uri): Float {
     return 0f
 }
 
-// Bitmap을 회전하는 함수
 fun rotateBitmap(bitmap: Bitmap, rotationDegrees: Float): Bitmap {
     return if (rotationDegrees != 0f) {
         val matrix = Matrix().apply { postRotate(rotationDegrees) }
@@ -84,7 +100,6 @@ fun rotateBitmap(bitmap: Bitmap, rotationDegrees: Float): Bitmap {
     }
 }
 
-// 이미지의 inSampleSize를 계산하는 함수
 fun calculateInSampleSize(
     options: BitmapFactory.Options,
     reqWidth: Int = 1080,

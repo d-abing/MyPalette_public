@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">Meine Palette</string>
+    <string name="myCombination">Meine Kombination</string>
+    <string name="myPalette">Meine Palette</string>
+    <string name="registerColor">Farbe registrieren</string>
+    <string name="one_combination_message">Bitte wählen Sie eine Kombination ☝</string>
+    <string name="save_message">Gespeichert! Gehe zu Meine Palette 🎨</string>
+    <string name="yes_similarity_message">%1$d%% ähnlich zu einer Farbe in Meine Palette 🙆‍♀️</string>
+    <string name="no_similarity_message">Noch keine ähnliche Farbe in Meine Palette 🙅‍♀️</string>
+    <string name="comparison_message">Sie können die extrahierte Farbe mit den Farben in Meine Palette vergleichen</string>
+    <string name="extracted_colors_message">Es wurden insgesamt %1$d Farben extrahiert 👩‍🎨\nTippen Sie auf den gewünschten Bereich des Bildes, um die Farbe zu extrahieren</string>
+    <string name="ok">OK</string>
+    <string name="empty">Leer</string>
+    <string name="modify">Bearbeiten</string>
+    <string name="delete">Löschen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="save">Speichern</string>
+    <string name="close">Schließen</string>
+    <string name="move">Bewegen</string>
+    <string name="gallery_type">Galerie-Typ</string>
+    <string name="list_type">Listen-Typ</string>
+    <string name="image">Galerie</string>
+    <string name="camera">Kamera</string>
+    <string name="selected_image">Ausgewähltes Bild</string>
+    <string name="copy_message">Hex-Farbcode wurde in die Zwischenablage kopiert! 📎</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="delete_color_message">Möchten Sie die Farbe löschen?</string>
+    <string name="delete_image_message">Möchten Sie das Bild löschen?</string>
+    <string name="color_select_message">Bitte wählen Sie eine Farbe 🖌</string>
+    <string name="setting">Einstellungen</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="language">Sprache</string>
+    <string name="language_description">Wählen Sie die App-Sprache</string>
+    <string name="privacy_policy_description">Sehen Sie unsere Datenschutzrichtlinie</string>
+    <string name="choose_language">Wählen Sie eine Sprache</string>
+</resources>

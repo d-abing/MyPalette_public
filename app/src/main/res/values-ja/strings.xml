@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">マイパレット</string>
+    <string name="myCombination">私の組み合わせ</string>
+    <string name="myPalette">私のパレット</string>
+    <string name="registerColor">色を登録する</string>
+    <string name="one_combination_message">1つの組み合わせを選択してください ☝</string>
+    <string name="save_message">保存しました！ 私のパレットへ 🎨</string>
+    <string name="yes_similarity_message">私のパレットの色と%1$d%%類似しています 🙆‍♀️</string>
+    <string name="no_similarity_message">私のパレットにまだ類似した色はありません 🙅‍♀️</string>
+    <string name="comparison_message">抽出された色を私のパレットの色と比較できます</string>
+    <string name="extracted_colors_message">合計%1$d色が抽出されました 👩‍🎨\n画像の必要な部分をタップして色を抽出してください。</string>
+    <string name="ok">OK</string>
+    <string name="empty">空</string>
+    <string name="modify">修正</string>
+    <string name="delete">削除</string>
+    <string name="add">追加</string>
+    <string name="save">保存</string>
+    <string name="close">閉じる</string>
+    <string name="move">移動</string>
+    <string name="gallery_type">ギャラリータイプ</string>
+    <string name="list_type">リストタイプ</string>
+    <string name="image">ギャラリー</string>
+    <string name="camera">カメラ</string>
+    <string name="selected_image">選択された画像</string>
+    <string name="copy_message">16進数の色コードをクリップボードにコピーしました！ 📎</string>
+    <string name="cancel">キャンセル</string>
+    <string name="delete_color_message">色を削除しますか？</string>
+    <string name="delete_image_message">画像を削除しますか？</string>
+    <string name="color_select_message">色を選んでください 🖌</string>
+    <string name="setting">設定</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="language">言語</string>
+    <string name="language_description">アプリの言語を選択</string>
+    <string name="privacy_policy_description">プライバシーポリシーを見る</string>
+    <string name="choose_language">言語を選択</string>
+</resources>

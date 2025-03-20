@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">Mi Paleta</string>
+    <string name="myCombination">Mi Combinación</string>
+    <string name="myPalette">Mi Paleta</string>
+    <string name="registerColor">Registrar Color</string>
+    <string name="one_combination_message">Por favor selecciona una combinación ☝</string>
+    <string name="save_message">¡Guardado! Ve a Mi Paleta 🎨</string>
+    <string name="yes_similarity_message">%1$d%% similar a un color en Mi Paleta 🙆‍♀️</string>
+    <string name="no_similarity_message">Aún no hay un color similar en Mi Paleta 🙅‍♀️</string>
+    <string name="comparison_message">Puedes comparar el color extraído con los colores de Mi Paleta</string>
+    <string name="extracted_colors_message">Se han extraído un total de %1$d colores 👩‍🎨\nToca la parte deseada de la imagen para extraer el color</string>
+    <string name="ok">Aceptar</string>
+    <string name="empty">Vacío</string>
+    <string name="modify">Modificar</string>
+    <string name="delete">Eliminar</string>
+    <string name="add">Añadir</string>
+    <string name="save">Guardar</string>
+    <string name="close">Cerrar</string>
+    <string name="move">Mover</string>
+    <string name="gallery_type">Tipo de galería</string>
+    <string name="list_type">Tipo de lista</string>
+    <string name="image">Galería</string>
+    <string name="camera">Cámara</string>
+    <string name="selected_image">Imagen Seleccionada</string>
+    <string name="copy_message">¡El código de color Hex se copió al portapapeles! 📎</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete_color_message">¿Deseas eliminar este color?</string>
+    <string name="delete_image_message">¿Deseas eliminar esta imagen?</string>
+    <string name="color_select_message">Por favor, elige un color 🖌</string>
+    <string name="setting">Configuración</string>
+    <string name="privacy_policy">Política de Privacidad</string>
+    <string name="language">Idioma</string>
+    <string name="language_description">Selecciona el idioma de la aplicación</string>
+    <string name="privacy_policy_description">Consulta nuestra política de privacidad</string>
+    <string name="choose_language">Elige un idioma</string>
+</resources>

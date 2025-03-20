@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +19,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -96,7 +97,8 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
     if (colorList.isEmpty()) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(Sizes.colorLazyVerticalGridHeight)
                 .border(1.dp, color = Color.LightGray, shape = RoundedCornerShape(16.dp)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -125,17 +127,18 @@ fun MyPaletteColor(colorViewModel: ColorViewModel, addColor: (Int) -> Unit) {
 @Composable
 fun ClickablePaletteColorItem(colorItem: ColorEntity, addColor: (Int) -> Unit) {
 
-    val actualSize = calculateColorSize(Sizes.colorCardSize, Paddings.large * 2, Paddings.none)
+    val actualSize = calculateColorSize(Sizes.colorCardSize, Paddings.large * 2, Paddings.small)
 
-    Box(
+    Card(
         modifier = Modifier
+            .padding(Paddings.small)
             .width(Sizes.colorCardSize)
             .height(actualSize)
             .clip(RoundedCornerShape(12.dp))
-            .background(Color(colorItem.color))
-            .clickable { addColor(colorItem.color) }
-    )
+            .clickable { addColor(colorItem.color) },
+        elevation = CardDefaults.cardElevation(2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(colorItem.color)
+        )
+    ) {}
 }
-
-
-

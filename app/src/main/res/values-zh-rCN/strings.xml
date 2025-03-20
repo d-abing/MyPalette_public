@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">我的调色板</string>
+    <string name="myCombination">我的组合</string>
+    <string name="myPalette">我的调色板</string>
+    <string name="registerColor">注册颜色</string>
+    <string name="one_combination_message">请选择一个组合 ☝</string>
+    <string name="save_message">已保存！前往我的调色板 🎨</string>
+    <string name="yes_similarity_message">与我的调色板中的颜色 %1$d%% 相似 🙆‍♀️</string>
+    <string name="no_similarity_message">我的调色板中还没有类似的颜色 🙅‍♀️</string>
+    <string name="comparison_message">您可以将提取的颜色与我的调色板中的颜色进行比较</string>
+    <string name="extracted_colors_message">共提取了 %1$d 种颜色 👩‍🎨\n点击图片的所需部分以提取颜色。</string>
+    <string name="ok">确定</string>
+    <string name="empty">空</string>
+    <string name="modify">修改</string>
+    <string name="delete">删除</string>
+    <string name="add">添加</string>
+    <string name="save">保存</string>
+    <string name="close">关闭</string>
+    <string name="move">移动</string>
+    <string name="gallery_type">图库类型</string>
+    <string name="list_type">列表类型</string>
+    <string name="image">图库</string>
+    <string name="camera">相机</string>
+    <string name="selected_image">已选图片</string>
+    <string name="copy_message">十六进制颜色代码已复制到剪贴板！📎</string>
+    <string name="cancel">取消</string>
+    <string name="delete_color_message">您确定要删除此颜色吗？</string>
+    <string name="delete_image_message">您确定要删除此图片吗？</string>
+    <string name="color_select_message">请选择一种颜色 🖌</string>
+    <string name="setting">设置</string>
+    <string name="privacy_policy">隐私政策</string>
+    <string name="language">语言</string>
+    <string name="language_description">选择应用程序语言</string>
+    <string name="privacy_policy_description">查看我们的隐私政策</string>
+    <string name="choose_language">选择语言</string>
+</resources>

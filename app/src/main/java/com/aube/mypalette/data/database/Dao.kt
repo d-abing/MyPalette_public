@@ -46,7 +46,7 @@ interface ImageDao {
     @Query("SELECT * FROM images WHERE hash = :hash AND colorId = :colorId")
     suspend fun getImageByHash(hash: String, colorId: Int): ImageEntity?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertImage(image: ImageEntity)
 
     @Delete

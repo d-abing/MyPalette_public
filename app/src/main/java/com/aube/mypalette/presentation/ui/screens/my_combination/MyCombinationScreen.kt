@@ -3,7 +3,9 @@ package com.aube.mypalette.presentation.ui.screens.my_combination
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,8 +26,8 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,10 +35,12 @@ import com.aube.mypalette.R
 import com.aube.mypalette.data.model.CombinationEntity
 import com.aube.mypalette.presentation.model.Combination
 import com.aube.mypalette.presentation.model.toUiModel
+import com.aube.mypalette.presentation.ui.component.AdMobBanner
 import com.aube.mypalette.presentation.ui.screens.my_combination.add_combination.AddCombinationScreen
 import com.aube.mypalette.presentation.ui.screens.my_combination.bottom_bar.MyCombinationBottomAppBar
 import com.aube.mypalette.presentation.ui.screens.my_combination.content.MyCombinationList
 import com.aube.mypalette.presentation.ui.theme.Paddings
+import com.aube.mypalette.presentation.ui.theme.Sizes
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.CombinationViewModel
 import com.aube.mypalette.utils.showSnackBar
@@ -45,9 +49,9 @@ import com.aube.mypalette.utils.showSnackBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyCombinationScreen(
+    navController: NavHostController,
     combinationViewModel: CombinationViewModel,
     colorViewModel: ColorViewModel,
-    navController: NavHostController,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -69,72 +73,76 @@ fun MyCombinationScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
+                modifier = Modifier.heightIn(max = Sizes.topBarMaxHeight),
                 title = { Text(stringResource(R.string.myCombination)) }
             )
         },
         bottomBar = {
-            MyCombinationBottomAppBar(
-                isAdding = isAdding,
-                isModifying = isModifying,
-                newCombination = newCombination,
-                onDeleteButtonClick = {
-                    if (selectedIds.isNotEmpty()) {
-                        selectedIds.forEach { combinationViewModel.delete(it) }
-                        selectedIds.clear()
-                    }
-                },
-                onModifyButtonClick = {
-                    if (selectedIds.isNotEmpty() && selectedIds.size == 1) {
-                        combinationViewModel.getCombination(selectedIds[0])
-                        combinationViewModel.combination.observe(lifecycleOwner) { combination ->
-                            newCombination = combination.colors.toMutableStateList()
+            Column {
+                AdMobBanner()
+                MyCombinationBottomAppBar(
+                    isAdding = isAdding,
+                    isModifying = isModifying,
+                    newCombination = newCombination,
+                    onDeleteButtonClick = {
+                        if (selectedIds.isNotEmpty()) {
+                            selectedIds.forEach { combinationViewModel.delete(it) }
+                            selectedIds.clear()
                         }
-                        isModifying = true
-                        navController.navigate(context.getString(R.string.addCombinationScreen))
-                    } else {
-                        showSnackBar(
-                            scope,
-                            snackbarHostState,
-                            context.getString(R.string.one_combination_message),
-                            context.getString(R.string.yes)
-                        ) {
-                            snackbarHostState.currentSnackbarData?.dismiss()
+                    },
+                    onModifyButtonClick = {
+                        if (selectedIds.isNotEmpty() && selectedIds.size == 1) {
+                            combinationViewModel.getCombination(selectedIds[0])
+                            combinationViewModel.combination.observe(lifecycleOwner) { combination ->
+                                newCombination = combination.colors.toMutableStateList()
+                            }
+                            isModifying = true
+                            navController.navigate(context.getString(R.string.addCombinationScreen))
+                        } else {
+                            showSnackBar(
+                                scope,
+                                snackbarHostState,
+                                context.getString(R.string.one_combination_message),
+                                context.getString(R.string.ok)
+                            ) {
+                                snackbarHostState.currentSnackbarData?.dismiss()
+                            }
                         }
-                    }
-                },
-                onAddButtonClick = {
-                    isAdding = true
-                    navController.navigate("addCombinationScreen")
-                },
-                onCompleteButtonClick = {
-                    if (isModifying) { // 수정 중
-                        combinationViewModel.insert(
-                            CombinationEntity(
-                                id = selectedIds[0],
-                                colors = newCombination
+                    },
+                    onAddButtonClick = {
+                        isAdding = true
+                        navController.navigate("addCombinationScreen")
+                    },
+                    onCompleteButtonClick = {
+                        if (isModifying) { // 수정 중
+                            combinationViewModel.insert(
+                                CombinationEntity(
+                                    id = selectedIds[0],
+                                    colors = newCombination
+                                )
                             )
+                            isModifying = false
+                        } else {  // 추가 중
+                            combinationViewModel.insert(CombinationEntity(colors = newCombination))
+                            isAdding = false
+                        }
+                        navController.popBackStack(
+                            context.getString(R.string.myCombinationScreen),
+                            inclusive = false
                         )
-                        isModifying = false
-                    } else {  // 추가 중
-                        combinationViewModel.insert(CombinationEntity(colors = newCombination))
+                        newCombination = SnapshotStateList()
+                        resetSelection(selectedIds, combinationList)
+                    },
+                    onCloseButtonClick = {
+                        navController.popBackStack(
+                            context.getString(R.string.myCombinationScreen),
+                            inclusive = false
+                        )
                         isAdding = false
+                        resetSelection(selectedIds, combinationList)
                     }
-                    navController.popBackStack(
-                        context.getString(R.string.myCombinationScreen),
-                        inclusive = false
-                    )
-                    newCombination = SnapshotStateList()
-                    resetSelection(selectedIds, combinationList)
-                },
-                onCloseButtonClick = {
-                    navController.popBackStack(
-                        context.getString(R.string.myCombinationScreen),
-                        inclusive = false
-                    )
-                    isAdding = false
-                    resetSelection(selectedIds, combinationList)
-                }
-            )
+                )
+            }
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)

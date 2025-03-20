@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.android") version "1.9.25"
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
@@ -13,8 +13,8 @@ android {
         applicationId = "com.aube.mypalette"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 8
+        versionName = "1.0.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -23,6 +23,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -40,9 +43,10 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -50,16 +54,24 @@ android {
         }
     }
     kapt {
+        javacOptions {
+            option("--add-exports", "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED")
+        }
         correctErrorTypes = true
     }
-
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 }
 
 dependencies {
-
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -70,6 +82,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
     implementation("com.github.yalantis:ucrop:2.2.9")
 
+    implementation("com.google.android.gms:play-services-ads:23.5.0")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")

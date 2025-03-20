@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">Moja Paleta</string>
+    <string name="myCombination">Moje Kombinacje</string>
+    <string name="myPalette">Moja Paleta</string>
+    <string name="registerColor">Zarejestruj Kolor</string>
+    <string name="one_combination_message">Proszę wybrać jedną kombinację ☝</string>
+    <string name="save_message">Zapisano! Przejdź do Mojej Palety 🎨</string>
+    <string name="yes_similarity_message">%1$d%% podobny do koloru w Mojej Palecie 🙆‍♀️</string>
+    <string name="no_similarity_message">Brak podobnego koloru w Mojej Palecie 🙅‍♀️</string>
+    <string name="comparison_message">Możesz porównać wyodrębniony kolor z kolorami Mojej Palety</string>
+    <string name="extracted_colors_message">Wyodrębniono w sumie %1$d kolorów 👩‍🎨\nDotknij żądanej części obrazu, aby wyodrębnić kolor</string>
+    <string name="ok">OK</string>
+    <string name="empty">Puste</string>
+    <string name="modify">Modyfikuj</string>
+    <string name="delete">Usuń</string>
+    <string name="add">Dodaj</string>
+    <string name="save">Zapisz</string>
+    <string name="close">Zamknij</string>
+    <string name="move">Przenieś</string>
+    <string name="gallery_type">Typ galerii</string>
+    <string name="list_type">Typ listy</string>
+    <string name="image">Galeria</string>
+    <string name="camera">Aparat</string>
+    <string name="selected_image">Wybrany obraz</string>
+    <string name="copy_message">Kod koloru Hex skopiowany do schowka! 📎</string>
+    <string name="cancel">Anuluj</string>
+    <string name="delete_color_message">Czy na pewno chcesz usunąć kolor?</string>
+    <string name="delete_image_message">Czy na pewno chcesz usunąć obraz?</string>
+    <string name="color_select_message">Proszę wybrać kolor 🖌</string>
+    <string name="setting">Ustawienia</string>
+    <string name="privacy_policy">Polityka prywatności</string>
+    <string name="language">Język</string>
+    <string name="language_description">Wybierz język aplikacji</string>
+    <string name="privacy_policy_description">Zobacz naszą politykę prywatności</string>
+    <string name="choose_language">Wybierz język</string>
+</resources>

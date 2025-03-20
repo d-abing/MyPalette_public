@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">La Mia Tavolozza</string>
+    <string name="myCombination">La Mia Combinazione</string>
+    <string name="myPalette">La Mia Tavolozza</string>
+    <string name="registerColor">Registra Colore</string>
+    <string name="one_combination_message">Si prega di selezionare una combinazione ☝</string>
+    <string name="save_message">Salvato! Vai alla Mia Tavolozza 🎨</string>
+    <string name="yes_similarity_message">%1$d%% simile a un colore nella Mia Tavolozza 🙆‍♀️</string>
+    <string name="no_similarity_message">Nessun colore simile nella Mia Tavolozza ancora 🙅‍♀️</string>
+    <string name="comparison_message">Puoi confrontare il colore estratto con i colori della Mia Tavolozza</string>
+    <string name="extracted_colors_message">Sono stati estratti in totale %1$d colori 👩‍🎨\nTocca la parte desiderata dell\'immagine per estrarre il colore</string>
+    <string name="ok">OK</string>
+    <string name="empty">Vuoto</string>
+    <string name="modify">Modifica</string>
+    <string name="delete">Elimina</string>
+    <string name="add">Aggiungi</string>
+    <string name="save">Salva</string>
+    <string name="close">Chiudi</string>
+    <string name="move">Sposta</string>
+    <string name="gallery_type">tipo di galleria</string>
+    <string name="list_type">tipo di lista</string>
+    <string name="image">galleria</string>
+    <string name="camera">fotocamera</string>
+    <string name="selected_image">Immagine Selezionata</string>
+    <string name="copy_message">Codice Colore Esadecimale copiato negli appunti! 📎</string>
+    <string name="cancel">Annulla</string>
+    <string name="delete_color_message">Vuoi eliminare il colore?</string>
+    <string name="delete_image_message">Vuoi eliminare l\'immagine?</string>
+    <string name="color_select_message">Si prega di scegliere un colore 🖌</string>
+    <string name="setting">Impostazioni</string>
+    <string name="privacy_policy">Informativa sulla Privacy</string>
+    <string name="language">Lingua</string>
+    <string name="language_description">Seleziona la lingua dell\'app</string>
+    <string name="privacy_policy_description">Visualizza la nostra informativa sulla privacy</string>
+    <string name="choose_language">Scegli una lingua</string>
+</resources>

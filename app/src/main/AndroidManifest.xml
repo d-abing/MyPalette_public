@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".app.App"
         android:allowBackup="false"
@@ -13,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyPalette"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.ui.screens.setting.SettingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MyPalette" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,6 +44,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
     </application>
 
 </manifest>

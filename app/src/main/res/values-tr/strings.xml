@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">My Palette</string>
+    <string name="myCombination">Benim Kombinasyonum</string>
+    <string name="myPalette">Paletim</string>
+    <string name="registerColor">Renk Kaydet</string>
+    <string name="one_combination_message">Lütfen bir kombinasyon seçin ☝</string>
+    <string name="save_message">Kaydedildi! Paletime Git 🎨</string>
+    <string name="yes_similarity_message">Paletimdeki bir renge %1$d%% benzer 🙆‍♀️</string>
+    <string name="no_similarity_message">Paletimde henüz benzer bir renk yok 🙅‍♀️</string>
+    <string name="comparison_message">Çıkarılan rengi paletimdeki renklerle karşılaştırabilirsiniz</string>
+    <string name="extracted_colors_message">Toplamda %1$d renk çıkarıldı 👩‍🎨\nRengi çıkarmak için görüntünün istediğiniz kısmına dokunun</string>
+    <string name="ok">Tamam</string>
+    <string name="empty">Boş</string>
+    <string name="modify">Düzenle</string>
+    <string name="delete">Sil</string>
+    <string name="add">Ekle</string>
+    <string name="save">Kaydet</string>
+    <string name="close">Kapat</string>
+    <string name="move">Taşı</string>
+    <string name="gallery_type">Galeri türü</string>
+    <string name="list_type">Liste türü</string>
+    <string name="image">galeri</string>
+    <string name="camera">kamera</string>
+    <string name="selected_image">Seçilen Görüntü</string>
+    <string name="copy_message">Hex Renk Kodu panoya kopyalandı! 📎</string>
+    <string name="cancel">İptal</string>
+    <string name="delete_color_message">Bu rengi silmek istiyor musunuz?</string>
+    <string name="delete_image_message">Bu resmi silmek istiyor musunuz?</string>
+    <string name="color_select_message">Lütfen bir renk seçin 🖌</string>
+    <string name="setting">Ayarlar</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="language">Dil</string>
+    <string name="language_description">Uygulama dilini seçin</string>
+    <string name="privacy_policy_description">Gizlilik politikamızı görüntüleyin</string>
+    <string name="choose_language">Bir Dil Seçin</string>
+</resources>

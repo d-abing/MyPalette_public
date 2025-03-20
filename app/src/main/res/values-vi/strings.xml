@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">Bảng Màu Của Tôi</string>
+    <string name="myCombination">Kết Hợp Của Tôi</string>
+    <string name="myPalette">Bảng Màu Của Tôi</string>
+    <string name="registerColor">Đăng Ký Màu</string>
+    <string name="one_combination_message">Vui lòng chọn một tổ hợp ☝</string>
+    <string name="save_message">Đã lưu! Đi đến Bảng Màu Của Tôi 🎨</string>
+    <string name="yes_similarity_message">%1$d%% tương tự với một màu trong Bảng Màu Của Tôi 🙆‍♀️</string>
+    <string name="no_similarity_message">Chưa có màu nào tương tự trong Bảng Màu Của Tôi 🙅‍♀️</string>
+    <string name="comparison_message">Bạn có thể so sánh màu đã trích xuất với các màu trong Bảng Màu Của Tôi</string>
+    <string name="extracted_colors_message">Đã trích xuất tổng cộng %1$d màu 👩‍🎨\nNhấn vào phần mong muốn của hình ảnh để trích xuất màu sắc</string>
+    <string name="ok">Đồng ý</string>
+    <string name="empty">Trống</string>
+    <string name="modify">Chỉnh sửa</string>
+    <string name="delete">Xóa</string>
+    <string name="add">Thêm</string>
+    <string name="save">Lưu</string>
+    <string name="close">Đóng</string>
+    <string name="move">Di chuyển</string>
+    <string name="gallery_type">loại thư viện</string>
+    <string name="list_type">loại danh sách</string>
+    <string name="image">thư viện</string>
+    <string name="camera">máy ảnh</string>
+    <string name="selected_image">Hình Ảnh Đã Chọn</string>
+    <string name="copy_message">Mã Màu Hex đã được sao chép vào clipboard! 📎</string>
+    <string name="cancel">Hủy</string>
+    <string name="delete_color_message">Bạn có muốn xóa màu này không?</string>
+    <string name="delete_image_message">Bạn có muốn xóa hình ảnh này không?</string>
+    <string name="color_select_message">Vui lòng chọn một màu 🖌</string>
+    <string name="setting">Cài đặt</string>
+    <string name="privacy_policy">Chính sách Bảo mật</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="language_description">Chọn ngôn ngữ ứng dụng</string>
+    <string name="privacy_policy_description">Xem chính sách bảo mật của chúng tôi</string>
+    <string name="choose_language">Chọn một ngôn ngữ</string>
+</resources>

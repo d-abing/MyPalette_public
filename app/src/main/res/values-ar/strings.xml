@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+
+    <string name="addCombinationScreen">addCombinationScreen</string>
+    <string name="myCombinationScreen">myCombinationScreen</string>
+    <string name="myPaletteScreen">myPaletteScreen</string>
+    <string name="registerColorScreen">registerColorScreen</string>
+    <string name="uri_display_name">PaletteImage</string>
+    <string name="gallery_launcher_input">image/*</string>
+    <string name="file_name">%s.jpg</string>
+    <string name="mime_type">image/jpeg</string>
+    <string name="label">Label</string>
+
+    <string name="app_name">لوحتي</string>
+    <string name="myCombination">مجموعتي</string>
+    <string name="myPalette">لوحتي</string>
+    <string name="registerColor">تسجيل لون</string>
+    <string name="one_combination_message">يرجى اختيار تركيبة واحدة ☝</string>
+    <string name="save_message">تم الحفظ! اذهب لرؤية لوحتي 🎨</string>
+    <string name="yes_similarity_message">%1$d%% مشابه للون في لوحتي 🙆‍♀️</string>
+    <string name="no_similarity_message">لا يوجد لون مشابه لهذا حتى الآن 🙅‍♀️</string>
+    <string name="comparison_message">يمكنك مقارنة اللون المستخرج مع ألوان لوحتي</string>
+    <string name="extracted_colors_message">تم استخراج %1$d لونًا 👩‍🎨\nاضغط على الجزء المطلوب من الصورة لاستخراج اللون.
+</string>
+    <string name="ok">حسنًا</string>
+    <string name="empty">فارغ</string>
+    <string name="modify">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="add">إضافة</string>
+    <string name="save">حفظ</string>
+    <string name="close">إغلاق</string>
+    <string name="move">نقل</string>
+    <string name="gallery_type">نوع المعرض</string>
+    <string name="list_type">نوع القائمة</string>
+    <string name="image">معرض</string>
+    <string name="camera">كاميرا</string>
+    <string name="selected_image">الصورة المختارة</string>
+    <string name="copy_message">تم نسخ رمز اللون السداسي إلى الحافظة! 📎</string>
+    <string name="cancel">إلغاء</string>
+    <string name="delete_color_message">هل تريد حذف اللون؟</string>
+    <string name="delete_image_message">هل تريد حذف الصورة؟</string>
+    <string name="color_select_message">يرجى اختيار لون 🖌</string>
+    <string name="setting">الإعدادات</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="language">اللغة</string>
+    <string name="language_description">اختر لغة التطبيق</string>
+    <string name="privacy_policy_description">عرض سياسة الخصوصية الخاصة بنا</string>
+    <string name="choose_language">اختر لغة</string>
+</resources>

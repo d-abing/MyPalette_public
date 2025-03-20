@@ -50,7 +50,7 @@ fun SimilarityColor(
         Row(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             val (similarColor, distance) = similarColorResult.value
             val scrollState = rememberScrollState()

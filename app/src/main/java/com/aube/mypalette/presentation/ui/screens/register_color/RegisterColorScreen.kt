@@ -21,10 +21,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.aube.mypalette.R
 import com.aube.mypalette.presentation.ui.screens.register_color.content.RegisterColorContent
 import com.aube.mypalette.presentation.ui.screens.register_color.top_app_bar.RegisterColorTopAppBar
+import com.aube.mypalette.presentation.viewmodel.AdViewModel
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.ImageViewModel
 import com.aube.mypalette.utils.calculateColorDistance
@@ -39,7 +40,9 @@ import java.util.UUID
 fun RegisterColorScreen(
     colorViewModel: ColorViewModel,
     imageViewModel: ImageViewModel,
+    adViewModel: AdViewModel,
     pagerState: PagerState,
+    showInterstitialAd: () -> Unit,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -79,29 +82,27 @@ fun RegisterColorScreen(
 
     val photoFromGalleryLauncher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let { uri ->
-                startCrop(context, uri) { uCropIntent ->
+            uri?.let {
+                startCrop(context, it) { uCropIntent ->
                     cropImageLauncher.launch(uCropIntent)
                 }
             }
         }
 
-    Scaffold(
-        topBar = {
-            RegisterColorTopAppBar(
-                context,
-                imageViewModel,
-                selectedColor,
-                selectedImage,
-                snackbarHostState,
-                pagerState,
-                coroutineScope
-            )
-        },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) { innerPadding ->
-        RegisterColorContent(
-            innerPadding = innerPadding,
+    Scaffold(topBar = {
+        RegisterColorTopAppBar(
+            context,
+            imageViewModel,
+            adViewModel,
+            selectedColor,
+            selectedImage,
+            snackbarHostState,
+            pagerState,
+            coroutineScope,
+            showInterstitialAd
+        )
+    }, snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { innerPadding ->
+        RegisterColorContent(innerPadding = innerPadding,
             selectedColor = selectedColor,
             colorPalette = colorPalette,
             selectedImage = selectedImage,
@@ -136,8 +137,7 @@ fun RegisterColorScreen(
                     photoFromCameraLauncher.launch(it)
                 }
             },
-            onGalleryClick = { photoFromGalleryLauncher.launch(context.getString(R.string.gallery_launcher_input)) }
-        )
+            onGalleryClick = { photoFromGalleryLauncher.launch(context.getString(R.string.gallery_launcher_input)) })
     }
 }
 
@@ -148,21 +148,17 @@ fun resetSimilarColorResult(similarColorResult: MutableState<Pair<Color?, Double
 fun createImageUri(context: Context, displayName: String): Uri? {
     val contentValues = ContentValues().apply {
         put(
-            MediaStore.Images.Media.DISPLAY_NAME,
-            context.getString(R.string.file_name, displayName)
+            MediaStore.Images.Media.DISPLAY_NAME, context.getString(R.string.file_name, displayName)
         )
         put(MediaStore.Images.Media.MIME_TYPE, context.getString(R.string.mime_type))
         put(
-            MediaStore.Images.Media.RELATIVE_PATH,
-            Environment.DIRECTORY_PICTURES
-        ) // Android 10 이상에서 저장 위치 지정
+            MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES
+        )
     }
     return context.contentResolver.insert(
-        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-        contentValues
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues
     )
 }
-
 
 fun startCrop(
     context: Context,
