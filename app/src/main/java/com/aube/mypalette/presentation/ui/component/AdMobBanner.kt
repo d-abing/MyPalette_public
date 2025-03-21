@@ -21,6 +21,8 @@ fun AdMobBanner() {
                 adUnitId = getString(context, R.string.banner_ad_unit_id)
                 loadAd(AdRequest.Builder().build())
             }
-        }
+        },
+        update = { adView -> adView.resume() },
+        onRelease = { adView -> adView.destroy() }
     )
 }
