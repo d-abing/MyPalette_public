@@ -42,10 +42,18 @@
     <string name="delete_color_message">色を削除しますか？</string>
     <string name="delete_image_message">画像を削除しますか？</string>
     <string name="color_select_message">色を選んでください 🖌</string>
+
     <string name="setting">設定</string>
-    <string name="privacy_policy">プライバシーポリシー</string>
-    <string name="language">言語</string>
-    <string name="language_description">アプリの言語を選択</string>
-    <string name="privacy_policy_description">プライバシーポリシーを見る</string>
-    <string name="choose_language">言語を選択</string>
+    <string name="text_language">言語</string>
+    <string name="text_privacy_policy">プライバシーポリシー</string>
+    <string name="text_privacy_policy_detail">プライバシーポリシーを開く。</string>
+    <string name="text_google_drive">Google ドライブ</string>
+    <string name="text_status_connected">ステータス：接続済み</string>
+    <string name="text_status_not_connected">ステータス：未接続</string>
+    <string name="text_last_backup">最終バックアップ：</string>
+    <string name="text_back_up_now">今すぐバックアップ</string>
+    <string name="text_restore">復元</string>
+    <string name="text_disconnect">切断</string>
+    <string name="text_connect_google_drive">Google ドライブに接続</string>
+    <string name="text_back_up_detail">マイパレット のデータを Google ドライブにバックアップし、必要なときに復元します。</string>
 </resources>

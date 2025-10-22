@@ -15,7 +15,7 @@ interface ColorDao {
     @Query("SELECT * FROM colors ORDER BY color")
     fun getAllColors(): LiveData<List<ColorEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertColor(color: ColorEntity): Long
     // Long을 반환하면 성공적으로 삽입된 행의 ID를 반환함
 

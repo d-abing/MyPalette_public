@@ -42,10 +42,18 @@
     <string name="delete_color_message">क्या आप इस रंग को हटाना चाहते हैं?</string>
     <string name="delete_image_message">क्या आप इस छवि को हटाना चाहते हैं?</string>
     <string name="color_select_message">कृपया एक रंग चुनें 🖌</string>
+
     <string name="setting">सेटिंग्स</string>
-    <string name="privacy_policy">गोपनीयता नीति</string>
-    <string name="language">भाषा</string>
-    <string name="language_description">ऐप की भाषा चुनें</string>
-    <string name="privacy_policy_description">हमारी गोपनीयता नीति देखें</string>
-    <string name="choose_language">एक भाषा चुनें</string>
+    <string name="text_language">भाषा</string>
+    <string name="text_privacy_policy">गोपनीयता नीति</string>
+    <string name="text_privacy_policy_detail">गोपनीयता नीति खोलें।</string>
+    <string name="text_google_drive">Google ड्राइव</string>
+    <string name="text_status_connected">स्थिति: जुड़ा हुआ</string>
+    <string name="text_status_not_connected">स्थिति: कनेक्ट नहीं</string>
+    <string name="text_last_backup">अंतिम बैकअप:</string>
+    <string name="text_back_up_now">अभी बैकअप करें</string>
+    <string name="text_restore">पुनर्स्थापित करें</string>
+    <string name="text_disconnect">डिसकनेक्ट करें</string>
+    <string name="text_connect_google_drive">Google ड्राइव से कनेक्ट करें</string>
+    <string name="text_back_up_detail">अपना मेरा पैलेट डेटा Google ड्राइव में बैकअप करें और आवश्यकता पड़ने पर पुनर्स्थापित करें।</string>
 </resources>

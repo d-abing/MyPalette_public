@@ -7,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.aube.mypalette"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.aube.mypalette"
         minSdk = 29
-        targetSdk = 34
-        versionCode = 9
-        versionName = "1.0.8"
+        targetSdk = 35
+        versionCode = 14
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,7 +27,7 @@ android {
             applicationIdSuffix = ".debug"
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -50,7 +50,17 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            pickFirsts += "META-INF/DEPENDENCIES"
+
+            // (선택) 다른 라이선스 파일 충돌 예방
+            excludes += setOf(
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt"
+            )
         }
     }
     kapt {
@@ -80,9 +90,16 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager-indicators:0.21.3-beta")
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
-    implementation("com.github.yalantis:ucrop:2.2.9")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation("com.github.yalantis:ucrop:2.2.11")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
+    implementation("com.jakewharton:process-phoenix:2.1.2")
 
     implementation("com.google.android.gms:play-services-ads:23.5.0")
+    implementation("com.google.android.gms:play-services-auth:21.4.0")
+    implementation("com.google.apis:google-api-services-drive:v3-rev20230822-2.0.0")
+    implementation("com.google.api-client:google-api-client-android:2.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")

@@ -42,10 +42,18 @@
     <string name="delete_color_message">Bạn có muốn xóa màu này không?</string>
     <string name="delete_image_message">Bạn có muốn xóa hình ảnh này không?</string>
     <string name="color_select_message">Vui lòng chọn một màu 🖌</string>
+
     <string name="setting">Cài đặt</string>
-    <string name="privacy_policy">Chính sách Bảo mật</string>
-    <string name="language">Ngôn ngữ</string>
-    <string name="language_description">Chọn ngôn ngữ ứng dụng</string>
-    <string name="privacy_policy_description">Xem chính sách bảo mật của chúng tôi</string>
-    <string name="choose_language">Chọn một ngôn ngữ</string>
+    <string name="text_language">Ngôn ngữ</string>
+    <string name="text_privacy_policy">Chính sách bảo mật</string>
+    <string name="text_privacy_policy_detail">Mở chính sách bảo mật.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Trạng thái: Đã kết nối</string>
+    <string name="text_status_not_connected">Trạng thái: Chưa kết nối</string>
+    <string name="text_last_backup">Sao lưu lần cuối:</string>
+    <string name="text_back_up_now">Sao lưu ngay</string>
+    <string name="text_restore">Khôi phục</string>
+    <string name="text_disconnect">Ngắt kết nối</string>
+    <string name="text_connect_google_drive">Kết nối Google Drive</string>
+    <string name="text_back_up_detail">Sao lưu dữ liệu Bảng Màu Của Tôi của bạn lên Google Drive và khôi phục khi cần thiết.</string>
 </resources>

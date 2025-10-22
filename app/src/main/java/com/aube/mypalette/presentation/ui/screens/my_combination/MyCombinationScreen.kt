@@ -1,14 +1,19 @@
 package com.aube.mypalette.presentation.ui.screens.my_combination
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,6 +44,7 @@ import com.aube.mypalette.presentation.ui.component.AdMobBanner
 import com.aube.mypalette.presentation.ui.screens.my_combination.add_combination.AddCombinationScreen
 import com.aube.mypalette.presentation.ui.screens.my_combination.bottom_bar.MyCombinationBottomAppBar
 import com.aube.mypalette.presentation.ui.screens.my_combination.content.MyCombinationList
+import com.aube.mypalette.presentation.ui.screens.setting.SettingActivity
 import com.aube.mypalette.presentation.ui.theme.Paddings
 import com.aube.mypalette.presentation.ui.theme.Sizes
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
@@ -74,6 +80,18 @@ fun MyCombinationScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 modifier = Modifier.heightIn(max = Sizes.topBarMaxHeight),
+                navigationIcon = {
+                    IconButton(onClick = {
+                        Intent(context, SettingActivity::class.java).apply {
+                            context.startActivity(this)
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.Settings,
+                            contentDescription = stringResource(id = R.string.setting)
+                        )
+                    }
+                },
                 title = { Text(stringResource(R.string.myCombination)) }
             )
         },

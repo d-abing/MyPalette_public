@@ -26,6 +26,7 @@ data class CombinationEntity(
 
 @Entity(
     tableName = "images",
+    indices = [Index(value = ["hash", "colorId"], unique = true)],
     foreignKeys = [
         ForeignKey(
             entity = ColorEntity::class,

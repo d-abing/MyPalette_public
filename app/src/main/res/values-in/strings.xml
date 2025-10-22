@@ -42,10 +42,18 @@
     <string name="delete_color_message">Apakah Anda ingin menghapus warna ini?</string>
     <string name="delete_image_message">Apakah Anda ingin menghapus gambar ini?</string>
     <string name="color_select_message">Silakan pilih warna 🖌</string>
+
     <string name="setting">Pengaturan</string>
-    <string name="privacy_policy">Kebijakan Privasi</string>
-    <string name="language">Bahasa</string>
-    <string name="language_description">Pilih bahasa aplikasi</string>
-    <string name="privacy_policy_description">Lihat kebijakan privasi kami</string>
-    <string name="choose_language">Pilih Bahasa</string>
+    <string name="text_language">Bahasa</string>
+    <string name="text_privacy_policy">Kebijakan Privasi</string>
+    <string name="text_privacy_policy_detail">Buka kebijakan privasi.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Status: Terhubung</string>
+    <string name="text_status_not_connected">Status: Tidak terhubung</string>
+    <string name="text_last_backup">Cadangan terakhir:</string>
+    <string name="text_back_up_now">Cadangkan sekarang</string>
+    <string name="text_restore">Pulihkan</string>
+    <string name="text_disconnect">Putuskan</string>
+    <string name="text_connect_google_drive">Hubungkan ke Google Drive</string>
+    <string name="text_back_up_detail">Cadangkan data Palet Saya Anda ke Google Drive dan pulihkan saat diperlukan.</string>
 </resources>

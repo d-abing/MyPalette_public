@@ -1,12 +1,16 @@
 package com.aube.mypalette
 
-import android.content.Context
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
@@ -19,21 +23,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.aube.mypalette.data.datastore.LocalePrefs
 import com.aube.mypalette.presentation.ui.screens.my_combination.MyCombinationScreen
 import com.aube.mypalette.presentation.ui.screens.my_palette.MyPaletteScreen
 import com.aube.mypalette.presentation.ui.screens.register_color.RegisterColorScreen
-import com.aube.mypalette.presentation.ui.screens.setting.LANGUAGE
-import com.aube.mypalette.presentation.ui.screens.setting.SHARED_PREFERENCES
 import com.aube.mypalette.presentation.ui.theme.MyPaletteTheme
 import com.aube.mypalette.presentation.viewmodel.AdViewModel
 import com.aube.mypalette.presentation.viewmodel.ColorViewModel
 import com.aube.mypalette.presentation.viewmodel.CombinationViewModel
 import com.aube.mypalette.presentation.viewmodel.ImageViewModel
-import com.aube.mypalette.utils.setAppLocale
+import com.aube.mypalette.utils.AppLocaleManager
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -45,38 +50,28 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     private var interstitialAd: InterstitialAd? = null
     private var lastAdShownTime: Long = 0L
 
-    private val colorViewModel: ColorViewModel by viewModels<ColorViewModel>()
-    private val combinationViewModel: CombinationViewModel by viewModels<CombinationViewModel>()
-    private val imageViewModel: ImageViewModel by viewModels<ImageViewModel>()
     private val adViewModel: AdViewModel by viewModels<AdViewModel>()
 
-    private val sharedPreferences by lazy {
-        getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val tag = kotlinx.coroutines.runBlocking {
+            LocalePrefs.flow(applicationContext).first()  // import kotlinx.coroutines.flow.first
+        }
+        AppLocaleManager.apply(tag)
+
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this)
         loadInterstitialAd()
-        val language = sharedPreferences.getString(LANGUAGE, null) ?: Locale.getDefault().language
-        setAppLocale(this, language)
         setContent {
             MyPaletteTheme {
-                AppContent(
-                    colorViewModel,
-                    combinationViewModel,
-                    imageViewModel,
-                    adViewModel,
-                    this,
-                ) { showInterstitialAd(adViewModel) }
+                AppContent { showInterstitialAd(adViewModel) }
             }
         }
     }
@@ -133,21 +128,24 @@ const val REGISTER_STATE = 2
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppContent(
-    colorViewModel: ColorViewModel,
-    combinationViewModel: CombinationViewModel,
-    imageViewModel: ImageViewModel,
-    adViewModel: AdViewModel,
-    context: Context,
+    colorViewModel: ColorViewModel = hiltViewModel(),
+    combinationViewModel: CombinationViewModel = hiltViewModel(),
+    imageViewModel: ImageViewModel = hiltViewModel(),
+    adViewModel: AdViewModel = hiltViewModel(),
     showInterstitialAd: () -> Unit,
 ) {
+    val context = LocalContext.current
     val pagerState = rememberPagerState(initialPage = REGISTER_STATE)
     val coroutineScope = rememberCoroutineScope()
     val navController = rememberNavController()
 
     Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
         bottomBar = {
             NavigationBar(
-                modifier = Modifier.heightIn(max = 50.dp),
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .heightIn(max = 50.dp),
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.onBackground
             ) {
@@ -221,7 +219,9 @@ fun AppContent(
         HorizontalPager(
             count = 3,
             state = pagerState,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) { page ->
             when (page) {
                 COMBINATION_STATE -> MyCombinationScreen(

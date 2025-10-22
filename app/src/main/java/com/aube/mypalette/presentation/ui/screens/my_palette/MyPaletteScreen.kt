@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import com.aube.mypalette.R
 import com.aube.mypalette.data.model.ColorEntity
 import com.aube.mypalette.data.model.ImageEntity
+import com.aube.mypalette.presentation.ui.component.AdMobBanner
 import com.aube.mypalette.presentation.ui.component.MPDialog
 import com.aube.mypalette.presentation.ui.screens.my_palette.content.ColorGrid
 import com.aube.mypalette.presentation.ui.screens.my_palette.content.ColorList
@@ -53,7 +54,11 @@ fun MyPaletteScreen(
                 isListType = it
             }
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        bottomBar = {
+            if (isListType)
+                AdMobBanner()
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier

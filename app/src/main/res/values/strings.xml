@@ -42,10 +42,18 @@
     <string name="delete_color_message">Do you want to delete the color?</string>
     <string name="delete_image_message">Do you want to delete the image?</string>
     <string name="color_select_message">Please choose a color 🖌</string>
+
     <string name="setting">Settings</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="language">Language</string>
-    <string name="language_description">Select app language</string>
-    <string name="privacy_policy_description">View our privacy policy</string>
-    <string name="choose_language">Choose a Language</string>
+    <string name="text_language">Language</string>
+    <string name="text_privacy_policy">Privacy Policy</string>
+    <string name="text_privacy_policy_detail">Open privacy policy.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Status: Connected</string>
+    <string name="text_status_not_connected">Status: Not connected</string>
+    <string name="text_last_backup">Last backup:</string>
+    <string name="text_back_up_now">Back up now</string>
+    <string name="text_restore">Restore</string>
+    <string name="text_disconnect">Disconnect</string>
+    <string name="text_connect_google_drive">Connect Google Drive</string>
+    <string name="text_back_up_detail">Back up your My Palette data to Google Drive and restore when needed.</string>
 </resources>

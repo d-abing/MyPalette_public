@@ -42,10 +42,18 @@
     <string name="delete_color_message">Vuoi eliminare il colore?</string>
     <string name="delete_image_message">Vuoi eliminare l\'immagine?</string>
     <string name="color_select_message">Si prega di scegliere un colore 🖌</string>
+
     <string name="setting">Impostazioni</string>
-    <string name="privacy_policy">Informativa sulla Privacy</string>
-    <string name="language">Lingua</string>
-    <string name="language_description">Seleziona la lingua dell\'app</string>
-    <string name="privacy_policy_description">Visualizza la nostra informativa sulla privacy</string>
-    <string name="choose_language">Scegli una lingua</string>
+    <string name="text_language">Lingua</string>
+    <string name="text_privacy_policy">Informativa sulla privacy</string>
+    <string name="text_privacy_policy_detail">Apri l\'informativa sulla privacy.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Stato: Connesso</string>
+    <string name="text_status_not_connected">Stato: Non connesso</string>
+    <string name="text_last_backup">Ultimo backup:</string>
+    <string name="text_back_up_now">Esegui backup ora</string>
+    <string name="text_restore">Ripristina</string>
+    <string name="text_disconnect">Disconnetti</string>
+    <string name="text_connect_google_drive">Connetti a Google Drive</string>
+    <string name="text_back_up_detail">Esegui il backup dei dati La Mia Tavolozza su Google Drive e ripristinali quando necessario.</string>
 </resources>

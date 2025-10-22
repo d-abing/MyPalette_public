@@ -17,8 +17,8 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     val MIGRATION_1_2 = object : Migration(1, 2) {
-        override fun migrate(db: SupportSQLiteDatabase) {
-            db.execSQL("")
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL("CREATE UNIQUE INDEX index_images_hash_colorId ON images(hash, colorId)")
         }
     }
 
@@ -30,7 +30,7 @@ object DatabaseModule {
             MyPaletteDatabase::class.java,
             "my_palette_database"
         )
-//            .addMigrations(MIGRATION_1_2)
+            .addMigrations(MIGRATION_1_2)
             .build()
     }
 }

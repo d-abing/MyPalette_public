@@ -8,7 +8,7 @@ import com.aube.mypalette.data.model.ColorEntity
 import com.aube.mypalette.data.model.CombinationEntity
 import com.aube.mypalette.data.model.ImageEntity
 
-const val DATABASE_VERSION = 1
+const val DATABASE_VERSION = 2
 
 @Database(
     entities = [ColorEntity::class, CombinationEntity::class, ImageEntity::class],

@@ -42,10 +42,18 @@
     <string name="delete_color_message">Você deseja excluir a cor?</string>
     <string name="delete_image_message">Você deseja excluir a imagem?</string>
     <string name="color_select_message">Por favor, escolha uma cor 🖌</string>
+
     <string name="setting">Configurações</string>
-    <string name="privacy_policy">Política de Privacidade</string>
-    <string name="language">Idioma</string>
-    <string name="language_description">Selecione o idioma do aplicativo</string>
-    <string name="privacy_policy_description">Veja nossa política de privacidade</string>
-    <string name="choose_language">Escolha um idioma</string>
+    <string name="text_language">Idioma</string>
+    <string name="text_privacy_policy">Política de Privacidade</string>
+    <string name="text_privacy_policy_detail">Abrir política de privacidade.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Status: Conectado</string>
+    <string name="text_status_not_connected">Status: Desconectado</string>
+    <string name="text_last_backup">Último backup:</string>
+    <string name="text_back_up_now">Fazer backup agora</string>
+    <string name="text_restore">Restaurar</string>
+    <string name="text_disconnect">Desconectar</string>
+    <string name="text_connect_google_drive">Conectar ao Google Drive</string>
+    <string name="text_back_up_detail">Faça backup dos seus dados do Minha Paleta no Google Drive e restaure-os quando necessário.</string>
 </resources>

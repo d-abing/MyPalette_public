@@ -41,10 +41,18 @@
     <string name="delete_color_message">색상을 삭제하시겠습니까?</string>
     <string name="delete_image_message">이미지를 삭제하시겠습니까?</string>
     <string name="color_select_message">색을 선택해주세요 🖌</string>
+
     <string name="setting">설정</string>
-    <string name="privacy_policy">개인정보처리방침</string>
-    <string name="language">언어</string>
-    <string name="language_description">앱 언어를 선택하세요</string>
-    <string name="privacy_policy_description">개인정보 보호 정책 보기</string>
-    <string name="choose_language">언어 선택</string>
+    <string name="text_language">언어</string>
+    <string name="text_privacy_policy">개인정보 처리방침</string>
+    <string name="text_privacy_policy_detail">개인정보 처리방침 열기</string>
+    <string name="text_google_drive">Google 드라이브</string>
+    <string name="text_status_connected">상태: 연결됨</string>
+    <string name="text_status_not_connected">상태: 연결되지 않음</string>
+    <string name="text_last_backup">마지막 백업:</string>
+    <string name="text_back_up_now">지금 백업</string>
+    <string name="text_restore">복원</string>
+    <string name="text_disconnect">연결 해제</string>
+    <string name="text_connect_google_drive">Google 드라이브 연결</string>
+    <string name="text_back_up_detail">마이 팔레트 데이터를 Google 드라이브에 백업하고 필요할 때 복원하세요.</string>
 </resources>

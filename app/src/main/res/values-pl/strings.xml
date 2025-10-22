@@ -42,10 +42,18 @@
     <string name="delete_color_message">Czy na pewno chcesz usunąć kolor?</string>
     <string name="delete_image_message">Czy na pewno chcesz usunąć obraz?</string>
     <string name="color_select_message">Proszę wybrać kolor 🖌</string>
+
     <string name="setting">Ustawienia</string>
-    <string name="privacy_policy">Polityka prywatności</string>
-    <string name="language">Język</string>
-    <string name="language_description">Wybierz język aplikacji</string>
-    <string name="privacy_policy_description">Zobacz naszą politykę prywatności</string>
-    <string name="choose_language">Wybierz język</string>
+    <string name="text_language">Język</string>
+    <string name="text_privacy_policy">Polityka prywatności</string>
+    <string name="text_privacy_policy_detail">Otwórz politykę prywatności.</string>
+    <string name="text_google_drive">Google Drive</string>
+    <string name="text_status_connected">Status: Połączono</string>
+    <string name="text_status_not_connected">Status: Nie połączono</string>
+    <string name="text_last_backup">Ostatnia kopia zapasowa:</string>
+    <string name="text_back_up_now">Utwórz kopię teraz</string>
+    <string name="text_restore">Przywróć</string>
+    <string name="text_disconnect">Odłącz</string>
+    <string name="text_connect_google_drive">Połącz z Google Drive</string>
+    <string name="text_back_up_detail">Utwórz kopię zapasową danych Moja Paleta w Google Drive i przywróć je w razie potrzeby.</string>
 </resources>
